@@ -6,6 +6,9 @@ export type User = {
   id: string;
   name: string;
   email: string;
+  city: string;
+  instagram: string;
+  tiktok: string;
   password: string;
 };
 
@@ -39,8 +42,21 @@ export type LatestInvoice = {
   amount: string;
 };
 
+export type LatestPromotion = {
+  id: string;
+  name: string;
+  business: string;
+  promotionType: string;
+  amount: string;
+};
+
 // The database returns a number for amount, but we later format it to a string with the formatCurrency function
 export type LatestInvoiceRaw = Omit<LatestInvoice, 'amount'> & {
+  amount: number;
+};
+
+// The database returns a number for amount, but we later format it to a string with the formatCurrency function
+export type LatestPromotionRaw = Omit<LatestPromotion, 'amount'> & {
   amount: number;
 };
 
@@ -86,3 +102,114 @@ export type InvoiceForm = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
+export enum BusinessType {
+  Bar = "Bar",
+  Restaurant = "Restaurant",
+  Hotel = "Hotel",
+  Spa = "Spa",
+}
+export type Location = {
+  address1: string,
+  address2: string,
+  city: string,
+  state: string,
+  zipcode: string,
+}
+
+export type Business = {
+  id: string;
+  businessType: BusinessType;
+  promotions: string[];
+  businessName: string;
+  businessDescription: string;
+  businessInstagram: string;
+  businessTikTok: string;
+  contactName: string;
+  contactPhoneNumber: string;
+  contactEmail: string;
+  address1: string,
+  address2: string,
+  city: string,
+  state: string,
+  zipcode: string,
+  businessEmailAddress: string;
+  businessPhoneNumber: string;
+  featuredImage: string;
+  tags: string[];
+  updatedAt: string;
+};
+
+export type Promotion = {
+  id: string;
+  businessId: string;
+  startDate: string;
+  endDate: string;
+  quantity: number;
+  title: string;
+  description: string;
+  maxOfferPrice: number;
+  minOfferPrice: number;
+  platform: 'tiktok' | 'instagram';
+  postType: 'reel' | 'story';
+  featuredImage: string;
+  images: string[];
+  tags: string[];
+  updatedAt: string;
+};
+
+export type SortFilterItem = {
+  title: string;
+  slug: string | null;
+  sortKey: 'RELEVANCE' | 'BEST_SELLING' | 'CREATED_AT' | 'PRICE';
+  reverse: boolean;
+};
+
+export type PromotionGrid = {
+  id: string;
+  businessId: string;
+  startDate: string;
+  endDate: string;
+  quantity: number;
+  title: string;
+  description: string;
+  maxOfferPrice: number;
+  minOfferPrice: number;
+  platform: 'tiktok' | 'instagram';
+  postType: 'reel' | 'story';
+  featuredImage: string;
+  images: string[];
+  tags: string[];
+  updatedAt: string;
+};
+
+export type PromotionTable = {
+  id: string;
+  business_id: string;
+  start_date: string;
+  end_date: string;
+  quantity: number;
+  title: string;
+  description: string;
+  max_offer_price: number;
+  min_offer_price: number;
+  platform: 'tiktok' | 'instagram';
+  post_type: 'reel' | 'story';
+  featured_image: string;
+  tags: string[];
+  updated_at: string;
+};
+
+export type PromotionOptions = {
+  id: string;
+  name: string;
+  values: string[];
+};
+
+export type Image = {
+  url: string;
+  altText: string;
+  width: number;
+  height: number;
+};
+
