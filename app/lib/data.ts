@@ -10,6 +10,8 @@ import {
   Revenue, Promotion, PromotionTable, Business, PromotionGrid, LatestPromotion, LatestPromotionRaw,
 } from './definitions';
 import { formatCurrency } from './utils';
+import {GetServerSideProps} from "next";
+import {auth} from "@/auth";
 
 export async function fetchRevenue() {
   // Add noStore() here to prevent the response from being cached.

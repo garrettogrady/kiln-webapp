@@ -8,10 +8,10 @@ import {
 import {ArrowRightIcon, FaceSmileIcon, MapPinIcon, PhoneIcon} from '@heroicons/react/20/solid';
 import { Button } from './button';
 import { useFormState, useFormStatus } from 'react-dom';
-import {authenticate, register} from '@/app/lib/actions';
+import {creatorRegister} from '@/app/lib/actions';
 
-export default function RegisterForm() {
-  const [errorMessage, dispatch] = useFormState(register, undefined);
+export default function CreatorRegisterForm() {
+  const [errorMessage, dispatch] = useFormState(creatorRegister, undefined);
 
   return (
       <form action={dispatch} className="space-y-3">

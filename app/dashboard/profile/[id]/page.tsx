@@ -40,14 +40,9 @@ export default async function ProfilePage({ params }: { params: { id: string } }
                     <CardWrapper />
                 </Suspense>
             </div>
-            <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-                {/*<Suspense fallback={<RevenueChartSkeleton />}>*/}
-                {/*    <RevenueChart />*/}
-                {/*</Suspense>*/}
-                <Suspense fallback={<InvoiceSkeleton />}>
-                    <LatestPromotions id={id}/>
-                </Suspense>
-            </div>
+            <Suspense fallback={<InvoiceSkeleton />}>
+                <LatestPromotions id={id}/>
+            </Suspense>
         </main>
     );
 }

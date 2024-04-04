@@ -16,3 +16,13 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.rti--input {
+  box-shadow: none!important;
+}
+
+.rti--input:focus  {
+  box-shadow: none!important;
+  border: none!important;
+  transition: none!important;
+}

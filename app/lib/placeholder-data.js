@@ -191,19 +191,9 @@ const invoices = [
   },
 ];
 
-const revenue = [
-  { month: 'Jan', revenue: 2000 },
-  { month: 'Feb', revenue: 1800 },
-  { month: 'Mar', revenue: 2200 },
-  { month: 'Apr', revenue: 2500 },
-  { month: 'May', revenue: 2300 },
-  { month: 'Jun', revenue: 3200 },
-  { month: 'Jul', revenue: 3500 },
-  { month: 'Aug', revenue: 3700 },
-  { month: 'Sep', revenue: 2500 },
-  { month: 'Oct', revenue: 2800 },
-  { month: 'Nov', revenue: 3000 },
-  { month: 'Dec', revenue: 4800 },
+const enrollment = [
+  { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userId: '410544b2-4001-4271-9855-fec4b6a6442a',  date: Date.now(), amount: "10000" },
+  { promotionId: 'f0c51f16-b154-40eb-b8d2-c1179df34ed1', userId: '410544b2-4001-4271-9855-fec4b6a6442a',  date: Date.now(), amount: "7000" }
 ];
 
 const businesses = [
@@ -223,8 +213,6 @@ const businesses = [
     city: "New York",
     state: "NY",
     zipCode: "11111",
-    businessEmailAddress: "help@carbone.com",
-    businessPhoneNumber: "6162108822",
     featuredImage: "",
     tags: ["x", "y", "x"]
   },
@@ -244,8 +232,6 @@ const businesses = [
     city: "Los Angeles",
     state: "CA",
     zipCode: "90046",
-    businessEmailAddress: "help@theden.com",
-    businessPhoneNumber: "6162108822",
     featuredImage: "",
     tags: ["x", "y", "x"]
   },
@@ -265,8 +251,63 @@ const businesses = [
     city: "Miami",
     state: "FL",
     zipCode: "57832",
-    businessEmailAddress: "help@fairmontmiami.com",
-    businessPhoneNumber: "4522108822",
+    featuredImage: "",
+    tags: ["x", "y", "x"]
+  },
+  {
+    id: "3f38c6b8-0d11-4e4b-8d36-ec16162859c9",
+    businessType: "Restaurant",
+    promotions: [""],
+    businessName: "Brunch Club",
+    businessDescription: "Cozy brunch restauraunt",
+    businessInstagram: "@brunchclublondon",
+    businessTikTok: "@brunchclublondon",
+    contactName: "Jane Jones",
+    contactPhoneNumber: "1124308879",
+    contactEmail: "jane@brunchclub.com",
+    address1: "29 East Bay Lane Canalside Here East",
+    address2: "Queen Elizabeth Olympic Park",
+    city: "London",
+    state: "ENGLAND",
+    zipCode: "E15 2GW",
+    featuredImage: "",
+    tags: ["x", "y", "x"]
+  },
+  {
+    id: "b1b519d0-f3f1-4a76-8f32-06c7068ff1ac",
+    businessType: "Bar",
+    promotions: [""],
+    businessName: "Skyview Bar",
+    businessDescription: "Upscale Hotel Bar",
+    businessInstagram: "@skyviewbar",
+    businessTikTok: "@skyviewbar",
+    contactName: "Jane Jones",
+    contactPhoneNumber: "1124308879",
+    contactEmail: "jane@skyviewbar.com",
+    address1: "160 tower rd",
+    address2: "",
+    city: "Dubai",
+    state: "FL",
+    zipCode: "57832",
+    featuredImage: "",
+    tags: ["x", "y", "x"]
+  },
+  {
+    id: "f0c51f16-b154-40eb-b8d2-c1179df34ed1",
+    businessType: "Bar",
+    promotions: [""],
+    businessName: "Sake Club",
+    businessDescription: "Sake Bar",
+    businessInstagram: "@Sakeclubtky",
+    businessTikTok: "@Sakeclubtky",
+    contactName: "Jane Jones",
+    contactPhoneNumber: "1124308879",
+    contactEmail: "jane@Sakeclubtky.com",
+    address1: "160 Beach rd",
+    address2: "",
+    city: "Tokyo",
+    state: "TX",
+    zipCode: "57832",
     featuredImage: "",
     tags: ["x", "y", "x"]
   }
@@ -285,7 +326,7 @@ const promotions = [
     minOfferPrice: 7500,
     platform: 'instagram',
     postType: 'reel',
-    featuredImage: "https://media.newyorker.com/photos/609ed8bdd60710aaa9f4848a/master/w_1600,c_limit/Rosner-Carbone.jpg",
+    featuredImage: "/promotions/carbone.jpg",
     images: ["https://static01.nyt.com/images/2013/03/06/dining/06CARBONE1_SPAN/06CARBONE1-jumbo.jpg?quality=75&auto=webp", "https://www.carbonenewyork.com/assets/images/slides/carbone_spicy-rigatoni_4_optimized.jpg", "https://res.cloudinary.com/the-infatuation/image/upload/c_fill,w_640,ar_4:3,g_center,f_auto/cms/media/reviews/carbone/banners/carbone-1005_0"],
     tags: ["carbone", "dinner", "new york"],
   },
@@ -301,7 +342,7 @@ const promotions = [
     minOfferPrice: 7500,
     platform: 'instagram',
     postType: 'reel',
-    featuredImage: "https://images.getbento.com/accounts/cff17e6e6723fb0788c72761293da229/media/images/84690JakobLayman.1122.TheDen_333.jpg?w=1200&fit=crop&auto=compress,format&crop=focalpoint&fp-x=0.5&fp-y=0.5'",
+    featuredImage: "/promotions/densunset.jpg",
     images: ["https://images.getbento.com/accounts/cff17e6e6723fb0788c72761293da229/media/images/61578JakobLayman.1122.TheDen_365.jpg?w=1200&fit=crop&auto=compress,format&crop=focalpoint&fp-x=0.5&fp-y=0.5", "https://images.getbento.com/accounts/cff17e6e6723fb0788c72761293da229/media/images/16072JakobLayman.1122.TheDen_360.jpg?w=1200&fit=crop&auto=compress,format&crop=focalpoint&fp-x=0.5&fp-y=0.5", "https://images.getbento.com/accounts/cff17e6e6723fb0788c72761293da229/media/images/16524JakobLayman.1122.TheDen_352.jpg?w=1200&fit=crop&auto=compress,format&crop=focalpoint&fp-x=0.5&fp-y=0.5"],
     tags: ["Night Out", "Bar", "LA"],
   },
@@ -317,17 +358,77 @@ const promotions = [
     minOfferPrice: 7500,
     platform: 'instagram',
     postType: 'reel',
-    featuredImage: "https://cdn.vox-cdn.com/thumbor/I3KFUGoq26RSB0RwKfc4eea021o=/0x0:1200x799/775x775/filters:focal(504x304:696x496):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/65209042/Interior_2___Photo_Credit_Seth_Browarnik_WorldRedEye.com.0.jpg",
+    featuredImage: "/promotions/papisteak.jpg",
     images: ["https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,w_1600/crm/miamifl/papiedit3_6EDDAC28-5056-A36A-0BA8AC3C1BD96770-6eddab435056a36_6eddac91-5056-a36a-0b206520dbcbc9b2.jpg", "https://c8a6x6i3.rocketcdn.me/wp-content/uploads/2022/12/Papi_Miami4.jpg", "https://c8a6x6i3.rocketcdn.me/wp-content/uploads/2022/12/Papi_Miami.jpg"],
     tags: ["papi", "dinner", "miami"],
   },
+  {
+    businessId: "3f38c6b8-0d11-4e4b-8d36-ec16162859c9",
+    startDate: 1679395200000,
+    endDate: 1679481600000,
+    quantity: 100,
+    title: "Brunch at The Breakfast Club",
+    description: "Enjoy a delightful brunch with your loved ones",
+    city: "London",
+    maxOfferPrice: 2500,
+    minOfferPrice: 2000,
+    platform: "instagram",
+    postType: "reel",
+    featuredImage: "/promotions/breakfastclub.jpg",
+    images: [
+      "https://www.restaurantonline.co.uk/var/wrbm_gb_hospitality/storage/images/_aliases/wrbm_large/publications/hospitality/restaurantonline.co.uk/casual-dining/the-breakfast-club-tees-up-third-soho-site/6227771-1-eng-GB/The-Breakfast-Club-tees-up-third-Soho-site.png",
+      "https://assets3.thrillist.com/v1/image/1244754/414x310/crop;webp=auto;jpeg_quality=60;progressive.jpg",
+      "https://cdn.vox-cdn.com/thumbor/Vr7CMOVlsQrOPIFFdt9iL61fV4s=/0x104:1428x852/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/19098665/breakfast_club_full_English.jpg"
+    ],
+    tags: ["brunch", "London", "food"]
+  },
+  {
+    businessId: "b1b519d0-f3f1-4a76-8f32-06c7068ff1ac",
+    startDate: 1679395200000,
+    endDate: 1679481600000,
+    quantity: 75,
+    title: "Cocktail Hour at The Sky Bar",
+    description: "Sip on cocktails while enjoying the breathtaking city view",
+    city: "Dubai",
+    maxOfferPrice: 8000,
+    minOfferPrice: 6000,
+    platform: "tiktok",
+    postType: "video",
+    featuredImage: "/promotions/skybar.jpg",
+    images: [
+      "https://www.designamericafurniture.com/i/burj-al-arab-restaurants-skyview-bar-01-hero-1-1.jpg",
+      "https://cdn.jumeirah.com/-/mediadh/dh/hospitality/jumeirah/restaurants/dubai/burj-al-arab-skyview-bar-and-restaurant/restaurant-gallery/skyview-interior-1.jpg?h=1080&w=1620&modified=20220705080147",
+      "https://media.tacdn.com/media/attractions-splice-spp-674x446/07/38/2e/9b.jpg"
+    ],
+    tags: ["cocktails", "Dubai", "sky bar"]
+  },
+  {
+    businessId: "f0c51f16-b154-40eb-b8d2-c1179df34ed1",
+    startDate: 1679395200000,
+    endDate: 1679481600000,
+    quantity: 50,
+    title: "Sushi Night at Sake Club",
+    description: "Indulge in a variety of exquisite sushi rolls",
+    city: "Tokyo",
+    maxOfferPrice: 12000,
+    minOfferPrice: 10000,
+    platform: "instagram",
+    postType: "story",
+    featuredImage: "/promotions/sakeclub.jpg",
+    images: [
+      "https://cdn-az.allevents.in/events6/banners/53dc20441266cd50d542203d85181f7ce26281d00e9f5e4a4a3bbf8a8cb52f84-rimg-w960-h640-gmir.jpg?v=1710480626",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/506417509.jpg?k=b3feb304d9eb735a9c5d72369942a85c4560656b32753ed32172c30e82b9aea6&o=&hp=1",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/506418920.jpg?k=ab868d1bd223087bbeea67c0229cb375de445ac02b66ce8095cdd54f5375adb3&o=&hp=1"
+    ],
+    tags: ["sushi", "Tokyo", "nightlife"]
+  }
 ]
 
 module.exports = {
   users,
   customers,
   invoices,
-  revenue,
+  enrollment,
   businesses,
   promotions
 };
