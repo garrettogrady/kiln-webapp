@@ -8,29 +8,39 @@ import {
   BuildingOfficeIcon,
   BuildingStorefrontIcon,
   MusicalNoteIcon,
-  ShoppingBagIcon, SparklesIcon
+  ShoppingBagIcon, SparklesIcon, UserCircleIcon
 } from "@heroicons/react/24/outline";
 import CampaignStatus from "@/app/ui/campaigns/status";
 import Enrollment from "@/app/ui/campaigns/enrollment";
 
-export default async function CampaignsTable() {
+export default async function ContributorsTable() {
   const businessId = await fetchAuthedUserId();
   const promotions = await fetchCampaigns(businessId);
+
+  const enrollments = [
+    { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Gartogo',  date: Date.now(), followers: "10K", posts: '3', engagement: "5K", amount: 250 },
+    { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Jack_Jones',  date: Date.now(), followers: "255K", posts: '3', engagement: "22K", amount: 750 },
+    { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Milesteller',  date: Date.now(), followers: "112K",  posts: '2', engagement: "45K", amount: 500 },
+    { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Johnsummit',  date: Date.now(), followers: "98K", posts: '2', engagement: "93K", amount: 450 },
+    { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Seanjones',  date: Date.now(), followers: "322K",posts: '3', engagement: "101K", amount: 1000 },
+
+  ];
 
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
+        Contributors
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {promotions?.map((promotion) => (
+            {enrollments?.map((promotion) => (
               <div
-                key={promotion.id}
+                key={promotion.userId}
                 className="mb-2 w-full rounded-md bg-white p-4"
               >
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
                     <div className="mb-2 flex items-center">
-                      {selectPromotionIcon(promotion.promotionType)}
+
                       <p>{promotion.title}</p>
                     </div>
                     <p className="text-sm text-gray-500">{promotion.email}</p>
@@ -40,9 +50,9 @@ export default async function CampaignsTable() {
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
                     <p className="text-xl font-medium">
-                      {formatCurrency(Number.parseInt(promotion.maxOfferPrice))}
+                      {formatCurrency(promotion.amount)}
                     </p>
-                    <p>{formatDateToLocal(promotion.startDate)}</p>
+                    <p>{formatDateToLocal(promotion.date)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
                     <UpdateInvoice id={promotion.id} />
@@ -56,58 +66,47 @@ export default async function CampaignsTable() {
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Title
+                  Contributor
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Amount
+                  Followers
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Date
+                  Posts
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Enrollments
+                  Engagement
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Status
-                </th>
-                <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Edit</span>
+                  Spend
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white">
-              {promotions?.map((promotion) => (
+              {enrollments?.map((enrollment) => (
                 <tr
-                  key={promotion.id}
+                  key={enrollment.promotionId}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
-                      {selectPromotionIcon(promotion.promotionType)}
-                      <p>{promotion.title}</p>
+                      <UserCircleIcon width={32} height={32} className="mr-4 rounded-full"/>
+                      <p>{enrollment.userName}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {formatCurrency(promotion.amount)}
+                    {enrollment.followers}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {formatDateToLocal(promotion.endDate)}
+                    {enrollment.posts}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    <Enrollment promotionId={promotion.id} />
+                    {enrollment.engagement}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    <CampaignStatus endDate={promotion.endDate} />
+                    {formatCurrency( enrollment.amount)}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {promotion.email}
-                  </td>
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex justify-end gap-3">
-                      <DeleteInvoice id={promotion.id} />
-                      <UpdateInvoice id={promotion.id} />
-                    </div>
-                  </td>
+
                 </tr>
               ))}
             </tbody>

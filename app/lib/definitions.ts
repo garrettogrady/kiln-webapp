@@ -4,6 +4,13 @@
 // However, these types are generated automatically if you're using an ORM such as Prisma.
 export type User = {
   id: string;
+  type: string;
+  email: string;
+  password: string;
+};
+
+export type Creator = {
+  id: string;
   name: string;
   email: string;
   city: string;
@@ -11,7 +18,6 @@ export type User = {
   tiktok: string;
   password: string;
 };
-
 export type Customer = {
   id: string;
   name: string;
@@ -70,6 +76,7 @@ export type InvoicesTable = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
 
 export type CustomersTableType = {
   id: string;
@@ -143,6 +150,7 @@ export type Business = {
 export type Promotion = {
   id: string;
   businessId: string;
+  promotionType: string;
   startDate: string;
   endDate: string;
   quantity: number;
@@ -185,19 +193,12 @@ export type PromotionGrid = {
 
 export type PromotionTable = {
   id: string;
-  business_id: string;
-  start_date: string;
-  end_date: string;
-  quantity: number;
+  promotionType: string;
   title: string;
-  description: string;
-  max_offer_price: number;
-  min_offer_price: number;
-  platform: 'tiktok' | 'instagram';
-  post_type: 'reel' | 'story';
-  featured_image: string;
-  tags: string[];
-  updated_at: string;
+  maxOfferPrice: string;
+  startDate: string;
+  endDate: string;
+  quantity: number;
 };
 
 export type PromotionOptions = {

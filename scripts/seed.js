@@ -1,9 +1,9 @@
 const {db} = require('@vercel/postgres');
 const {
-    invoices,
     customers,
-    enrollment,
     users,
+    enrollment,
+    creators,
     businesses,
     promotions
 } = require('../app/lib/placeholder-data.js');
@@ -17,12 +17,8 @@ async function seedUsers(client) {
         const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS users (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
+        type TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
-        phone TEXT NOT NULL,
-        city VARCHAR(255) NOT NULL,
-        instagram VARCHAR(255) NOT NULL UNIQUE,
-        tiktok VARCHAR(255) NOT NULL UNIQUE,
         password TEXT NOT NULL
       );
     `;
@@ -34,15 +30,13 @@ async function seedUsers(client) {
             users.map(async (user) => {
                 const hashedPassword = await bcrypt.hash(user.password, 10);
                 return client.sql`
-        INSERT INTO users (id, name, email, phone, city, instagram, tiktok, password)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${user.phone}, ${user.city}, ${user.instagram}, ${user.tiktok}, ${hashedPassword})
-        ON CONFLICT (id) DO NOTHING;
-      `;
+                    INSERT INTO users (id, type, email, password)
+                    VALUES (${user.id}, ${user.type}, ${user.email}, ${hashedPassword})
+                    ON CONFLICT (id) DO NOTHING;
+                `;
             }),
         );
-
         console.log(`Seeded ${insertedUsers.length} users`);
-
         return {
             createTable,
             users: insertedUsers,
@@ -58,82 +52,40 @@ async function seedCreators(client) {
     try {
         await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
         await client.sql`DROP TABLE creators`;
-        // Create the "users" table if it doesn't exist
+        // Create the "creators" table if it doesn't exist
         const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS creators (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        phone TEXT NOT NULL,
-        city VARCHAR(255) NOT NULL,
-        instagram VARCHAR(255) NOT NULL UNIQUE,
-        tiktok VARCHAR(255) NOT NULL UNIQUE,
-        password TEXT NOT NULL
-      );
-    `;
+        CREATE TABLE IF NOT EXISTS creators (
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            email TEXT NOT NULL UNIQUE,
+            phone TEXT NOT NULL,
+            city VARCHAR(255) NOT NULL,
+            instagram VARCHAR(255) NOT NULL UNIQUE,
+            tiktok VARCHAR(255) NOT NULL UNIQUE
+          );
+        `;
 
         console.log(`Created "creators" table`);
 
-        // Insert data into the "users" table
-        const insertedUsers = await Promise.all(
-            users.map(async (user) => {
-                const hashedPassword = await bcrypt.hash(user.password, 10);
+        // Insert data into the "creators" table
+        const insertedCreators = await Promise.all(
+            creators.map(async (user) => {
                 return client.sql`
-        INSERT INTO users (id, name, email, phone, city, instagram, tiktok, password)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${user.phone}, ${user.city}, ${user.instagram}, ${user.tiktok}, ${hashedPassword})
-        ON CONFLICT (id) DO NOTHING;
-      `;
+                    INSERT INTO creators (id, name, email, phone, city, instagram, tiktok)
+                    VALUES (${user.id}, ${user.name}, ${user.email}, ${user.phone}, ${user.city}, ${user.instagram}, ${user.tiktok})
+                    ON CONFLICT (id) DO NOTHING;
+                `;
             }),
         );
 
-        console.log(`Seeded ${insertedUsers.length} users`);
+        console.log(`Seeded ${insertedCreators.length} creators`);
 
         return {
             createTable,
-            users: insertedUsers,
+            creators: insertedCreators,
         };
     } catch (error) {
-        console.error('Error seeding users:', error);
-        throw error;
-    }
-}
-
-async function seedInvoices(client) {
-    try {
-        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
-        // Create the "invoices" table if it doesn't exist
-        const createTable = await client.sql`
-    CREATE TABLE IF NOT EXISTS invoices (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    customer_id UUID NOT NULL,
-    amount INT NOT NULL,
-    status VARCHAR(255) NOT NULL,
-    date DATE NOT NULL
-  );
-`;
-
-        console.log(`Created "invoices" table`);
-
-        // Insert data into the "invoices" table
-        const insertedInvoices = await Promise.all(
-            invoices.map(
-                (invoice) => client.sql`
-        INSERT INTO invoices (customer_id, amount, status, date)
-        VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
-        ON CONFLICT (id) DO NOTHING;
-      `,
-            ),
-        );
-
-        console.log(`Seeded ${insertedInvoices.length} invoices`);
-
-        return {
-            createTable,
-            invoices: insertedInvoices,
-        };
-    } catch (error) {
-        console.error('Error seeding invoices:', error);
+        console.error('Error seeding creators:', error);
         throw error;
     }
 }
@@ -272,6 +224,7 @@ async function seedPromotions(client) {
       CREATE TABLE IF NOT EXISTS promotions (
         "id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         "businessId" UUID NOT NULL,
+        "promotionType" VARCHAR(255) NOT NULL,
         "startDate" VARCHAR(255) NOT NULL,
         "endDate" VARCHAR(255) NOT NULL,
         "quantity" VARCHAR(255) NOT NULL,
@@ -297,6 +250,7 @@ async function seedPromotions(client) {
         INSERT INTO promotions (
         "id", 
         "businessId", 
+        "promotionType", 
         "startDate", 
         "endDate",
         "quantity",
@@ -311,6 +265,7 @@ async function seedPromotions(client) {
         "tags")
         VALUES (uuid_generate_v4(), 
         ${promotion.businessId}, 
+        ${promotion.promotionType}, 
         ${promotion.startDate}, 
         ${promotion.endDate}, 
         ${promotion.quantity}, 
@@ -384,9 +339,6 @@ async function main() {
 
     await seedUsers(client);
     await seedCreators(client);
-    // await seedCustomers(client);
-    // await seedInvoices(client);
-    // await seedRevenue(client);
     await seedBusiness(client);
     await seedPromotions(client);
     await seedEnrollment(client);

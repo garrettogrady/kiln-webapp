@@ -13,6 +13,9 @@ const CampaignSchema = z.object({
     businessId: z.string({
         invalid_type_error: 'Not signed In',
     }),
+    promotionType: z.string({
+        invalid_type_error: 'Please select a promotion selection',
+    }),
     amount: z.coerce
         .number()
         .gt(0, { message: 'Please enter an amount greater than $0.' }),
@@ -167,6 +170,7 @@ export async function createCampaign(prevState: State, formData: FormData) {
     const businessIds = await fetchAuthedUserId();
     const validatedFields = CreateCampaign.safeParse({
         businessId: businessIds,
+        promotionType: formData.get('promotionType'),
         startDate: formData.get('startDate'),
         endDate: formData.get('endDate'),
         amount: formData.get('amount'),
@@ -188,6 +192,7 @@ export async function createCampaign(prevState: State, formData: FormData) {
     }
     // Prepare data for insertion into the database
     const { businessId,
+        promotionType,
         startDate,
         endDate,
         amount,
@@ -208,6 +213,7 @@ export async function createCampaign(prevState: State, formData: FormData) {
      INSERT INTO promotions (
         "id", 
         "businessId", 
+        "promotionType",
         "startDate", 
         "endDate",
         "quantity",
@@ -221,6 +227,7 @@ export async function createCampaign(prevState: State, formData: FormData) {
         "tags")
         VALUES (uuid_generate_v4(), 
         ${businessId}, 
+        ${promotionType}, 
         ${startDate}, 
         ${endDate}, 
         ${quantity}, 
@@ -328,11 +335,18 @@ export async function creatorRegister(
         }
         // Prepare data for insertion into the database
         const { name, email, phone, city, instagram, tiktok, password } = validatedFields.data;
+        const userType = "creator";
         const hashedPassword = await bcrypt.hash(password, 10);
         await sql`
-        INSERT INTO users (name, email, phone, city, instagram, tiktok, password)
-        VALUES (${name}, ${email}, ${phone}, ${city}, ${instagram}, ${tiktok}, ${hashedPassword})
+        INSERT INTO creators (name, email, phone, city, instagram, tiktok)
+        VALUES (${name}, ${email}, ${phone}, ${city}, ${instagram}, ${tiktok})
         ON CONFLICT (id) DO NOTHING;`;
+
+        await sql`
+        INSERT INTO users ( email, password, type)
+        VALUES (${email}, ${hashedPassword}, ${userType})
+        ON CONFLICT (id) DO NOTHING;`;
+
         await signIn('credentials', formData);
     } catch (error) {
         if (error instanceof AuthError) {
@@ -397,15 +411,21 @@ export async function businessRegister(
             password
     } = validatedFields.data;
         const hashedPassword = await bcrypt.hash(password, 10);
+        const userType = "business"
         //create business entry
         await sql`
         INSERT INTO businesses ("businessType", "businessName", "businessDescription", "businessInstagram", 
-        "businessTikTok", "contactName", "contactPhoneNumber", "contactEmail", "address1", "city", "state", "zipcode", "password")
+        "businessTikTok", "contactName", "contactPhoneNumber", "contactEmail", "address1", "city", "state", "zipcode")
         VALUES (${businessType}, ${businessName}, ${businessDescription}, ${businessInstagram}, ${businessTikTok}, ${contactName}, 
-        ${contactPhoneNumber}, ${contactEmail},  ${address1},${city},${state},${zipcode},${hashedPassword} )
+        ${contactPhoneNumber}, ${contactEmail},  ${address1},${city},${state},${zipcode} )
         ON CONFLICT (id) DO NOTHING;`;
 
         //create User
+        await sql`
+        INSERT INTO users ( email, password, type)
+        VALUES (${contactEmail}, ${hashedPassword}, ${userType})
+        ON CONFLICT (id) DO NOTHING;`;
+
 
         await signIn('credentials', formData);
     } catch (error) {
@@ -421,18 +441,23 @@ export async function businessRegister(
     }
 }
 
-export async function isUserEnrolledInPromotion(promotionId: string) {
+
+export async function enrollUserInPromotion(promotionId: string) {
     const user = await auth();
     const userId = user?.user.id;
+    const date = Date.now();
+    const amount = "";
     console.log(userId)
-    // try {
-    //     await sql`DELETE FROM invoices WHERE id = ${id}`;
-    //     revalidatePath('/dashboard/invoices');
-    //     return { message: 'Deleted Invoice.' };
-    // } catch (error) {
-    //     return { message: 'Database Error: Failed to Delete Invoice.' };
-    // }
+
+    try {
+        await sql`INSERT INTO enrollment ("promotionId", "userId", date, amount)
+                  VALUES (${promotionId}, ${userId}, ${date}, ${amount})`;
+        revalidatePath('/creator/promotions/'+promotionId);
+    } catch (error) {
+        return { message: 'Database Error: Failed to Delete Invoice.' };
+    }
 }
+
 
 export async function fetchAuthedUserId() {
     const user = await auth();

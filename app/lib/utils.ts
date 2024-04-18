@@ -1,5 +1,11 @@
 import { Revenue } from './definitions';
 import { ReadonlyURLSearchParams } from 'next/navigation';
+import {
+  BuildingOfficeIcon,
+  BuildingStorefrontIcon,
+  MusicalNoteIcon,
+  ShoppingBagIcon, SparklesIcon
+} from "@heroicons/react/24/outline";
 
 export const formatCurrency = (amount: number) => {
   return (amount / 100).toLocaleString('en-US', {
@@ -12,7 +18,9 @@ export const formatDateToLocal = (
   dateStr: string,
   locale: string = 'en-US',
 ) => {
+  console.log(dateStr);
   const date = new Date(dateStr);
+  console.log(date);
   const options: Intl.DateTimeFormatOptions = {
     day: 'numeric',
     month: 'short',
@@ -75,4 +83,5 @@ export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyUR
 
   return `${pathname}${queryString}`;
 };
+
 

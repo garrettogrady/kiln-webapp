@@ -7,7 +7,7 @@ export default function ProductGridItems({ promotion }: { promotion: PromotionGr
   return (
     <>
         <Grid.Item key={promotion.id} className="animate-fadeIn">
-          <Link className="relative inline-block h-full w-full" href={`/dashboard/promotions/${promotion.id}`}>
+          <Link className="relative inline-block h-full w-full" href={`/creator/promotions/${promotion.id}`}>
             <GridTileImage
               alt={promotion.title}
               label={{

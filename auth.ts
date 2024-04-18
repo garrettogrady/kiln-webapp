@@ -16,16 +16,6 @@ async function getUser(email: string): Promise<User | undefined> {
         throw new Error('Failed to fetch user.');
     }
 }
-async function getBusinessUser(email: string): Promise<Business | undefined> {
-    try {
-        const user = await sql<Business>`SELECT * FROM users WHERE "contactEmail"=${email}`;
-        return user.rows[0];
-    } catch (error) {
-        console.error('Failed to fetch user:', error);
-        throw new Error('Failed to fetch user.');
-    }
-}
-
 export const { auth, signIn, signOut } = NextAuth({
     ...authConfig,
     providers: [
@@ -41,8 +31,7 @@ export const { auth, signIn, signOut } = NextAuth({
                     const { email, password } = parsedCredentials.data;
                     console.log("email: " + email);
                     console.log("password: " + password);
-                    const creatorUser = await getUser(email);
-                    const businessUser = await getBusinessUser(email);
+                    const user = await getUser(email);
                     console.log(user);
                     if (!user) return null;
                     const passwordsMatch = await bcrypt.compare(password, user.password);
