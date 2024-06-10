@@ -88,7 +88,7 @@ export default async function CampaignsTable() {
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {formatCurrency(promotion.amount)}
+                    {formatCurrency(Number(promotion.maxOfferPrice))}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatDateToLocal(promotion.endDate)}
@@ -97,7 +97,7 @@ export default async function CampaignsTable() {
                     <Enrollment promotionId={promotion.id} />
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    <CampaignStatus endDate={promotion.endDate} />
+                    <CampaignStatus endDate={promotion.endDate} startDate={promotion.startDate} />
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {promotion.email}

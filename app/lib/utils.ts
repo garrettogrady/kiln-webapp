@@ -13,21 +13,21 @@ export const formatCurrency = (amount: number) => {
     currency: 'USD',
   });
 };
-
 export const formatDateToLocal = (
   dateStr: string,
   locale: string = 'en-US',
 ) => {
+  'use client'
   console.log(dateStr);
   const date = new Date(dateStr);
-  console.log(date);
+  console.log(date.toString());
   const options: Intl.DateTimeFormatOptions = {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
   };
   const formatter = new Intl.DateTimeFormat(locale, options);
-  return formatter.format(date);
+  return !isNaN(date.getTime()) ? formatter.format(date) : "";
 };
 
 export const generateYAxis = (revenue: Revenue[]) => {

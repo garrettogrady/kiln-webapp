@@ -2,14 +2,13 @@
 
 import Price from '@/app/ui/components/price';
 import {Business, Promotion} from "@/app/lib/definitions";
-import { enrollUserInPromotion} from "@/app/lib/actions";
 import Platform from "@/app/ui/components/platform";
 import {checkUserEnrollment} from "@/app/lib/data";
 
 
 export async function PromotionDescription({promotion, business}: { promotion: Promotion, business: Business }) {
     // const { data: session, status } = useSession()
-        const enroll = enrollUserInPromotion.bind(null, promotion.id);
+        //const enroll = enrollUserInPromotion.bind(null, promotion.id);
         //const isUserEnrolled = await checkUserEnrollment(promotion.id);
 
 
@@ -42,16 +41,7 @@ export async function PromotionDescription({promotion, business}: { promotion: P
 
             </div>
             {}
-            <form action={enroll}>
-                <button   aria-label="Add to cart"
-                          className={buttonClasses}>
-                    Enroll
-                </button>
-            </form>
 
-            <p aria-live="polite" className="sr-only" role="status">
-                {"message"}
-            </p>
         </>
     );
 }

@@ -109,7 +109,7 @@ export default function CreatorRegisterForm() {
                   id="instagram"
                   type="text"
                   name="instagram"
-                  placeholder="@trykiln"
+                  placeholder="trykiln"
                   required
               />
               <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
@@ -128,7 +128,7 @@ export default function CreatorRegisterForm() {
                   id="tiktok"
                   type="text"
                   name="tiktok"
-                  placeholder="@trykiln"
+                  placeholder="trykiln"
                   required
               />
               <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />

@@ -13,13 +13,19 @@ const users = [
   {
     id: '50ca3e18-62cd-11ee-8c99-0242ac120002',
     type: 'creator',
-    email: 'yale@trykiln.com',
+    email: 'jim@trykiln.com',
     password: 'password',
   },
   {
     id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
     type: 'creator',
     email: 'kim@gmail.com',
+    password: '123456',
+  },
+  {
+    id: '1e082498-f20d-4db2-8119-5aa33e0529bc',
+    type: 'business',
+    email: 'yale@trykiln.com',
     password: '123456',
   },
 ];

@@ -517,3 +517,24 @@ export async function fetchPromotionCardData() {
     throw new Error('Failed to fetch card promotion data.');
   }
 }
+
+export async function checkUserEnrollment(promotionId: string) {
+  const user = await auth();
+  const userId = user?.user.id;
+  console.log(userId)
+
+  try {
+    const enrollment = await sql`SELECT * FROM enrollment WHERE "promotionId"=${promotionId} and "userId"=${userId}`;
+
+    if (enrollment.rowCount == 0) {
+      console.log("user not enrolled")
+      return false;
+    } else {
+      console.log("user enrolled")
+      return true;
+    }
+  } catch (error) {
+    console.log(error)
+    return false;
+  }
+}

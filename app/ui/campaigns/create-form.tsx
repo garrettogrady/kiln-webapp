@@ -2,6 +2,8 @@
 import {CustomerField} from '@/app/lib/definitions';
 import Link from 'next/link';
 import React, { useState } from "react";
+import TimePicker from 'react-time-picker';
+
 
 import {
     CalendarIcon,
@@ -19,7 +21,11 @@ import { TagsInput } from "react-tag-input-component";
 
 export default function Form() {
     const initialState = { message: null, errors: {} };
+    const [pricingType, setPricingType] = useState("fixed"); // Default to fixed pricing
     const [state, dispatch] = useFormState(createCampaign, initialState);
+    const [availabilityStart, setAvailabilityStart] = useState("09:00"); // Default start time
+    const [availabilityEnd, setAvailabilityEnd] = useState("17:00"); // Default end time
+
     const [tags, setTags] = useState([]);
 
     return (
@@ -127,35 +133,167 @@ export default function Form() {
                     </div>
                 </div>
 
-                {/* Invoice Amount */}
-                <div className="mb-4">
-                    <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-                        Choose an amount
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            <input
-                                id="amount"
-                                name="amount"
-                                type="number"
-                                step="0.01"
-                                placeholder="Enter USD amount"
-                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="amount-error"
-                            />
-                            <CurrencyDollarIcon
-                                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
-                        </div>
-                        <div id="amount-error" aria-live="polite" aria-atomic="true">
-                            {state.errors?.amount &&
-                                state.errors.amount.map((error: string) => (
-                                    <p className="mt-2 text-sm text-red-500" key={error}>
-                                        {error}
-                                    </p>
-                                ))}
+                {/*/!* Payout Amount *!/*/}
+                {/*<div className="mb-4">*/}
+                {/*    <label htmlFor="amount" className="mb-2 block text-sm font-medium">*/}
+                {/*        Choose an amount*/}
+                {/*    </label>*/}
+                {/*    <div className="relative mt-2 rounded-md">*/}
+                {/*        <div className="relative">*/}
+                {/*            <input*/}
+                {/*                id="amount"*/}
+                {/*                name="amount"*/}
+                {/*                type="number"*/}
+                {/*                step="0.01"*/}
+                {/*                placeholder="Enter USD amount"*/}
+                {/*                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"*/}
+                {/*                aria-describedby="amount-error"*/}
+                {/*            />*/}
+                {/*            <CurrencyDollarIcon*/}
+                {/*                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>*/}
+                {/*        </div>*/}
+                {/*        <div id="amount-error" aria-live="polite" aria-atomic="true">*/}
+                {/*            {state.errors?.amount &&*/}
+                {/*                state.errors.amount.map((error: string) => (*/}
+                {/*                    <p className="mt-2 text-sm text-red-500" key={error}>*/}
+                {/*                        {error}*/}
+                {/*                    </p>*/}
+                {/*                ))}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                {/* Pricing Type */}
+                <fieldset>
+                    <legend className="mb-2 block text-sm font-medium">
+                        Pricing Type
+                    </legend>
+                    <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+                        <div className="flex gap-4">
+                            <div className="flex items-center">
+                                <input
+                                    id="fixed"
+                                    name="pricingType"
+                                    type="radio"
+                                    value="fixed"
+                                    checked={pricingType === "fixed"}
+                                    onChange={() => setPricingType("fixed")}
+                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                />
+                                <label
+                                    htmlFor="fixed"
+                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
+                                >
+                                    Fixed Pricing <CurrencyDollarIcon className="h-4 w-4"/>
+                                </label>
+                            </div>
+                            <div className="flex items-center">
+                                <input
+                                    id="tiered"
+                                    name="pricingType"
+                                    type="radio"
+                                    value="tiered"
+                                    checked={pricingType === "tiered"}
+                                    onChange={() => setPricingType("tiered")}
+                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                />
+                                <label
+                                    htmlFor="tiered"
+                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
+                                >
+                                    Tiered Pricing <ReceiptPercentIcon className="h-4 w-4"/>
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </fieldset>
+
+                {/* Fixed Pricing Amount */}
+                {pricingType === "fixed" && (
+                    <div className="flex gap-4">
+                        {/* Minimum Amount */}
+                        <div className="mb-4 flex-1">
+                            <label htmlFor="minAmount" className="mb-2 block text-sm font-medium">
+                                Fixed Amount
+                            </label>
+                            <div className="relative mt-2 rounded-md">
+                                <div className="relative">
+                                    <input
+                                        id="fixedAmount"
+                                        name="fixedAmount"
+                                        type="number"
+                                        step="0.01"
+                                        placeholder="Enter fixed USD amount"
+                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                        aria-describedby="fixedAmount-error"
+                                    />
+                                    <CurrencyDollarIcon
+                                        className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
+                                    />
+                                </div>
+                                <div id="fixedAmount-error" aria-live="polite" aria-atomic="true">
+                                    {/* Error handling code */}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Tiered Pricing Amount */}
+                {pricingType === "tiered" && (
+                    <div className="flex gap-4">
+                        {/* Minimum Amount */}
+                        <div className="mb-4 flex-1">
+                            <label htmlFor="minAmount" className="mb-2 block text-sm font-medium">
+                                Minimum Amount
+                            </label>
+                            <div className="relative mt-2 rounded-md">
+                                <div className="relative">
+                                    <input
+                                        id="minAmount"
+                                        name="minAmount"
+                                        type="number"
+                                        step="0.01"
+                                        placeholder="Enter minimum USD amount"
+                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                        aria-describedby="minAmount-error"
+                                    />
+                                    <CurrencyDollarIcon
+                                        className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
+                                    />
+                                </div>
+                                <div id="minAmount-error" aria-live="polite" aria-atomic="true">
+                                    {/* Error handling code */}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Maximum Amount */}
+                        <div className="mb-4 flex-1">
+                            <label htmlFor="maxAmount" className="mb-2 block text-sm font-medium">
+                                Maximum Amount
+                            </label>
+                            <div className="relative mt-2 rounded-md">
+                                <div className="relative">
+                                    <input
+                                        id="maxAmount"
+                                        name="maxAmount"
+                                        type="number"
+                                        step="0.01"
+                                        placeholder="Enter maximum USD amount"
+                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                        aria-describedby="maxAmount-error"
+                                    />
+                                    <CurrencyDollarIcon
+                                        className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
+                                    />
+                                </div>
+                                <div id="maxAmount-error" aria-live="polite" aria-atomic="true">
+                                    {/* Error handling code */}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Campaign Quantity */}
                 <div className="mb-4">
@@ -245,6 +383,64 @@ export default function Form() {
                     </div>
                 </div>
 
+                {/* Suggested Dishes/Services */}
+                <div className="mb-4">
+                    <label htmlFor="suggestedItems" className="mb-2 block text-sm font-medium">
+                        Suggested Dishes/Services
+                    </label>
+                    <div className="relative mt-2 rounded-md">
+                        <div className="relative">
+                            <input
+                                id="suggestedItems"
+                                name="suggestedItems"
+                                type="text"
+                                placeholder="Enter suggested dishes or services"
+                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                aria-describedby="suggestedItems-error"
+                            />
+                            <ReceiptPercentIcon
+                                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
+                            />
+                        </div>
+                        <div id="suggestedItems-error" aria-live="polite" aria-atomic="true">
+                            {/* Error handling code */}
+                        </div>
+                    </div>
+                </div>
+                {/* Hours of Availability */}
+                <div className="mb-4">
+                    <label htmlFor="availability" className="mb-2 block text-sm font-medium">
+                        Hours of Availability
+                    </label>
+                    <div className="relative mt-2 rounded-md">
+                        <div className="relative">
+                            <div className="flex items-center">
+                                <span className="mr-2">From:</span>
+                                <TimePicker
+                                    id="availabilityStart"
+                                    name="availabilityStart"
+                                    value={availabilityStart}
+                                    onChange={setAvailabilityStart}
+                                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                />
+                            </div>
+                            <div className="flex items-center mt-2">
+                                <span className="mr-2">To:</span>
+                                <TimePicker
+                                    id="availabilityEnd"
+                                    name="availabilityEnd"
+                                    value={availabilityEnd}
+                                    onChange={setAvailabilityEnd}
+                                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                />
+                            </div>
+                        </div>
+                        <div id="availability-error" aria-live="polite" aria-atomic="true">
+                            {/* Error handling code */}
+                        </div>
+                    </div>
+                </div>
+
                 {/* creator platform */}
                 <fieldset>
                     <legend className="mb-2 block text-sm font-medium">
@@ -279,7 +475,7 @@ export default function Form() {
                                 />
                                 <label
                                     htmlFor="instagram"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
+                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
                                 >
                                     Instagram <CameraIcon className="h-4 w-4"/>
                                 </label>

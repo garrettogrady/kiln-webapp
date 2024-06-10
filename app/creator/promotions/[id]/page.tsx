@@ -1,24 +1,35 @@
 import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
-import {fetchInvoiceById, fetchCustomers, fetchPromotionById, fetchBusinessById} from '@/app/lib/data';
+import {
+    fetchInvoiceById,
+    fetchCustomers,
+    fetchPromotionById,
+    fetchBusinessById,
+    checkUserEnrollment
+} from '@/app/lib/data';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import {Suspense} from "react";
 import Footer from "@/app/ui/components/layout/footer";
 import {PromotionDescription} from "@/app/ui/components/promotion/product-description";
 import {Gallery} from "@/app/ui/components/promotion/gallery";
+import {enrollUserInPromotion} from "@/app/lib/actions";
+import { useFormState } from 'react-dom'
+import {EnrollButton} from "@/app/ui/components/promotion/enrollment";
 
 export const metadata: Metadata = {
     title: 'View Promotion',
 };
+const initialState = {
+    message: '',
+}
 export default async function Page({ params }: { params: { id: string } }) {
+
     const id = params.id;
     const promotion = await fetchPromotionById(id);
     const business = await fetchBusinessById(promotion.businessId);
-    // const [invoice, customers] = await Promise.all([
-    //     fetchPromotionById(id),
-    //     fetchCustomers(),
-    // ]);
+
+    const isUserEnrolled = await checkUserEnrollment(promotion.id);
     if (!promotion) {
         notFound();
     }
@@ -37,11 +48,10 @@ export default async function Page({ params }: { params: { id: string } }) {
 
                     <div className="basis-full lg:basis-2/6">
                         <PromotionDescription promotion={promotion} business={business} />
+                        <EnrollButton isUserEnrolled={isUserEnrolled} promotion={promotion}/>
+
                     </div>
                 </div>
-                {/*<Suspense>*/}
-                {/*    <RelatedProducts id={product.id} />*/}
-                {/*</Suspense>*/}
             </div>
         </main>
     );

@@ -452,9 +452,10 @@ export async function enrollUserInPromotion(promotionId: string) {
     try {
         await sql`INSERT INTO enrollment ("promotionId", "userId", date, amount)
                   VALUES (${promotionId}, ${userId}, ${date}, ${amount})`;
-        revalidatePath('/creator/promotions/'+promotionId);
+        //revalidatePath('/creator/promotions/'+promotionId);
+        return { isUserEnrolled: true };
     } catch (error) {
-        return { message: 'Database Error: Failed to Delete Invoice.' };
+        return { isUserEnrolled: false};
     }
 }
 
