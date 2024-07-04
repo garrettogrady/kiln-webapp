@@ -1,17 +1,12 @@
 'use client';
 
-import Price from '@/app/ui/components/price';
-import {Business, Promotion} from "@/app/lib/definitions";
-import Platform from "@/app/ui/components/platform";
-import {enrollUserInPromotion} from "@/app/lib/actions";
-import {useFormState} from "react-dom";
-import {checkUserEnrollment} from "@/app/lib/data";
-import {createIntl, createIntlCache} from '@formatjs/intl'
+import { useFormState } from "react-dom";
+import { createIntl, createIntlCache } from '@formatjs/intl';
+import { enrollUserInPromotion } from "@/app/lib/actions";
+import { Promotion } from "@/app/lib/definitions";
 
-
-
-export function EnrollButton({promotion, isUserEnrolled} : {  promotion: Promotion, isUserEnrolled: boolean }) {
-    const cache = createIntlCache()
+export function EnrollButton({ promotion, isUserEnrolled }: { promotion: Promotion, isUserEnrolled: boolean }) {
+    const cache = createIntlCache();
 
     const intl = createIntl(
         {
@@ -19,30 +14,34 @@ export function EnrollButton({promotion, isUserEnrolled} : {  promotion: Promoti
             messages: {},
         },
         cache
-    )
+    );
     const date = new Date(Number(promotion.endDate));
     const formatter = intl.formatDate(date, {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
-    })
-    const initialState = {
-        isUserEnrolled: isUserEnrolled
-    }
-    const enroll = enrollUserInPromotion.bind(null, promotion.id);
-    const [state, formAction] = useFormState(enroll, initialState)
+    });
 
-    const buttonClasses = state.isUserEnrolled ? 'relative flex w-full items-center justify-center rounded-full bg-gray-600 p-4 tracking-wide text-white' :  'relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white';
+    const initialState = {
+        isUserEnrolled: isUserEnrolled,
+    };
+    const enroll = enrollUserInPromotion.bind(null, promotion.id);
+    const [state, formAction] = useFormState(enroll, initialState);
+
+    const buttonClasses = "relative flex w-full items-center justify-center rounded border border-gray-600 bg-white p-4 tracking-wide text-gray-600";
+
     const enrollmentMessage = state.isUserEnrolled ? "You are enrolled! Redeem by " + formatter.toString() : "";
 
+    console.log(buttonClasses)
     return (
         <>
             <form action={formAction}>
-                <button disabled={state.isUserEnrolled}  aria-label="Add to cart"
-                        className={buttonClasses}>
-                    Enroll
-                </button>
-                <p aria-live="polite" >
+                {!state.isUserEnrolled && (
+                    <button disabled={state.isUserEnrolled} aria-label="Enroll" className={buttonClasses}>
+                        Enroll
+                    </button>
+                )}
+                <p className="text-md font-small" aria-live="polite">
                     {enrollmentMessage}
                 </p>
             </form>

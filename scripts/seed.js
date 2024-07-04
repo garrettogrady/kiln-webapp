@@ -263,7 +263,7 @@ async function seedPromotions(client) {
         "featuredImage",
         "images",
         "tags")
-        VALUES (uuid_generate_v4(), 
+        VALUES (${promotion.id},
         ${promotion.businessId}, 
         ${promotion.promotionType}, 
         ${promotion.startDate}, 
@@ -305,8 +305,10 @@ async function seedEnrollment(client) {
             "id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
             "promotionId" UUID NOT NULL,
             "userId" VARCHAR(255) NOT NULL,
+            "businessId" VARCHAR(255) NOT NULL,
             date VARCHAR(255) NOT NULL,
-            "amount" VARCHAR(255) NOT NULL
+            "amount" INT NOT NULL,
+            "status" VARCHAR(255) NOT NULL
           );
         `;
         console.log(`Created "enrollment" table`);
@@ -315,8 +317,8 @@ async function seedEnrollment(client) {
         const insertedEnrollment = await Promise.all(
             enrollment.map(
                 (enroll) => client.sql`
-                INSERT INTO enrollment ("promotionId", "userId", "date", "amount")
-                VALUES (${enroll.promotionId}, ${enroll.userId}, ${enroll.date}, ${enroll.amount})
+                INSERT INTO enrollment ("promotionId", "userId", "businessId", "date", "amount", "status")
+                VALUES (${enroll.promotionId}, ${enroll.userId}, ${enroll.businessId}, ${enroll.date}, ${enroll.amount}, ${enroll.status})
                 ON CONFLICT (id) DO NOTHING;
               `,
             ),

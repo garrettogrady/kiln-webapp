@@ -12,6 +12,7 @@ import {InvoicesTableSkeleton} from "@/app/ui/skeletons";
 import Table from "@/app/ui/invoices/table";
 import Pagination from "@/app/ui/invoices/pagination";
 import PromotionsGrid from "@/app/ui/components/promotions-grid";
+import Map from "@/app/ui/map";
 
 export const metadata = {
     description: 'High-performance ecommerce store built with Next.js, Vercel, and Shopify.',
@@ -37,6 +38,9 @@ export default async function HomePage({searchParams}: {
             </div>
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
                 <Search placeholder="Search promotions..." />
+            </div>
+            <div className=" ">
+                <Map />
             </div>
             <PromotionsGrid query={query} currentPage={currentPage} />
             <div className="mt-5 flex w-full justify-center">

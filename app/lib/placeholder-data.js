@@ -64,8 +64,8 @@ const creators = [
 ];
 
 const enrollment = [
-  { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userId: '410544b2-4001-4271-9855-fec4b6a6442a',  date: Date.now(), amount: "10000" },
-  { promotionId: 'f0c51f16-b154-40eb-b8d2-c1179df34ed1', userId: '410544b2-4001-4271-9855-fec4b6a6442a',  date: Date.now(), amount: "7000" }
+  { promotionId: 'e6cf9e2f-1405-45e3-9c76-d62f25f80a7d', userId: '410544b2-4001-4271-9855-fec4b6a6442a', businessId: '1e082498-f20d-4db2-8119-5aa33e0529bc',  date: Date.now(), amount: 10000, status: "enrolled" },
+  { promotionId: '3b508ec3-1a7c-4e6a-a2d7-770b43fb3749', userId: '410544b2-4001-4271-9855-fec4b6a6442a', businessId: 'f0c51f16-b154-40eb-b8d2-c1179df34ed1',  date: Date.now(), amount: 7000, status: "redeemed" }
 ];
 
 const businesses = [
@@ -187,6 +187,7 @@ const businesses = [
 
 const promotions = [
   {
+    id: "e6cf9e2f-1405-45e3-9c76-d62f25f80a7d",
     businessId: "1e082498-f20d-4db2-8119-5aa33e0529bc",
     promotionType: "dinner",
     startDate: Date.now(),
@@ -204,6 +205,7 @@ const promotions = [
     tags: ["carbone", "dinner", "new york"],
   },
   {
+    id: "b7c74193-1f62-454b-9b9b-f3eabedc3fc6",
     businessId: "781b52ae-1a4a-4f89-a571-cb113c8d6537",
     promotionType: "bar",
     startDate: Date.now(),
@@ -221,6 +223,7 @@ const promotions = [
     tags: ["Night Out", "Bar", "LA"],
   },
   {
+    id: "c2e9f61c-cfb8-47f1-a1c0-d12eee6a1647",
     businessId: "b50426b3-3651-4de0-a299-e576e19e86f8",
     promotionType: "dinner",
     startDate: Date.now(),
@@ -238,6 +241,7 @@ const promotions = [
     tags: ["papi", "dinner", "miami"],
   },
   {
+    id: "c0e56323-30af-4243-a4a1-73c57f6ad7f0",
     businessId: "3f38c6b8-0d11-4e4b-8d36-ec16162859c9",
     promotionType: "dinner",
     startDate: 1679395200000,
@@ -259,6 +263,7 @@ const promotions = [
     tags: ["brunch", "London", "food"]
   },
   {
+    id: "d9967a03-a51a-4270-b535-f3d95bf1a024",
     businessId: "b1b519d0-f3f1-4a76-8f32-06c7068ff1ac",
     promotionType: "dinner",
     startDate: 1679395200000,
@@ -280,6 +285,7 @@ const promotions = [
     tags: ["cocktails", "Dubai", "sky bar"]
   },
   {
+    id: "3b508ec3-1a7c-4e6a-a2d7-770b43fb3749",
     businessId: "f0c51f16-b154-40eb-b8d2-c1179df34ed1",
     promotionType: "dinner",
     startDate: 1679395200000,

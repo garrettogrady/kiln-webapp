@@ -6,16 +6,12 @@ import {
   InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
-  User,
   Revenue,
   Promotion,
   PromotionTable,
   Business,
   PromotionGrid,
-  LatestPromotion,
   LatestPromotionRaw,
-  Creator,
-  CampaignTable,
 } from './definitions';
 import { formatCurrency } from './utils';
 import {GetServerSideProps} from "next";
@@ -58,35 +54,35 @@ export async function fetchLatestInvoices() {
   }
 }
 
-export async function fetchCardData() {
+export async function fetchCardData(userId: string) {
   noStore();
   try {
+    //const enrollmentCountPromise = sql`SELECT COUNT(*) FROM enrollment where "userId"=${userId}`;
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
-    const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-    const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
-    const invoiceStatusPromise = sql`SELECT
-         SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-         SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-         FROM invoices`;
+    const enrolledCountPromise = sql`SELECT COUNT(*) FROM enrollment WHERE "userId"=${userId} AND status='enrolled'`;
+    const redeemedCountPromise = sql`SELECT COUNT(*) FROM enrollment WHERE "userId"=${userId} AND status='redeemed'`;
+    const enrolledTotalPromise = sql`SELECT SUM("amount") FROM enrollment WHERE "userId"=${userId} AND status='enrolled'`;
+    const totalBusinessPromise = sql`SELECT COUNT(DISTINCT "businessId") FROM enrollment WHERE "userId"=${userId} AND status='redeemed'`;
 
     const data = await Promise.all([
-      invoiceCountPromise,
-      customerCountPromise,
-      invoiceStatusPromise,
+      enrolledCountPromise,
+      redeemedCountPromise,
+      enrolledTotalPromise,
+      totalBusinessPromise
     ]);
 
-    const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-    const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
-    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
-    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
+    const numberOfEnrollments = Number(data[0].rows[0].count ?? '0');
+    const numberOfRedemptions = Number(data[1].rows[0].count ?? '0');
+    const totalEnrolledPromotions = formatCurrency(data[2].rows[0].sum ?? '0');
+    const totalBusiness = Number(data[3].rows[0].count ?? '0');
 
     return {
-      numberOfCustomers,
-      numberOfInvoices,
-      totalPaidInvoices,
-      totalPendingInvoices,
+      numberOfEnrollments,
+      numberOfRedemptions,
+      totalEnrolledPromotions,
+      totalBusiness,
     };
   } catch (error) {
     console.error('Database Error:', error);
@@ -469,16 +465,23 @@ export async function fetchLatestPromotionsFromUser(id: string) {
       SELECT promotions."maxOfferPrice" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
       FROM promotions
       JOIN businesses ON promotions."businessId" = businesses.id
+      JOIN enrollment ON promotions.id = enrollment."promotionId"
       LIMIT 5`;
 
+    const data2 = await sql<LatestPromotionRaw>`
+      SELECT promotions."maxOfferPrice" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
+      FROM promotions
+      JOIN businesses ON promotions."businessId" = businesses.id
+      LIMIT 5`;
     const latestInvoices = data.rows.map((invoice) => ({
       ...invoice,
       amount: formatCurrency(invoice.amount),
     }));
+
     return latestInvoices;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch the latest promotions from suer.');
+    throw new Error('Failed to fetch the latest promotions from user.');
   }
 
 }

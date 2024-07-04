@@ -1,32 +1,15 @@
-import clsx from 'clsx';
-import Price from './price';
+interface LabelProps {
+    title: string;
+    amount: string;
+}
 
-const Label = ({
-  title,
-  amount,
-  position = 'bottom'
-}: {
-  title: string;
-  amount: string;
-  position?: 'bottom' | 'center';
-}) => {
-  return (
-    <div
-      className={clsx('absolute bottom-0 left-0 flex w-full px-4 pb-4 @container/label', {
-        'lg:px-20 lg:pb-[35%]': position === 'center'
-      })}
-    >
-      <div className="flex items-center rounded-full border bg-white/70 p-1 text-xs font-semibold text-black backdrop-blur-md dark:border-neutral-800 dark:bg-black/70 dark:text-white">
-        <h3 className="mr-4 line-clamp-2 flex-grow pl-2 leading-none tracking-tight">{title}</h3>
-        <Price
-          className="flex-none rounded-full bg-blue-600 p-2 text-white"
-          amount={amount}
-          currencyCode="USD"
-          currencyCodeClassName="hidden @[275px]/label:inline"
-        />
-      </div>
-    </div>
-  );
+const Label: React.FC<LabelProps> = ({ title, amount }) => {
+    return (
+        <div className="flex justify-between items-center w-full px-4 pt-2 pb-2">
+            <h3 className="text-sm font-semibold text-black dark:text-white">{title}</h3>
+            <p className="text-sm font-semibold text-black dark:text-white">{amount}</p>
+        </div>
+    );
 };
 
 export default Label;

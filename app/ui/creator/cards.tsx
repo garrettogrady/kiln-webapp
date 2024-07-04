@@ -14,21 +14,21 @@ const iconMap = {
   invoices: InboxIcon,
 };
 
-export default async function CardWrapper() {
+export default async function CardWrapper({id}: { id: string }) {
   const {
-    numberOfInvoices,
-    numberOfCustomers,
-    totalPaidInvoices,
-    totalPendingInvoices,
-  } = await fetchCardData();
+      numberOfEnrollments,
+      numberOfRedemptions,
+      totalEnrolledPromotions,
+      totalBusiness,
+  } = await fetchCardData(id);
   return (
     <>
       {/* NOTE: comment in this code when you get to this point in the course */}
 
-      <Card title="Redeemed" value={totalPaidInvoices} type="redeemed" />
-      <Card title="Enrolled" value={totalPendingInvoices} type="enrolled" />
-      <Card title="Total Promotions" value={numberOfInvoices} type="totalPromotions" />
-      <Card title="Total Customers" value={numberOfCustomers} type="totalBusinesses"
+      <Card title="Redeemed" value={numberOfEnrollments} type="redeemed" />
+      <Card title="Enrolled" value={numberOfRedemptions} type="enrolled" />
+      <Card title="Total Promotions" value={totalEnrolledPromotions} type="totalPromotions" />
+      <Card title="Total Businesses" value={totalBusiness} type="totalBusinesses"
       />
     </>
   );
