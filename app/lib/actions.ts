@@ -84,11 +84,8 @@ export type BusinessState = {
         contactName?: string[];
         contactPhoneNumber?: string[];
         contactEmail?: string[];
-        address1?: string[];
-        address2?: string[];
-        city?: string[];
-        state?: string[];
-        zipcode?: string[];
+        address?: string[];
+        placesId?: string[];
         password?: string[];
         date?: string[];
     };
@@ -105,10 +102,8 @@ const BusinessSchema = z.object({
     contactName: z.string(),
     contactPhoneNumber: z.string(),
     contactEmail: z.string(),
-    address1: z.string(),
-    city: z.string(),
-    state: z.string(),
-    zipcode: z.string(),
+    address: z.string(),
+    placesId: z.string(),
     password: z.string(),
     date: z.string(),
 });
@@ -205,7 +200,7 @@ export async function createCampaign(prevState: State, formData: FormData) {
 
     const amountInCents = amount * 100;
     const tagList = tags.split(",");
-    const defaultList = "/promotions/placeholder.jpg";
+    const defaultList = "/business/placeholder.jpg";
     const date = new Date().toISOString().split('T')[0];
     console.log(tagList);
     try {
@@ -376,13 +371,9 @@ export async function businessRegister(
             contactName: formData.get('contactName'),
             contactPhoneNumber: formData.get('contactPhoneNumber'),
             contactEmail: formData.get('email'),
-            address1: formData.get('address1'),
-            address2: formData.get('address2'),
-            city: formData.get('city'),
-            state: formData.get('state'),
-            zipcode: formData.get('zipcode'),
+            address: formData.get('address'),
+            placesId: formData.get('placesId'),
             password: formData.get('password'),
-
         });
         console.log(validatedFields);
         // If form validation fails, return errors early. Otherwise, continue.
@@ -404,10 +395,8 @@ export async function businessRegister(
             contactName,
             contactPhoneNumber,
             contactEmail,
-            address1,
-            city,
-            state,
-            zipcode,
+            address,
+            placesId,
             password
     } = validatedFields.data;
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -415,9 +404,9 @@ export async function businessRegister(
         //create business entry
         await sql`
         INSERT INTO businesses ("businessType", "businessName", "businessDescription", "businessInstagram", 
-        "businessTikTok", "contactName", "contactPhoneNumber", "contactEmail", "address1", "city", "state", "zipcode")
+        "businessTikTok", "contactName", "contactPhoneNumber", "contactEmail", "address", "placesId")
         VALUES (${businessType}, ${businessName}, ${businessDescription}, ${businessInstagram}, ${businessTikTok}, ${contactName}, 
-        ${contactPhoneNumber}, ${contactEmail},  ${address1},${city},${state},${zipcode} )
+        ${contactPhoneNumber}, ${contactEmail}, ${address},${placesId} )
         ON CONFLICT (id) DO NOTHING;`;
 
         //create User
@@ -452,7 +441,7 @@ export async function enrollUserInPromotion(promotionId: string) {
     try {
         await sql`INSERT INTO enrollment ("promotionId", "userId", date, amount)
                   VALUES (${promotionId}, ${userId}, ${date}, ${amount})`;
-        //revalidatePath('/creator/promotions/'+promotionId);
+        //revalidatePath('/creator/business/'+promotionId);
         return { isUserEnrolled: true };
     } catch (error) {
         return { isUserEnrolled: false};

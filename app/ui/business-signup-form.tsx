@@ -9,9 +9,57 @@ import {ArrowRightIcon, FaceSmileIcon, MapPinIcon, PhoneIcon} from '@heroicons/r
 import { Button } from './button';
 import { useFormState, useFormStatus } from 'react-dom';
 import {authenticate, businessRegister} from '@/app/lib/actions';
+import React, {useEffect, useRef, useState} from "react";
+import { useJsApiLoader } from "@react-google-maps/api";
+
 
 export default function BusinessRegisterForm() {
   const [errorMessage, dispatch] = useFormState(businessRegister, undefined);
+  const placeAutoCompleteRef = useRef<HTMLDivElement>(null)
+  const [selectedPlaceAddress, setSelectedPlaceAddress] = useState<string | null>(null);
+  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
+  const [autoComplete, setAutoComplete] = useState<google.maps.places.Autocomplete | null>(null);
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY as string,
+    libraries: ['core', 'maps', 'places', 'marker'], // Use only the required libraries
+  });
+
+  useEffect(() => {
+    if (isLoaded ) {
+        //limit place bounds
+        //
+        const austinBounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng({lat: 30.188196, lng: -97.920885}),//austin SW = 30.188196, -97.920885
+            new google.maps.LatLng({lat: 30.447454, lng: -97.606985})//austin NE 30.447454, -97.606985
+        );
+        //setup autocomplete
+        const gAutoComplete = new google.maps.places.Autocomplete(placeAutoCompleteRef.current as HTMLInputElement, {
+          // bounds: austinBounds,
+          fields: ['formatted_address', 'geometry', 'name', 'place_id'],
+          componentRestrictions: {
+            country: ['us']
+          }
+        })
+      console.log(gAutoComplete)
+        setAutoComplete(gAutoComplete)
+      } else {
+        console.error('Google Maps API not loaded correctly');
+      }
+  }, [isLoaded]);
+
+  useEffect(() => {
+    if (autoComplete) {
+      autoComplete.addListener('place_changed', () => {
+        const place = autoComplete.getPlace();
+        console.log(place)
+        setSelectedPlaceAddress(place.formatted_address as string);
+        setSelectedPlaceId(place.place_id as string);
+        const position = place.geometry?.location
+
+
+      })
+    }
+  }, [autoComplete])
 
   return (
       <form action={dispatch} className="space-y-3">
@@ -197,46 +245,32 @@ export default function BusinessRegisterForm() {
             <div className="relative">
               <input
                   className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                  id="address1"
+                  id="addressSearch"
                   type="text"
-                  name="address1"
+                  name="addressSearch"
+                  placeholder="Search Business"
+                  ref={placeAutoCompleteRef}
+              />
+              <input
+                  className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                  id="address"
+                  type="text"
+                  value={selectedPlaceAddress!}
+                  name="address"
                   placeholder="Address "
                   required
               />
               <MapPinIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
-            <div className="relative">
+            <div >
               <input
                   className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                  id="city"
+                  id="placesId"
                   type="text"
-                  name="city"
-                  placeholder="City"
-                  required
+                  name="placesId"
+                  placeholder="place ID "
+                  value={selectedPlaceId!}
               />
-              <MapPinIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-            </div>
-            <div className="relative">
-              <input
-                  className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                  id="state"
-                  type="text"
-                  name="state"
-                  placeholder="State"
-                  required
-              />
-              <MapPinIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-            </div>
-            <div className="relative">
-              <input
-                  className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                  id="zipcode"
-                  type="text"
-                  name="zipcode"
-                  placeholder="Zip Code"
-                  required
-              />
-              <MapPinIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
           <div className="mt-4">

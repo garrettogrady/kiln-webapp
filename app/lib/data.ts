@@ -188,7 +188,7 @@ export async function fetchCampaigns(id: string) {
     return promotions.rows;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch promotions.');
+    throw new Error('Failed to fetch business.');
   }
 }
 
@@ -244,7 +244,7 @@ export async function fetchInvoicesPages(query: string) {
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of promotions.');
+    throw new Error('Failed to fetch total number of business.');
   }
 }
 
@@ -266,7 +266,7 @@ export async function fetchCampaignPages(query: string) {
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of promotions.');
+    throw new Error('Failed to fetch total number of business.');
   }
 }
 
@@ -287,6 +287,9 @@ export async function fetchFilteredPromotions(
         promotions.description,
         promotions."minOfferPrice",
         promotions."maxOfferPrice",
+        businesses."placesId",
+        businesses."locationLat",
+        businesses."locationLng",
         businesses."businessName"
       FROM promotions
       JOIN businesses ON promotions."businessId" = businesses.id
@@ -300,7 +303,7 @@ export async function fetchFilteredPromotions(
     return promotions.rows;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch promotions.');
+    throw new Error('Failed to fetch business.');
   }
 }
 
@@ -321,7 +324,7 @@ export async function fetchPromotionsPages(query: string) {
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of promotions.');
+    throw new Error('Failed to fetch total number of business.');
   }
 }
 
@@ -466,13 +469,9 @@ export async function fetchLatestPromotionsFromUser(id: string) {
       FROM promotions
       JOIN businesses ON promotions."businessId" = businesses.id
       JOIN enrollment ON promotions.id = enrollment."promotionId"
+      where enrollment.status = 'enrolled'
       LIMIT 5`;
 
-    const data2 = await sql<LatestPromotionRaw>`
-      SELECT promotions."maxOfferPrice" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
-      FROM promotions
-      JOIN businesses ON promotions."businessId" = businesses.id
-      LIMIT 5`;
     const latestInvoices = data.rows.map((invoice) => ({
       ...invoice,
       amount: formatCurrency(invoice.amount),
@@ -481,7 +480,31 @@ export async function fetchLatestPromotionsFromUser(id: string) {
     return latestInvoices;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch the latest promotions from user.');
+    throw new Error('Failed to fetch the latest business from user.');
+  }
+
+}
+
+export async function fetchPastPromotionsFromUser(id: string) {
+  noStore();
+  try {
+    const data = await sql<LatestPromotionRaw>`
+      SELECT promotions."maxOfferPrice" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
+      FROM promotions
+      JOIN businesses ON promotions."businessId" = businesses.id
+      JOIN enrollment ON promotions.id = enrollment."promotionId"
+      where enrollment.status = 'redeemed'
+      LIMIT 5`;
+
+    const latestInvoices = data.rows.map((invoice) => ({
+      ...invoice,
+      amount: formatCurrency(invoice.amount),
+    }));
+
+    return latestInvoices;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch the latest business from user.');
   }
 
 }

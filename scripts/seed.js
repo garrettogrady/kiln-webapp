@@ -1,3 +1,4 @@
+'use server';
 const {db} = require('@vercel/postgres');
 const {
     customers,
@@ -147,11 +148,10 @@ async function seedBusiness(client) {
         "contactPhoneNumber" VARCHAR(255),
         "contactEmail" VARCHAR(255),
         "featuredImage" VARCHAR(255),
-        "address1" VARCHAR(255) ,
-        "address2" VARCHAR(255),
-        "city" VARCHAR(255),
-        "state" VARCHAR(255),
-        "zipcode" VARCHAR(255),
+        "address" VARCHAR(255) ,
+        "placesId" VARCHAR(255),
+        "locationLat" VARCHAR(255),
+        "locationLng" VARCHAR(255),
         "tags" TEXT[]
       );
     `;
@@ -174,11 +174,10 @@ async function seedBusiness(client) {
         "contactName",
         "contactPhoneNumber",
         "contactEmail",
-        "address1",
-        "address2",
-        "city",
-        "state",
-        "zipcode",
+        "address",
+        "placesId",
+        "locationLat",
+        "locationLng",
         "featuredImage",
         "tags")
         VALUES (${business.id}, 
@@ -191,11 +190,10 @@ async function seedBusiness(client) {
         ${business.contactName}, 
         ${business.contactPhoneNumber}, 
         ${business.contactEmail}, 
-        ${business.address1}, 
-        ${business.address2}, 
-        ${business.city}, 
-        ${business.state}, 
-        ${business.zipcode}, 
+        ${business.address}, 
+        ${business.placesId}, 
+        ${business.locationLat}, 
+        ${business.locationLng}, 
         ${business.featuredImage}, 
         ${business.tags})
         ON CONFLICT (id) DO NOTHING;
@@ -219,7 +217,7 @@ async function seedPromotions(client) {
     try {
         await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
         await client.sql`DROP TABLE promotions`;
-        // Create the "promotions" table if it doesn't exist
+        // Create the "business" table if it doesn't exist
         const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS promotions (
         "id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -290,7 +288,7 @@ async function seedPromotions(client) {
             promotions: insertedPromotions,
         };
     } catch (error) {
-        console.error('Error seeding promotions:', error);
+        console.error('Error seeding business:', error);
         throw error;
     }
 }

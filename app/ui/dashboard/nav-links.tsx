@@ -24,7 +24,7 @@ const links = [
     icon: DocumentDuplicateIcon,
   },
   { name: 'Profile', href: '/dashboard/profile', icon: UserGroupIcon },
-  { name: 'Promotions', href: '/dashboard/promotions', icon: UserGroupIcon },
+  { name: 'Promotions', href: '/dashboard/business', icon: UserGroupIcon },
 ];
 
 export default function NavLinks() {

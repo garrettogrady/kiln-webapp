@@ -34,7 +34,7 @@ export function EnrollButton({ promotion, isUserEnrolled }: { promotion: Promoti
 
     console.log(buttonClasses)
     return (
-        <>
+        <div className="md:mt-8">
             <form action={formAction}>
                 {!state.isUserEnrolled && (
                     <button disabled={state.isUserEnrolled} aria-label="Enroll" className={buttonClasses}>
@@ -45,6 +45,6 @@ export function EnrollButton({ promotion, isUserEnrolled }: { promotion: Promoti
                     {enrollmentMessage}
                 </p>
             </form>
-        </>
+        </div>
     );
 }

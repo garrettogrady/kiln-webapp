@@ -135,11 +135,10 @@ export type Business = {
   contactName: string;
   contactPhoneNumber: string;
   contactEmail: string;
-  address1: string,
-  address2: string,
-  city: string,
-  state: string,
-  zipcode: string,
+  address: string,
+  placesId: string,
+  locationLat: string,
+  locationLng: string,
   businessEmailAddress: string;
   businessPhoneNumber: string;
   featuredImage: string;
@@ -186,6 +185,9 @@ export type PromotionGrid = {
   platform: 'tiktok' | 'instagram';
   postType: 'reel' | 'story';
   featuredImage: string;
+  placesId: string;
+  locationLat: string;
+  locationLng: string;
   images: string[];
   tags: string[];
   updatedAt: string;

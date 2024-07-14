@@ -9,11 +9,12 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import {lusitana} from '@/app/ui/fonts';
 import {LatestInvoice} from '@/app/lib/definitions';
-import {fetchLatestInvoices, fetchLatestPromotionsFromUser} from "@/app/lib/data";
+import {fetchLatestInvoices, fetchLatestPromotionsFromUser, fetchPastPromotionsFromUser} from "@/app/lib/data";
 
 export default async function LatestPromotions({id}: { id: string }) {
 
-    const latestPromotions = await fetchLatestPromotionsFromUser(id);
+    const enrolledPromotions = await fetchLatestPromotionsFromUser(id);
+    const pastPromotions = await fetchPastPromotionsFromUser(id);
     return (
         <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
             <div className="flex w-full flex-col md:col-span-4">
@@ -22,7 +23,7 @@ export default async function LatestPromotions({id}: { id: string }) {
                 </h2>
                 <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
                     <div className="bg-white px-6">
-                        {latestPromotions.map((promotion, i) => {
+                        {enrolledPromotions.map((promotion, i) => {
                             return (
                                 <div
                                     key={promotion.id}
@@ -65,7 +66,7 @@ export default async function LatestPromotions({id}: { id: string }) {
                 </h2>
                 <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
                     <div className="bg-white px-6">
-                        {latestPromotions.map((promotion, i) => {
+                        {pastPromotions.map((promotion, i) => {
                             return (
                                 <div
                                     key={promotion.id}
