@@ -431,19 +431,20 @@ export async function businessRegister(
 }
 
 
-export async function enrollUserInPromotion(promotionId: string) {
+export async function enrollUserInPromotion(promotionId: string, businessId: string, amount: number) {
     const user = await auth();
     const userId = user?.user.id;
     const date = Date.now();
-    const amount = "";
-    console.log(userId)
+    console.log("enrolling")
+    //find user ~clout ranking~ and factor that into amount
 
     try {
-        await sql`INSERT INTO enrollment ("promotionId", "userId", date, amount)
-                  VALUES (${promotionId}, ${userId}, ${date}, ${amount})`;
+        await sql`INSERT INTO enrollment ("promotionId", "userId", "businessId", date, amount, status)
+                  VALUES (${promotionId}, ${userId}, ${businessId}, ${date}, ${amount}, 'enrolled')`;
         //revalidatePath('/creator/business/'+promotionId);
         return { isUserEnrolled: true };
     } catch (error) {
+        console.log(error)
         return { isUserEnrolled: false};
     }
 }

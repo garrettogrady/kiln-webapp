@@ -8,6 +8,9 @@ import { Promotion } from "@/app/lib/definitions";
 export function EnrollButton({ promotion, isUserEnrolled }: { promotion: Promotion, isUserEnrolled: boolean }) {
     const cache = createIntlCache();
 
+    console.log(promotion.endDate);
+    console.log("is user enrolled: " + isUserEnrolled);
+
     const intl = createIntl(
         {
             locale: 'en-US',
@@ -15,7 +18,7 @@ export function EnrollButton({ promotion, isUserEnrolled }: { promotion: Promoti
         },
         cache
     );
-    const date = new Date(Number(promotion.endDate));
+    const date = new Date(promotion.endDate);
     const formatter = intl.formatDate(date, {
         day: 'numeric',
         month: 'short',
@@ -25,7 +28,7 @@ export function EnrollButton({ promotion, isUserEnrolled }: { promotion: Promoti
     const initialState = {
         isUserEnrolled: isUserEnrolled,
     };
-    const enroll = enrollUserInPromotion.bind(null, promotion.id);
+    const enroll = enrollUserInPromotion.bind(null, promotion.id, promotion.businessId, promotion.maxOfferPrice);
     const [state, formAction] = useFormState(enroll, initialState);
 
     const buttonClasses = "relative flex w-full items-center justify-center rounded border border-gray-600 bg-white p-4 tracking-wide text-gray-600";
