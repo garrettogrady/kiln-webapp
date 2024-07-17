@@ -26,32 +26,37 @@ export function PromotionDescription({ promotion, business }: { promotion: Promo
                 </div>
             </div>
 
-            <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
-                <button onClick={toggleDetails} className="flex justify-between items-center w-full text-left text-md font-medium text-black dark:text-white">
-                    Promotion Details
-                    <span>{isDetailsOpen ? '▲' : '▼'}</span>
-                </button>
-                {isDetailsOpen && (
-                    <p className="mt-4 text-sm">
-                        {promotion.description}
-                    </p>
-                )}
-            </div>
-            <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
-                <button onClick={toggleTableSize} className="flex justify-between items-center w-full text-left text-md font-medium text-black dark:text-white">
-                    Table Size
-                    <span>{isTableSizeOpen ? '▲' : '▼'}</span>
-                </button>
-                {isTableSizeOpen && <p className="mt-4 text-sm">Details about table sizes.</p>}
-            </div>
-
-            <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
-                <button onClick={toggleHours} className="flex justify-between items-center w-full text-left text-md font-medium text-black dark:text-white">
-                    Hours of Availability
-                    <span>{isHoursOpen ? '▲' : '▼'}</span>
-                </button>
-                {isHoursOpen && <p className="mt-4 text-sm">Details about hours of availability.</p>}
-            </div>
+            {promotion.description && (
+                <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
+                    <button onClick={toggleDetails} className="flex justify-between items-center w-full text-left text-md font-medium text-black dark:text-white">
+                        Promotion Details
+                        <span>{isDetailsOpen ? '▲' : '▼'}</span>
+                    </button>
+                    {isDetailsOpen && (
+                        <p className="mt-4 text-sm">
+                            {promotion.description}
+                        </p>
+                    )}
+                </div>
+            )}
+            {promotion.tableSize && (
+                <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
+                    <button onClick={toggleTableSize} className="flex justify-between items-center w-full text-left text-md font-medium text-black dark:text-white">
+                        Table Size
+                        <span>{isTableSizeOpen ? '▲' : '▼'}</span>
+                    </button>
+                    {isTableSizeOpen && <p className="mt-4 text-sm">{promotion.tableSize}</p>}
+                </div>
+            )}
+            {promotion.availability && (
+                <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
+                    <button onClick={toggleHours} className="flex justify-between items-center w-full text-left text-md font-medium text-black dark:text-white">
+                        Hours of Availability
+                        <span>{isHoursOpen ? '▲' : '▼'}</span>
+                    </button>
+                    {isHoursOpen && <p className="mt-4 text-sm">{promotion.availability}</p>}
+                </div>
+            )}
             <div className="mt-2 font-small text-black dark:text-white">
                 {business.address}
             </div>

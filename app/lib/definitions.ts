@@ -155,6 +155,8 @@ export type Promotion = {
   quantity: number;
   title: string;
   description: string;
+  tableSize: string;
+  availability: string;
   maxOfferPrice: number;
   minOfferPrice: number;
   platform: 'tiktok' | 'instagram';

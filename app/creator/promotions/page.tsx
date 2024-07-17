@@ -1,24 +1,17 @@
-import React, { Suspense } from 'react';
-import {fetchInvoicesPages, fetchPromotions, fetchPromotionsPages} from "@/app/lib/data";
+import React from 'react';
+import { fetchPromotionsPages} from "@/app/lib/data";
 import {lusitana} from "@/app/ui/fonts";
 import Search from "@/app/ui/search";
-import {CreateInvoice} from "@/app/ui/invoices/buttons";
-import {InvoicesTableSkeleton} from "@/app/ui/skeletons";
-import Table from "@/app/ui/invoices/table";
 import Pagination from "@/app/ui/invoices/pagination";
 import PromotionsGrid from "@/app/ui/components/promotions-grid";
-import Map from "@/app/ui/map";
-import MapGrid from "@/app/ui/creator/map-grid";
-import {ListBulletIcon, MapIcon} from "@heroicons/react/24/outline";
-import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import MapButtons from "@/app/ui/map-buttons";
 
-// export const metadata = {
-//     description: 'High-performance ecommerce store built with Next.js, Vercel, and Shopify.',
-//     openGraph: {
-//         type: 'website'
-//     }
-// };
+export const metadata = {
+    description: 'High-performance ecommerce store built with Next.js, Vercel, and Shopify.',
+    openGraph: {
+        type: 'website'
+    }
+};
 
 export default async function HomePage({searchParams}: {
     searchParams?: {

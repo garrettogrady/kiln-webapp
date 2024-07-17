@@ -15,7 +15,7 @@ const ProductGridItems: React.FC<ProductGridItemsProps> = ({ promotion }) => {
                     alt={promotion.title}
                     label={{
                         title: promotion.title,
-                        amount: `$${promotion.minOfferPrice.toString()} USD`,
+                        amount: `$${promotion.maxOfferPrice.toString()} USD`,
                     }}
                     src={promotion.featuredImage}
                     fill

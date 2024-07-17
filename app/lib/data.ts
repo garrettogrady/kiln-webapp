@@ -469,7 +469,7 @@ export async function fetchLatestPromotionsFromUser(id: string) {
       FROM promotions
       JOIN businesses ON promotions."businessId" = businesses.id
       JOIN enrollment ON promotions.id = enrollment."promotionId"
-      where enrollment.status = 'enrolled'
+      where enrollment.status = 'enrolled' and enrollment."userId" = ${id}
       LIMIT 5`;
 
     const latestInvoices = data.rows.map((invoice) => ({
@@ -493,7 +493,7 @@ export async function fetchPastPromotionsFromUser(id: string) {
       FROM promotions
       JOIN businesses ON promotions."businessId" = businesses.id
       JOIN enrollment ON promotions.id = enrollment."promotionId"
-      where enrollment.status = 'redeemed'
+      where enrollment.status = 'redeemed' and enrollment."userId" = ${id}
       LIMIT 5`;
 
     const latestInvoices = data.rows.map((invoice) => ({

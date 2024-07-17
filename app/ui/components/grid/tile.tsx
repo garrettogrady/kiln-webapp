@@ -39,10 +39,10 @@ export const GridTileImage: React.FC<GridTileImageProps> = ({
                 ) : null}
             </div>
             {label && (
-                <Label
-                    title={label.title}
-                    amount={label.amount}
-                />
+                <div className="w-full text-center mt-2">
+                    <div className="text-lg font-medium text-gray-900 truncate">{label.title}</div>
+                    <div className="text-sm text-gray-600">{label.amount}</div>
+                </div>
             )}
         </div>
     );

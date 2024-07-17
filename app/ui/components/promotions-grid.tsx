@@ -13,22 +13,22 @@ interface PromotionsGridProps {
 export default async function PromotionsGrid({ query, currentPage, showMap }: PromotionsGridProps) {
     const promotions = await fetchFilteredPromotions(query, currentPage);
     if (showMap) {
-        return(
+        return (
             <Map promotions={promotions} />
-        )
+        );
     } else {
-        return( <div className="mt-6 flow-root">
-            <div className="inline-block min-w-full align-middle">
-                <div className="rounded-lg bg-white p-4 md:p-6">
-                    <Grid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">  {/* Updated gap */}
-                        {promotions.map((promotion) => (
-                            <ProductGridItems key={promotion.id} promotion={promotion} />
-                        ))}
-                    </Grid>
+        return (
+            <div className="mt-6 flow-root">
+                <div className="inline-block min-w-full align-middle">
+                    <div className="rounded-lg bg-white p-4 md:p-6">
+                        <Grid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">  {/* Updated gap */}
+                            {promotions.map((promotion) => (
+                                <ProductGridItems key={promotion.id} promotion={promotion} />
+                            ))}
+                        </Grid>
+                    </div>
                 </div>
             </div>
-        </div>
         );
     }
-
 }
