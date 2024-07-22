@@ -24,6 +24,9 @@ export function PromotionDescription({ promotion, business }: { promotion: Promo
                 <div className="mt-2 text-lg font-medium text-black dark:text-white">
                     <span className="text-md font-small">Budget: </span> ${promotion.maxOfferPrice}
                 </div>
+                <div className="mt-2 font-medium dark:text-white">
+                    <span className="rounded border border-gray-600 bg-[#254442] text-white">Instagram Story</span>
+                </div>
             </div>
 
             {promotion.description && (

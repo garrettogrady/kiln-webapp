@@ -10,7 +10,7 @@ import {
     CameraIcon, ChatBubbleBottomCenterIcon,
     CheckIcon,
     ClockIcon,
-    CurrencyDollarIcon, ReceiptPercentIcon,
+    CurrencyDollarIcon, InformationCircleIcon, ReceiptPercentIcon,
     UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import {Button} from '@/app/ui/button';
@@ -165,8 +165,15 @@ export default function Form() {
                 {/* Pricing Type */}
                 <fieldset>
                     <legend className="mb-2 block text-sm font-medium">
-                        Pricing Type
+                        <span>Pricing Type </span>
                     </legend>
+                    {pricingType === "tiered" && (
+                        <span>
+                            <InformationCircleIcon width={15} height={15}/>
+                            <p className="text-xs text-gray-600">For tiered pricing we determine the budget for the creator based on their follower count and engagement rates, you just need to set your min and max spend amount and we will do the rest</p>
+
+                        </span>
+                    )}
                     <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
                         <div className="flex gap-4">
                             <div className="flex items-center">
