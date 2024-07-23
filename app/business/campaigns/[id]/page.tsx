@@ -41,7 +41,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
                 {promotion.title}
             </h1>
-            <EngagementCards />
+            <EngagementCards promotionId={id} />
 
             <ContributorsTable  />
 

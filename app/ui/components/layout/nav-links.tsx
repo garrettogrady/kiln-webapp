@@ -17,7 +17,7 @@ const creatorLinks = [
 ];
 
 const businessLinks = [
-  { name: 'Home', href: 'business/campaigns', icon: HomeIcon },
+  { name: 'Home', href: '/business/campaigns', icon: HomeIcon },
   { name: 'Profile', href: '/business/profile', icon: UserGroupIcon },
 ];
 

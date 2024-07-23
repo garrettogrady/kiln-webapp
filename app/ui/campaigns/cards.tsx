@@ -18,18 +18,13 @@ const iconMap = {
 export default async function CardWrapper() {
     const businessId = await fetchAuthedUserId();
     const {
-        numberOfInvoices,
-        numberOfCustomers,
-        totalPaidInvoices,
-        totalPendingInvoices,
+        numberOfRedemptions
     } = await fetchCampaignCardData(businessId);
     return (
         <>
-            {/* NOTE: comment in this code when you get to this point in the course */}
-
-            <Card title="Open" value={numberOfInvoices} type="open" />
+            <Card title="Open" value={numberOfRedemptions} type="open" />
             <Card title="Closed" value="0" type="closed" />
-            <Card title="Total Promotions" value={numberOfInvoices} type="totalPromotions" />
+            <Card title="Total Promotions" value={10} type="totalPromotions" />
         </>
     );
 }

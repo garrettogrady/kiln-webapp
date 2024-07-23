@@ -2,19 +2,6 @@ import {CustomerField, Promotion} from '@/app/lib/definitions';
 import Link from 'next/link';
 import React, { useState } from "react";
 
-import {
-    CalendarIcon,
-    CameraIcon, ChatBubbleBottomCenterIcon,
-    CheckIcon,
-    ClockIcon,
-    CurrencyDollarIcon, ReceiptPercentIcon,
-    UserCircleIcon,
-} from '@heroicons/react/24/outline';
-import {Button} from '@/app/ui/button';
-import {createCampaign} from '@/app/lib/actions';
-import { useFormState } from 'react-dom';
-import { TagsInput } from "react-tag-input-component";
-import {fetchPromotionById} from "@/app/lib/data";
 import {CreateCampaign, UpdateCampaign} from "@/app/ui/campaigns/buttons";
 import {createIntl, createIntlCache} from "@formatjs/intl";
 
