@@ -25,14 +25,17 @@ export function PromotionDescription({ promotion, business }: { promotion: Promo
                     <span className="text-md font-small">Budget: </span> ${promotion.maxOfferPrice}
                 </div>
                 <div className="mt-2 font-medium dark:text-white">
-                    <span className="rounded border border-gray-600 bg-[#254442] text-white">Instagram Story</span>
+                    <span className="rounded border border-gray-600 bg-[#254442] text-white">Instagram Story Picture</span>
+                    <br/>
+                    <span className="rounded border border-gray-600 bg-[#254442] text-white">Instagram Story Video</span>
+                    {/*<span className="rounded border border-gray-600 bg-[#254442] text-white">{promotion.platform} {promotion.postType}</span>*/}
                 </div>
             </div>
 
             {promotion.description && (
                 <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
                     <button onClick={toggleDetails} className="flex justify-between items-center w-full text-left text-md font-medium text-black dark:text-white">
-                        Promotion Details
+                        Merchant Information
                         <span>{isDetailsOpen ? '▲' : '▼'}</span>
                     </button>
                     {isDetailsOpen && (

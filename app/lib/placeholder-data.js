@@ -243,7 +243,7 @@ const promotions = [
     id: "e6cf9e2f-1405-45e3-9c76-d62f25f80a7d",
     businessId: "1e082498-f20d-4db2-8119-5aa33e0529bc",
     promotionType: "dinner",
-    startDate: Date.now(),
+    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     endDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // Two weeks from now
     quantity: Math.floor(Math.random() * 100) + 1,
     title: "BBQ Bonanza at Bludso's",
@@ -265,7 +265,7 @@ const promotions = [
     id: "3b508ec3-1a7c-4e6a-a2d7-770b43fb3749",
     businessId: "781b52ae-1a4a-4f89-a571-cb113c8d6537",
     promotionType: "dinner",
-    startDate: Date.now(),
+    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     endDate: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000), // Three weeks from now
     quantity: Math.floor(Math.random() * 100) + 1,
     title: "Crispy Treat at Honey's Kettle",
@@ -286,7 +286,7 @@ const promotions = [
     id: "c2e9f61c-cfb8-47f1-a1c0-d12eee6a1647",
     businessId: "b50426b3-3651-4de0-a299-e576e19e86f8",
     promotionType: "dinner",
-    startDate: Date.now(),
+    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // One week from now
     quantity: Math.floor(Math.random() * 100) + 1,
     title: "Ethiopian Delight at Meals by Genet",
@@ -308,7 +308,7 @@ const promotions = [
     id: "c0e56323-30af-4243-a4a1-73c57f6ad7f0",
     businessId: "3f38c6b8-0d11-4e4b-8d36-ec16162859c9",
     promotionType: "dinner",
-    startDate: Date.now(),
+    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     endDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // Ten days from now
     quantity: Math.floor(Math.random() * 100) + 1,
     title: "Italian Nights at Jones Hollywood",
@@ -330,7 +330,7 @@ const promotions = [
     id: "d9967a03-a51a-4270-b535-f3d95bf1a024",
     businessId: "b1b519d0-f3f1-4a76-8f32-06c7068ff1ac",
     promotionType: "dinner",
-    startDate: Date.now(),
+    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // Fifteen days from now
     quantity: Math.floor(Math.random() * 100) + 1,
     title: "Steak Night at Musso & Frank Grill",
@@ -352,7 +352,7 @@ const promotions = [
     id: "3e003ac5-5637-4b7c-8b79-2f8516793414",
     businessId: "f0c51f16-b154-40eb-b8d2-c1179df34ed1",
     promotionType: "dinner",
-    startDate: Date.now(),
+    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // One week from now
     quantity: Math.floor(Math.random() * 100) + 1,
     title: "Korean Culinary Adventure at Danbi",
@@ -374,7 +374,7 @@ const promotions = [
     id: "fdda54fb-6f3c-4849-8a93-23d28ca8b222",
     businessId: "55e222fd-d020-46d9-9e49-aae42fafd66c",
     promotionType: "dinner",
-    startDate: Date.now(),
+    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     endDate: new Date(Date.now() + 18 * 24 * 60 * 60 * 1000), // Eighteen days from now
     quantity: Math.floor(Math.random() * 100) + 1,
     title: "Interactive BBQ Fun at KTEAM BBQ",
@@ -396,7 +396,7 @@ const promotions = [
     id: "9a5b1b06-cb15-499a-bea7-b19a0dc98073",
     businessId: "b6400d89-163e-4ef1-9a7c-f68a77507056",
     promotionType: "dinner",
-    startDate: Date.now(),
+    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     endDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000), // Twelve days from now
     quantity: Math.floor(Math.random() * 100) + 1,
     title: "Middle Eastern Feast at Bavel",
@@ -418,7 +418,7 @@ const promotions = [
     id: "75289397-69df-4e01-baeb-1d437ac45d38",
     businessId: "e96d48b0-843a-4b2f-985e-ae7c831f54bf",
     promotionType: "dinner",
-    startDate: Date.now(),
+    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000), // Twenty days from now
     quantity: Math.floor(Math.random() * 100) + 1,
     title: "Brazilian Vibes at Bossa Nova",

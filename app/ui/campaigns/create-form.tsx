@@ -17,7 +17,7 @@ import {Button} from '@/app/ui/button';
 import {createCampaign} from '@/app/lib/actions';
 import { useFormState } from 'react-dom';
 import { TagsInput } from "react-tag-input-component";
-
+import Tooltip from "@/app/ui/campaigns/tooltip";
 
 export default function Form() {
     const initialState = { message: null, errors: {} };
@@ -167,13 +167,6 @@ export default function Form() {
                     <legend className="mb-2 block text-sm font-medium">
                         <span>Pricing Type </span>
                     </legend>
-                    {pricingType === "tiered" && (
-                        <span>
-                            <InformationCircleIcon width={15} height={15}/>
-                            <p className="text-xs text-gray-600">For tiered pricing we determine the budget for the creator based on their follower count and engagement rates, you just need to set your min and max spend amount and we will do the rest</p>
-
-                        </span>
-                    )}
                     <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
                         <div className="flex gap-4">
                             <div className="flex items-center">
@@ -194,21 +187,23 @@ export default function Form() {
                                 </label>
                             </div>
                             <div className="flex items-center">
-                                <input
-                                    id="tiered"
-                                    name="pricingType"
-                                    type="radio"
-                                    value="tiered"
-                                    checked={pricingType === "tiered"}
-                                    onChange={() => setPricingType("tiered")}
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                />
-                                <label
-                                    htmlFor="tiered"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-                                >
-                                    Tiered Pricing <ReceiptPercentIcon className="h-4 w-4"/>
-                                </label>
+                                    <input
+                                        id="tiered"
+                                        name="pricingType"
+                                        type="radio"
+                                        value="tiered"
+                                        checked={pricingType === "tiered"}
+                                        onChange={() => setPricingType("tiered")}
+                                        className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                    />
+                                <Tooltip message={"For tiered pricing we determine the budget for the creator based on their follower count and engagement rates, you just need to set your min and max spend amount and we will do the rest."}>
+                                    <label
+                                        htmlFor="tiered"
+                                        className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
+                                    >
+                                        Tiered Pricing <ReceiptPercentIcon className="h-4 w-4"/>
+                                    </label>
+                                </Tooltip>
                             </div>
                         </div>
                     </div>

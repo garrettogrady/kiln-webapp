@@ -16,10 +16,34 @@ import { useFormState } from 'react-dom';
 import { TagsInput } from "react-tag-input-component";
 import {fetchPromotionById} from "@/app/lib/data";
 import {CreateCampaign, UpdateCampaign} from "@/app/ui/campaigns/buttons";
+import {createIntl, createIntlCache} from "@formatjs/intl";
 
 
 export default async function ShowForm(promotion: Promotion) {
     console.log(promotion)
+    const cache = createIntlCache();
+    const intl = createIntl(
+        {
+            locale: 'en-US',
+            messages: {},
+        },
+        cache
+    );
+    const startDate = new Date(promotion.startDate.toString());
+    console.log("start date hi hi hi " + promotion.startDate)
+    console.log(startDate)
+    const endDate = new Date(promotion.endDate);
+    const startFormatter = intl.formatDate(startDate, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    });
+    const endFormatter = intl.formatDate(endDate, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    });
+
     const promotionDetails = promotion;
     return (
         <div>
@@ -39,14 +63,14 @@ export default async function ShowForm(promotion: Promotion) {
                     </div>
                 </div>
 
-                {/* Start Date */}
+                {/* \Start Date */}
                 <div className="mb-4">
                     <label htmlFor="startDate" className="mb-2 block text-sm font-medium">
                         Start Date
                     </label>
                     <div className="relative mt-2 rounded-md">
                         <div className="relative">
-                            {promotionDetails.startDate}
+                            {startFormatter.toString()}
                         </div>
                     </div>
                 </div>
@@ -58,7 +82,7 @@ export default async function ShowForm(promotion: Promotion) {
                     </label>
                     <div className="relative mt-2 rounded-md">
                         <div className="relative">
-                            {promotionDetails.endDate}
+                            {endFormatter.toString()}
                         </div>
                     </div>
                 </div>
