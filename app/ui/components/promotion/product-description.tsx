@@ -7,11 +7,11 @@ import PromotionMap from "@/app/ui/promotion-map";
 
 export function PromotionDescription({ promotion, business }: { promotion: Promotion, business: Business }) {
     const [isDetailsOpen, setDetailsOpen] = useState(false);
-    const [isTableSizeOpen, setTableSizeOpen] = useState(false);
+    const [isSuggestedItemsOpen, setSuggestedItemsOpen] = useState(false);
     const [isHoursOpen, setHoursOpen] = useState(false);
 
     const toggleDetails = () => setDetailsOpen(!isDetailsOpen);
-    const toggleTableSize = () => setTableSizeOpen(!isTableSizeOpen);
+    const toggleSuggestedItems = () => setSuggestedItemsOpen(!isSuggestedItemsOpen);
     const toggleHours = () => setHoursOpen(!isHoursOpen);
 
     console.log(business)
@@ -45,22 +45,22 @@ export function PromotionDescription({ promotion, business }: { promotion: Promo
                     )}
                 </div>
             )}
-            {promotion.tableSize && (
+            {promotion.suggestedItems && (
                 <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
-                    <button onClick={toggleTableSize} className="flex justify-between items-center w-full text-left text-md font-medium text-black dark:text-white">
-                        Table Size
-                        <span>{isTableSizeOpen ? '▲' : '▼'}</span>
+                    <button onClick={toggleSuggestedItems} className="flex justify-between items-center w-full text-left text-md font-medium text-black dark:text-white">
+                        Suggested Items
+                        <span>{isSuggestedItemsOpen ? '▲' : '▼'}</span>
                     </button>
-                    {isTableSizeOpen && <p className="mt-4 text-sm">{promotion.tableSize}</p>}
+                    {isSuggestedItemsOpen && <p className="mt-4 text-sm">{promotion.suggestedItems}</p>}
                 </div>
             )}
-            {promotion.availability && (
+            {promotion.availabilityStart && promotion.availabilityEnd && (
                 <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
                     <button onClick={toggleHours} className="flex justify-between items-center w-full text-left text-md font-medium text-black dark:text-white">
                         Hours of Availability
                         <span>{isHoursOpen ? '▲' : '▼'}</span>
                     </button>
-                    {isHoursOpen && <p className="mt-4 text-sm">{promotion.availability}</p>}
+                    {isHoursOpen && <p className="mt-4 text-sm">{promotion.availabilityStart}-{promotion.availabilityEnd}</p>}
                 </div>
             )}
             <div className="mt-2 font-small text-black dark:text-white">
