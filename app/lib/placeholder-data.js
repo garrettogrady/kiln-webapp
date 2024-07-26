@@ -407,9 +407,9 @@ const promotions = [
     postType: "story",
     featuredImage: "/business/kteam.jpg",
     images: [
-      "https://example.com/images/kteambbq1.jpg",
-      "https://example.com/images/kteambbq2.jpg",
-      "https://example.com/images/kteambbq3.jpg"
+      "/promotions/kteambbq-1.jpg",
+      "/promotions/kteambbq-2.jpg",
+      "/promotions/kteambbq-3.jpg",
     ],
     tags: ["BBQ", "Interactive", "Fun"]
   },
@@ -432,9 +432,9 @@ const promotions = [
     postType: "reel",
     featuredImage: "/business/bavel.jpg",
     images: [
-      "https://example.com/images/bavel1.jpg",
-      "https://example.com/images/bavel2.jpg",
-      "https://example.com/images/bavel3.jpg"
+      "/promotions/bavel-1.jpg",
+      "/promotions/bavel-2.jpg",
+      "/promotions/bavel-3.jpg",
     ],
     tags: ["Feast", "Exotic", "Upscale"]
   },
@@ -457,9 +457,9 @@ const promotions = [
     postType: "story",
     featuredImage: "/business/bossanova.jpg",
     images: [
-      "https://example.com/images/bossanova1.jpg",
-      "https://example.com/images/bossanova2.jpg",
-      "https://example.com/images/bossanova3.jpg"
+      "/promotions/bossa-1.jpg",
+      "/promotions/bossa-2.jpg",
+      "/promotions/bossa-3.jpg",
     ],
     tags: ["Brazilian", "Fusion", "Vibrant"]
   }
