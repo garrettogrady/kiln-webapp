@@ -5,7 +5,7 @@ import {
     InboxIcon,
 } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
-import {fetchCampaignCardData, fetchCardData} from '@/app/lib/data';
+import {fetchCampaignBusinessCardData, fetchCampaignCardData, fetchCardData} from '@/app/lib/data';
 import {fetchAuthedUserId} from "@/app/lib/actions";
 
 const iconMap = {
@@ -18,13 +18,14 @@ const iconMap = {
 export default async function CardWrapper() {
     const businessId = await fetchAuthedUserId();
     const {
-        numberOfRedemptions
-    } = await fetchCampaignCardData(businessId);
+        openEnrollmentsNumber,
+        closedEnrollmentsNumber
+    } = await fetchCampaignBusinessCardData(businessId);
     return (
         <>
-            <Card title="Open" value={numberOfRedemptions} type="open" />
-            <Card title="Closed" value="0" type="closed" />
-            <Card title="Total Promotions" value={10} type="totalPromotions" />
+            <Card title="Open" value={openEnrollmentsNumber} type="open" />
+            <Card title="Closed"value={0} type="closed" />
+            <Card title="Total Promotions" value={openEnrollmentsNumber} type="totalPromotions" />
         </>
     );
 }

@@ -410,38 +410,38 @@ export default function Form() {
                     </div>
                 </div>
                 {/* Hours of Availability */}
-                <div className="mb-4">
-                    <label htmlFor="availability" className="mb-2 block text-sm font-medium">
-                        Hours of Availability
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            <div className="flex items-center">
-                                <span className="mr-2">From:</span>
-                                <TimePicker
-                                    id="availabilityStart"
-                                    name="availabilityStart"
-                                    value={availabilityStart}
-                                    onChange={setAvailabilityStart}
-                                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                />
-                            </div>
-                            <div className="flex items-center mt-2">
-                                <span className="mr-2">To:</span>
-                                <TimePicker
-                                    id="availabilityEnd"
-                                    name="availabilityEnd"
-                                    value={availabilityEnd}
-                                    onChange={setAvailabilityEnd}
-                                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                />
-                            </div>
-                        </div>
-                        <div id="availability-error" aria-live="polite" aria-atomic="true">
-                            {/* Error handling code */}
-                        </div>
-                    </div>
-                </div>
+                {/*<div className="mb-4">*/}
+                {/*    <label htmlFor="availability" className="mb-2 block text-sm font-medium">*/}
+                {/*        Hours of Availability*/}
+                {/*    </label>*/}
+                {/*    <div className="relative mt-2 rounded-md">*/}
+                {/*        <div className="relative">*/}
+                {/*            <div className="flex items-center">*/}
+                {/*                <span className="mr-2">From:</span>*/}
+                {/*                <TimePicker*/}
+                {/*                    id="availabilityStart"*/}
+                {/*                    name="availabilityStart"*/}
+                {/*                    value={availabilityStart}*/}
+                {/*                    onChange={setAvailabilityStart}*/}
+                {/*                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"*/}
+                {/*                />*/}
+                {/*            </div>*/}
+                {/*            <div className="flex items-center mt-2">*/}
+                {/*                <span className="mr-2">To:</span>*/}
+                {/*                <TimePicker*/}
+                {/*                    id="availabilityEnd"*/}
+                {/*                    name="availabilityEnd"*/}
+                {/*                    value={availabilityEnd}*/}
+                {/*                    onChange={setAvailabilityEnd}*/}
+                {/*                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"*/}
+                {/*                />*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*        <div id="availability-error" aria-live="polite" aria-atomic="true">*/}
+                {/*            /!* Error handling code *!/*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
                 {/* creator platform */}
                 <fieldset>

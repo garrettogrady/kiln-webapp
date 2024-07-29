@@ -24,6 +24,7 @@ export default async function LatestPromotions({id}: { id: string }) {
                 <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
                     <div className="bg-white px-6">
                         {enrolledPromotions.map((promotion, i) => {
+                            console.log(promotion.amount);
                             return (
                                 <div
                                     key={promotion.id}
@@ -46,7 +47,7 @@ export default async function LatestPromotions({id}: { id: string }) {
                                         </div>
                                     </div>
                                     <p
-                                        className={`${lusitana.className} truncate text-sm font-medium md:text-base`}
+                                        className={`${lusitana.className} text-sm font-medium md:text-base`}
                                     >
                                         {promotion.amount}
                                     </p>

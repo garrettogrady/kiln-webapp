@@ -104,6 +104,30 @@ export async function fetchCampaignCardData(promotionId: string) {
   }
 }
 
+
+export async function fetchCampaignBusinessCardData(businessId: string) {
+  noStore();
+  try {
+    const openEnrollments = await sql`SELECT COUNT(*) FROM promotions WHERE "businessId"=${businessId}`;
+    const closedEnrollments = await sql`SELECT COUNT(*) FROM promotions WHERE "businessId"=${businessId}`;
+
+    //    const openEnrollments = await sql`SELECT COUNT(*) FROM promotions WHERE "businessId"=${businessId} and CAST("endDate" As DateTime) <= NOW()`;
+    //     const closedEnrollments = await sql`SELECT COUNT(*) FROM promotions WHERE "businessId"=${businessId} and  CAST("endDate" As DateTime) > NOW()`;
+
+
+    const openEnrollmentsNumber = Number(openEnrollments.rows[0].count ?? '0');
+    const closedEnrollmentsNumber = Number(closedEnrollments.rows[0].count ?? '0');
+    return {
+      openEnrollmentsNumber,
+      closedEnrollmentsNumber
+    };
+
+  } catch (error) {
+    console.error('Database Errord:', error);
+    throw new Error('Failed to fetch card data.');
+  }
+}
+
 const ITEMS_PER_PAGE = 6;
 export async function fetchFilteredInvoices(
   query: string,

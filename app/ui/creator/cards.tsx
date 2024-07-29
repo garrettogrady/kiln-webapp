@@ -27,8 +27,8 @@ export default async function CardWrapper({id}: { id: string }) {
 
       <Card title="Redeemed" value={numberOfEnrollments} type="redeemed" />
       <Card title="Enrolled" value={numberOfRedemptions} type="enrolled" />
-      <Card title="Total Promotions" value={totalEnrolledPromotions} type="totalPromotions" />
-      <Card title="Total Businesses" value={totalBusiness} type="totalBusinesses"
+      <Card title="Total Redeemed" value={totalEnrolledPromotions} type="totalPromotions" />
+      <Card title="Total Businesses Visited" value={totalBusiness} type="totalBusinesses"
       />
     </>
   );

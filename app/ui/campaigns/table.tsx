@@ -62,7 +62,10 @@ export default async function CampaignsTable() {
                   Amount
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Date
+                  Start Date
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  End Date
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Enrollments
@@ -89,6 +92,9 @@ export default async function CampaignsTable() {
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatCurrency(Number(promotion.maxOfferPrice))}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {formatDateToLocal(promotion.startDate)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatDateToLocal(promotion.endDate)}
