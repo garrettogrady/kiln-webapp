@@ -70,7 +70,7 @@ const creators = [
 ];
 
 const enrollment = [
-  { promotionId: 'e6cf9e2f-1405-45e3-9c76-d62f25f80a7d', userId: '410544b2-4001-4271-9855-fec4b6a6442a', businessId: '1e082498-f20d-4db2-8119-5aa33e0529bc',  date: Date.now(), amount: 10000, status: "enrolled" },
+  { promotionId: 'e6cf9e2f-1405-45e3-9c76-d62f25f80a7d', userId: '410544b2-4001-4271-9855-fec4b6a6442a', businessId: '1e082498-f20d-4db2-8119-5aa33e0529bc',  date: Date.now(), amount: 10475, status: "enrolled" },
   { promotionId: '3b508ec3-1a7c-4e6a-a2d7-770b43fb3749', userId: '410544b2-4001-4271-9855-fec4b6a6442a', businessId: 'f0c51f16-b154-40eb-b8d2-c1179df34ed1',  date: Date.now(), amount: 7000, status: "redeemed" }
 ];
 const businesses = [
@@ -403,7 +403,7 @@ const promotions = [
     city: "Los Angeles",
     maxOfferPrice: getRandomInt(25000,100000),
     minOfferPrice:  getRandomInt(5000,20000),
-    platform: "tiktok",
+    platform: "instagram",
     postType: "story",
     featuredImage: "/business/kteam.jpg",
     images: [
@@ -453,7 +453,7 @@ const promotions = [
     city: "Los Angeles",
     maxOfferPrice: getRandomInt(25000,100000),
     minOfferPrice:  getRandomInt(5000,20000),
-    platform: "tiktok",
+    platform: "instagram",
     postType: "story",
     featuredImage: "/business/bossanova.jpg",
     images: [

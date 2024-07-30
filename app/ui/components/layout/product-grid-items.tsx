@@ -2,6 +2,7 @@ import Grid from '@/app/ui/components/grid';
 import { GridTileImage } from '@/app/ui/components/grid/tile';
 import Link from 'next/link';
 import { PromotionGrid } from "@/app/lib/definitions";
+import {formatCurrency} from "@/app/lib/utils";
 
 interface ProductGridItemsProps {
     promotion: PromotionGrid;
@@ -15,7 +16,7 @@ const ProductGridItems: React.FC<ProductGridItemsProps> = ({ promotion }) => {
                     alt={promotion.title}
                     label={{
                         title: promotion.title,
-                        amount: `$${promotion.maxOfferPrice.toString()} USD`,
+                        amount: formatCurrency(promotion.maxOfferPrice).toString(),
                     }}
                     src={promotion.featuredImage}
                     fill

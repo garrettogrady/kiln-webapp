@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Price from '@/app/ui/components/price';
 import { Business, Promotion } from "@/app/lib/definitions";
 import PromotionMap from "@/app/ui/promotion-map";
+import {formatCurrency} from "@/app/lib/utils";
 
 export function PromotionDescription({ promotion, business }: { promotion: Promotion, business: Business }) {
     const [isDetailsOpen, setDetailsOpen] = useState(false);
@@ -22,7 +23,7 @@ export function PromotionDescription({ promotion, business }: { promotion: Promo
                 <h1 className="mb-2 text-2xl font-medium">{promotion.title}</h1>
                 <span className=" text-md font-small">{business.businessName}</span>
                 <div className="mt-2 text-lg font-medium text-black dark:text-white">
-                    <span className="text-md font-small">Budget: </span> ${promotion.maxOfferPrice}
+                    <span className="text-md font-small">Budget: </span> {formatCurrency(promotion.maxOfferPrice).toString()}
                 </div>
                 <div className="mt-2 font-medium dark:text-white">
                     <span className="rounded border border-gray-600 bg-[#254442] text-white">Instagram Story Picture</span>
