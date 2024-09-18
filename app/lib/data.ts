@@ -63,7 +63,7 @@ export async function fetchCardData(userId: string) {
     // how to initialize multiple queries in parallel with JS.
     const enrolledCountPromise = sql`SELECT COUNT(*) FROM enrollment WHERE "userId"=${userId} AND status='enrolled'`;
     const redeemedCountPromise = sql`SELECT COUNT(*) FROM enrollment WHERE "userId"=${userId} AND status='redeemed'`;
-    const enrolledTotalPromise = sql`SELECT SUM("amount") FROM enrollment WHERE "userId"=${userId} AND status='enrolled'`;
+    const enrolledTotalPromise = sql`SELECT SUM("amount") FROM enrollment WHERE "userId"=${userId} AND status='redeemed'`;
     const totalBusinessPromise = sql`SELECT COUNT(DISTINCT "businessId") FROM enrollment WHERE "userId"=${userId} AND status='redeemed'`;
 
     const data = await Promise.all([
@@ -72,6 +72,7 @@ export async function fetchCardData(userId: string) {
       enrolledTotalPromise,
       totalBusinessPromise
     ]);
+    console.log(data[2]);
 
     const numberOfEnrollments = Number(data[0].rows[0].count ?? '0');
     const numberOfRedemptions = Number(data[1].rows[0].count ?? '0');
@@ -462,16 +463,42 @@ export async function fetchFilteredCustomers(query: string) {
 }
 
 
-export async function fetchLatestPromotionsFromUser(id: string) {
+export async function fetchLatestTransactionsFromUser(id: string) {
   noStore();
   try {
-    const data = await sql<LatestPromotionRaw>`
-      SELECT promotions."maxOfferPrice" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
-      FROM promotions
-      JOIN businesses ON promotions."businessId" = businesses.id
-      JOIN enrollment ON promotions.id = enrollment."promotionId"
-      where enrollment.status = 'enrolled' and enrollment."userId" = ${id}
-      LIMIT 5`;
+    // const data = await sql<LatestPromotionRaw>`
+    //   SELECT promotions."maxOfferPrice" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
+    //   FROM promotions
+    //   JOIN businesses ON promotions."businessId" = businesses.id
+    //   JOIN enrollment ON promotions.id = enrollment."promotionId"
+    //   where enrollment.status = 'enrolled' and enrollment."userId" = ${id}
+    //   LIMIT 5`;
+
+    const data = {
+        rows: [
+            {
+            amount: 9326,
+            name: "8/25/24-9/1/24",
+            promotionType: "Discount",
+            business: "Chase Checking",
+            id: "1"
+            },
+            {
+            amount: 4257,
+            name: "9/2/24-9/8/24",
+            promotionType: "Discount",
+            business: "Chase Checking",
+            id: "2"
+            },
+            {
+            amount: 1290,
+            name: "9/9/24-9/15/24",
+            promotionType: "Discount",
+            business: "Chase Checking",
+            id: "3"
+            }
+        ]
+    }
 
     const latestInvoices = data.rows.map((invoice) => ({
       ...invoice,
@@ -490,7 +517,7 @@ export async function fetchPastPromotionsFromUser(id: string) {
   noStore();
   try {
     const data = await sql<LatestPromotionRaw>`
-      SELECT promotions."maxOfferPrice" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
+      SELECT enrollment.amount AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
       FROM promotions
       JOIN businesses ON promotions."businessId" = businesses.id
       JOIN enrollment ON promotions.id = enrollment."promotionId"

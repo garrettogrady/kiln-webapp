@@ -9,11 +9,11 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import {lusitana} from '@/app/ui/fonts';
 import {LatestInvoice} from '@/app/lib/definitions';
-import {fetchLatestInvoices, fetchLatestPromotionsFromUser} from "@/app/lib/data";
+import {fetchLatestInvoices, fetchLatestTransactionsFromUser} from "@/app/lib/data";
 
 export default async function LatestPromotions({id}: { id: string }) {
 
-    const latestPromotions = await fetchLatestPromotionsFromUser(id);
+    const latestPromotions = await fetchLatestTransactionsFromUser(id);
     return (
         <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
             <div className="flex w-full flex-col md:col-span-4">
