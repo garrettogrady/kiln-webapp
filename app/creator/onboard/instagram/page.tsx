@@ -13,6 +13,7 @@ const LinkInstagramPage: React.FC = () => {
         const instagramAppId = process.env.INSTAGRAM_APP_ID
         const redirectUri = process.env.INSTAGRAM_REDIRECT_URI;
         const scope = "user_profile,user_media";
+        console.log(redirectUri);
         const instagramAuthUrl = `https://api.instagram.com/oauth/authorize?client_id=${instagramAppId}&redirect_uri=${encodeURIComponent(redirectUri!)}&scope=${scope}&response_type=code`;
         router.push(instagramAuthUrl);
     };
