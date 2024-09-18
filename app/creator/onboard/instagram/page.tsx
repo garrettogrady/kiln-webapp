@@ -9,12 +9,11 @@ const LinkInstagramPage: React.FC = () => {
     const handleClick = () => {
         // Handle button click
         console.log('Link Me clicked');
-        router.push('/creator/onboard/bank');
-        const instagramAppId = "1018860226699258";
-        const redirectUri = "localhost:3000/api/instagram-callback";
+        //router.push('/creator/onboard/bank');
+        const instagramAppId = process.env.INSTAGRAM_APP_ID
+        const redirectUri = process.env.INSTAGRAM_REDIRECT_URI;
         const scope = "user_profile,user_media";
-        const appSecret = "89ce4b84cb0f03215cf11d3374ae527d";
-        const instagramAuthUrl = `https://api.instagram.com/oauth/authorize?client_id=${instagramAppId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}&response_type=code`;
+        const instagramAuthUrl = `https://api.instagram.com/oauth/authorize?client_id=${instagramAppId}&redirect_uri=${encodeURIComponent(redirectUri!)}&scope=${scope}&response_type=code`;
         router.push(instagramAuthUrl);
     };
 
