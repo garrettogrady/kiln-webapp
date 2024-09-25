@@ -1,14 +1,14 @@
 'use client'
-import OnboardPage from "@/app/creator/onboard/onboard-page";
+import OnboardPage from "@/app/onboard/[id]/onboard-page";
 import {useRouter} from "next/navigation";
 import ContactButton from "@/app/ui/contact-button";
 
-const ContactPage: React.FC = () => {
+export default function ContactPage({ params }: { params: { id: string } }) {
     const router = useRouter();
     const handleClick = () => {
         // Handle button click
         console.log('Link Me clicked');
-        router.push('/creator/onboard/done');
+        router.push('/onboard/'+ params.id + '/done');
     };
 
     return (
@@ -25,5 +25,3 @@ const ContactPage: React.FC = () => {
         </OnboardPage>
     );
 };
-
-export default ContactPage;

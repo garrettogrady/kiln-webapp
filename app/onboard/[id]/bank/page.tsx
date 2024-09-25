@@ -1,15 +1,14 @@
 'use client'
 import React from 'react';
-import OnboardLayout from "@/app/creator/onboard/onboard-page";
-import OnboardPage from "@/app/creator/onboard/onboard-page";
+import OnboardLayout from "@/app/onboard/[id]/onboard-page";
+import OnboardPage from "@/app/onboard/[id]/onboard-page";
 import {useRouter} from "next/navigation";
 
 const LinkBankPage: React.FC = () => {
     const router = useRouter();
     const handleLinkMe = () => {
         // Handle button click
-        console.log('Link Me clicked');
-        router.push('/creator/onboard/provision');
+
     };
 
     return (

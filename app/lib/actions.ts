@@ -6,6 +6,7 @@ import {redirect} from "next/navigation";
 import { signIn, auth } from '@/auth';
 import { AuthError } from 'next-auth';
 import bcrypt from "bcrypt";
+import {Creator, CreatorOnboardData} from "@/app/lib/definitions";
 
 
 const CampaignSchema = z.object({
@@ -361,6 +362,45 @@ export async function creatorRegister(
     }
 }
 
+export async function creatorOnboard(
+    creatorData: CreatorOnboardData,
+    password: string,
+) {
+    try {
+        // Prepare data for insertion into the database
+
+        const { name, email, phone, city, instagram, tiktok } = creatorData;
+        const userType = "creator";
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await sql`
+        INSERT INTO creators (name, email, phone, city, instagram, tiktok)
+        VALUES (${name}, ${email}, ${phone}, ${city}, ${instagram}, ${tiktok})
+        ON CONFLICT (id) DO NOTHING;`;
+
+        await sql`
+        INSERT INTO users ( email, password, type)
+        VALUES (${email}, ${hashedPassword}, ${userType})
+        ON CONFLICT (id) DO NOTHING;`;
+
+        await signIn('credentials', creatorData);
+        //  await sql<CreatorOnboardData>`
+        //               DELETE *
+        //               FROM creatorsignup
+        //               WHERE id = ${userId};
+        //             `;
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid credentials.';
+                default:
+                    return 'Something went wrong.';
+            }
+        }
+        throw error;
+    }
+}
+
 export async function businessRegister(
     prevState: string | undefined,
     formData: FormData,
@@ -453,6 +493,45 @@ export async function enrollUserInPromotion(promotionId: string, businessId: str
         return { isUserEnrolled: false};
     }
 }
+
+export async function updateUserData(userData: CreatorOnboardData) {
+    try {
+        await sql`
+      UPDATE creatorsignup
+      SET name = ${userData.name},
+          email = ${userData.email},
+          phone = ${userData.phone},
+          instagram = ${userData.instagram},
+          tiktok = ${userData.tiktok},
+          city = ${userData.city}
+      WHERE id = ${userData.id}
+    `;
+        return { success: true };
+    } catch (error) {
+        console.error('Failed to update user data:', error);
+        return { success: false, error: 'Failed to update user data' };
+    }
+}
+
+export async function addCreatorData(userData: CreatorOnboardData) {
+    try {
+        await sql`
+      UPDATE creatorsignup
+      SET name = ${userData.name},
+          email = ${userData.email},
+          phone = ${userData.phone},
+          instagram = ${userData.instagram},
+          tiktok = ${userData.tiktok},
+          city = ${userData.city}
+      WHERE id = ${userData.id}
+    `;
+        return { success: true };
+    } catch (error) {
+        console.error('Failed to update user data:', error);
+        return { success: false, error: 'Failed to update user data' };
+    }
+}
+
 
 
 export async function fetchAuthedUserId() {

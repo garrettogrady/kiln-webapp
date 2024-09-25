@@ -61,17 +61,20 @@ const OnboardPage: React.FC<OnboardPageProps> = ({
                         <input
                             type="text"
                             placeholder="4242 4242 4242 4242"
+                            value="4242 4242 4242 4242"
                             className="w-full p-3 text-lg border-b border-gray-200 rounded-t-lg focus:outline-none"
                         />
                         <div className="flex">
                             <input
                                 type="text"
                                 placeholder="08 / 21"
+                                value="08 / 21"
                                 className="w-1/2 p-3 text-lg border-r border-gray-200 focus:outline-none"
                             />
                             <input
                                 type="text"
                                 placeholder="812"
+                                value="812"
                                 className="w-1/2 p-3 text-lg focus:outline-none"
                             />
                         </div>

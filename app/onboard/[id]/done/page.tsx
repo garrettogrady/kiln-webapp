@@ -1,11 +1,14 @@
 'use client'
-import OnboardPage from "@/app/creator/onboard/onboard-page";
+import OnboardPage from "@/app/onboard/[id]/onboard-page";
 import Image from "next/image";
 import party from "/party.png";
-const ContactPage: React.FC = () => {
+import {useRouter} from "next/navigation";
+export default function DonePage({ params }: { params: { id: string } }) {
+    const router = useRouter();
     const handleGetStarted = () => {
         // Handle button click
-        console.log('Get Started clicked');
+        console.log('handleGetStarted clicked');
+        router.push('/creator/promotions')
     };
 
     return (
@@ -25,5 +28,3 @@ const ContactPage: React.FC = () => {
         </OnboardPage>
     );
 };
-
-export default ContactPage;

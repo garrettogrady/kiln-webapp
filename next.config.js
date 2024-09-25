@@ -20,4 +20,9 @@ module.exports = {
             },
         ],
     },
+    experimental: {
+        serverActions: {
+            allowedOrigins: ["rnitb-108-54-145-188.a.free.pinggy.link", "localhost:3000"]
+        }
+    }
 };

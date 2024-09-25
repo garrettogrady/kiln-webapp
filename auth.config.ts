@@ -16,8 +16,9 @@ export const authConfig = {
             const isOnBusinessPage = nextUrl.pathname.startsWith('/business');
             const isOnProfilePage = nextUrl.pathname.endsWith('/profile');
             const isOnRegisterPage = nextUrl.pathname.startsWith('/register');
+            const isOnboardPage = nextUrl.pathname.startsWith('/onboard');
 
-            if (isOnRegisterPage) {
+            if (isOnRegisterPage || isOnboardPage) {
                 return true;
             }
 

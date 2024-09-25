@@ -1,13 +1,13 @@
 'use client'
-import OnboardPage from "@/app/creator/onboard/onboard-page";
+import OnboardPage from "@/app/onboard/[id]/onboard-page";
 import {useRouter} from "next/navigation";
 
-const ProvisionCardPage: React.FC = () => {
+export default function ProvisionCardPage({ params }: { params: { id: string } }) {
     const router = useRouter();
     const handleClick = () => {
         // Handle button click
         console.log('Link Me clicked');
-        router.push('/creator/onboard/contact');
+        router.push('/onboard/'+ params.id + '/contact');
     };
 
     return (
@@ -16,12 +16,10 @@ const ProvisionCardPage: React.FC = () => {
             description="Final step! Let's get your KILN card set up. Head on over to wallet and select new card and add the following details"
             activeStep={3}
             totalSteps={5}
-            buttonText="Get Started"
+            buttonText="Next"
             onButtonClick={handleClick}
             isProvisioning={true}
         >
         </OnboardPage>
     );
 };
-
-export default ProvisionCardPage;

@@ -4,6 +4,7 @@ const {
     customers,
     users,
     enrollment,
+    creatorsignup,
     creators,
     businesses,
     promotions
@@ -90,6 +91,49 @@ async function seedCreators(client) {
         throw error;
     }
 }
+
+async function seedCreatorsSignups(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+        await client.sql`DROP TABLE creatorsignup`;
+        // Create the "creators" table if it doesn't exist
+        const createTable = await client.sql`
+        CREATE TABLE IF NOT EXISTS creatorsignup (
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            email TEXT NOT NULL UNIQUE,
+            phone TEXT NOT NULL,
+            city VARCHAR(255) NOT NULL,
+            instagram VARCHAR(255) NOT NULL UNIQUE,
+            tiktok VARCHAR(255) NOT NULL UNIQUE
+          );
+        `;
+
+        console.log(`Created "creators" table`);
+
+        // Insert data into the "creators" table
+        const insertedCreators = await Promise.all(
+            creatorsignup.map(async (user) => {
+                return client.sql`
+                    INSERT INTO creatorsignup (id, name, email, phone, city, instagram, tiktok)
+                    VALUES (${user.id}, ${user.name}, ${user.email}, ${user.phone}, ${user.city}, ${user.instagram}, ${user.tiktok})
+                    ON CONFLICT (id) DO NOTHING;
+                `;
+            }),
+        );
+
+        console.log(`Seeded ${insertedCreators.length} creators`);
+
+        return {
+            createTable,
+            creators: insertedCreators,
+        };
+    } catch (error) {
+        console.error('Error seeding creators:', error);
+        throw error;
+    }
+}
+
 
 async function seedCustomers(client) {
     try {
@@ -348,6 +392,7 @@ async function main() {
 
     await seedUsers(client);
     await seedCreators(client);
+    await seedCreatorsSignups(client);
     await seedBusiness(client);
     await seedPromotions(client);
     await seedEnrollment(client);

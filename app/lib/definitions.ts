@@ -13,6 +13,7 @@ export type Creator = {
   id: string;
   name: string;
   email: string;
+  phone: string;
   city: string;
   instagram: string;
   tiktok: string;
@@ -169,11 +170,24 @@ export type Promotion = {
   updatedAt: string;
 };
 
-export type SortFilterItem = {
-  title: string;
-  slug: string | null;
-  sortKey: 'RELEVANCE' | 'BEST_SELLING' | 'CREATED_AT' | 'PRICE';
-  reverse: boolean;
+
+export type OnboardFormData = {
+  name: string;
+  email: string;
+  phone: string;
+  instagram: string;
+  tiktok: string;
+  city: string;
+};
+
+export type CreatorOnboardData = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  instagram: string;
+  tiktok: string;
+  city: string;
 };
 
 export type PromotionGrid = {

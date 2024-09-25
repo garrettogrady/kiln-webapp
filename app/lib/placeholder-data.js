@@ -108,6 +108,27 @@ const creators = [
   },
 ];
 
+const creatorsignup = [
+  {
+    id: 'b46b19c6-11b7-4903-a489-83ceeeb3649b',
+    name: 'Garrett OGrady',
+    email: 'garrett5@trykiln.com',
+    phone: '6164308879',
+    city: 'Los Angeles, CA',
+    instagram: 'gartogo5',
+    tiktok: 'gartogo5',
+  },
+  {
+    id: '8b5dc888-745e-4c45-8059-0d92bd137c8e',
+    name: 'Yale Goldberg',
+    email: 'yale6@trykiln.com',
+    phone: '3109932751',
+    city: 'Los Angeles, CA',
+    instagram: 'yale_goldberg5',
+    tiktok: 'yale_goldberg5',
+  }
+];
+
 const enrollment = [
   { promotionId: 'e6cf9e2f-1405-45e3-9c76-d62f25f80a7d', userId: '410544b2-4001-4271-9855-fec4b6a6442a', businessId: '1e082498-f20d-4db2-8119-5aa33e0529bc',  date: Date.now(), amount: 10475, status: "redeemed" },
   { promotionId: '3b508ec3-1a7c-4e6a-a2d7-770b43fb3749', userId: '410544b2-4001-4271-9855-fec4b6a6442a', businessId: 'f0c51f16-b154-40eb-b8d2-c1179df34ed1',  date: Date.now(), amount: 7000, status: "redeemed" }
@@ -510,6 +531,7 @@ module.exports = {
   creators,
   enrollment,
   businesses,
+  creatorsignup,
   promotions,
   transactions
 };

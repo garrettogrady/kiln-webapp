@@ -11,7 +11,7 @@ import {
   PromotionTable,
   Business,
   PromotionGrid,
-  LatestPromotionRaw,
+  LatestPromotionRaw, CreatorOnboardData,
 } from './definitions';
 import { formatCurrency } from './utils';
 import {GetServerSideProps} from "next";
@@ -373,6 +373,23 @@ export async function fetchPromotionById(id: string) {
   }
 }
 
+export async function fetchOnboardById(id: string) {
+  noStore();
+  try {
+    const data = await sql<CreatorOnboardData>`
+      SELECT *
+      FROM creatorsignup
+      WHERE id = ${id};
+    `;
+    const creator = data.rows[0];
+    console.log("creator = " + creator)
+    return creator;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch onboarded user. ');
+  }
+}
+
 export async function fetchBusinessById(id: string) {
   noStore();
   try {
@@ -461,7 +478,29 @@ export async function fetchFilteredCustomers(query: string) {
     throw new Error('Failed to fetch customer table.');
   }
 }
+export async function fetchLatestPromotionsFromUser(id: string) {
+  noStore();
+  try {
+    const data = await sql<LatestPromotionRaw>`
+      SELECT promotions."maxOfferPrice" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
+      FROM promotions
+      JOIN businesses ON promotions."businessId" = businesses.id
+      JOIN enrollment ON promotions.id = enrollment."promotionId"
+      where enrollment.status = 'enrolled' and enrollment."userId" = ${id}
+      LIMIT 5`;
 
+    const latestPromotions = data.rows.map((promotion) => ({
+      ...promotion,
+      amount: formatCurrency(promotion.amount),
+    }));
+
+    return latestPromotions;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch the latest business from user.');
+  }
+
+}
 
 export async function fetchLatestTransactionsFromUser(id: string) {
   noStore();
@@ -590,5 +629,15 @@ export async function checkUserEnrollment(promotionId: string) {
   } catch (error) {
     console.log(error)
     return false;
+  }
+}
+
+export async function fetchCreator(userId: string) {
+  try {
+    const user = await sql`SELECT * FROM creators WHERE "id"=${userId}`;
+    console.log(user);
+    return user.rows[0];
+  } catch (error) {
+    console.log(error)
   }
 }
