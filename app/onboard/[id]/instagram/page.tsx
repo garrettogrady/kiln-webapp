@@ -50,7 +50,7 @@ export default function InstagramPage({ params }: { params: { id: string } }) {
                     </ul>
 
                     <p className="mb-4 text-sm">
-                        To authenticate, please make sure you meet the following criteria and click "Link Insights" below to follow the process.
+                        To authenticate, please make sure you meet the following criteria and click Link Insights below to follow the process.
                     </p>
 
                     <ul className="mb-6 text-sm text-left list-none space-y-2 mx-auto max-w-md">
