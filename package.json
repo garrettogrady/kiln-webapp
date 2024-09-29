@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@api/mercurytechnologies": "file:.api/apis/mercurytechnologies",
     "@formatjs/intl": "^2.10.1",
     "@googlemaps/js-api-loader": "^1.16.6",
     "@headlessui/react": "^1.7.19",

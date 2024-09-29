@@ -1,44 +1,41 @@
-'use client';
-import {CustomerField} from '@/app/lib/definitions';
+'use client'
+import React, { useState } from 'react';
+import { useFormState } from 'react-dom';
 import Link from 'next/link';
-import React, { useState } from "react";
-import TimePicker from 'react-time-picker';
-
-
+import { TagsInput } from "react-tag-input-component";
 import {
     CalendarIcon,
-    CameraIcon, ChatBubbleBottomCenterIcon,
-    CheckIcon,
-    ClockIcon,
-    CurrencyDollarIcon, InformationCircleIcon, ReceiptPercentIcon,
+    CameraIcon,
+    ChatBubbleBottomCenterIcon,
+    CurrencyDollarIcon,
+    ReceiptPercentIcon,
     UserCircleIcon,
+    ClockIcon,
 } from '@heroicons/react/24/outline';
-import {Button} from '@/app/ui/button';
-import {createCampaign} from '@/app/lib/actions';
-import { useFormState } from 'react-dom';
-import { TagsInput } from "react-tag-input-component";
+import { Button } from '@/app/ui/button';
+import { createPromotion } from '@/app/lib/actions'; // Assume this function exists
 import Tooltip from "@/app/ui/campaigns/tooltip";
 
-export default function Form() {
+export default function PromotionForm() {
     const initialState = { message: null, errors: {} };
-    const [pricingType, setPricingType] = useState("fixed"); // Default to fixed pricing
-    const [state, dispatch] = useFormState(createCampaign, initialState);
-    const [availabilityStart, setAvailabilityStart] = useState("09:00"); // Default start time
-    const [availabilityEnd, setAvailabilityEnd] = useState("17:00"); // Default end time
-
+    const [state, dispatch] = useFormState(createPromotion, initialState);
+    const [pricingType, setPricingType] = useState("fixed");
     const [tags, setTags] = useState([]);
+    const [postTypes, setPostTypes] = useState({ story: false, reel: false });
+    const [mediaTypes, setMediaTypes] = useState({ picture: false, video: false });
+
 
     return (
         <form action={dispatch}>
             <div className="rounded-md bg-gray-50 p-4 md:p-6">
+                {/* Promotion Type */}
                 <div className="mb-4">
                     <label htmlFor="promotionType" className="mb-2 block text-sm font-medium">
-                        Choose a Promotion Type
+                        Promotion Type
                     </label>
                     <div className="relative mt-2 rounded-md">
                         <div className="relative">
-                            <UserCircleIcon
-                                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
+                            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
                             <select
                                 id="promotionType"
                                 name="promotionType"
@@ -46,33 +43,13 @@ export default function Form() {
                                 defaultValue=""
                                 aria-describedby="promotionType-error"
                             >
-                                <option value="" disabled>
-                                    Select a promotion type
-                                </option>
-                                <option value="restaurant">
-                                    Restaurant
-                                </option>
-                                <option value="bar">
-                                    Bar
-                                </option>
-                                <option value="hotel">
-                                    Hotel
-                                </option>
-                                <option value="shopping">
-                                    Shopping
-                                </option>
-                                <option value="spa">
-                                    Spa
-                                </option>
+                                <option value="" disabled>Select a promotion type</option>
+                                <option value="restaurant">Restaurant</option>
+                                <option value="bar">Bar</option>
+                                <option value="hotel">Hotel</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="spa">Spa</option>
                             </select>
-                        </div>
-                        <div id="promotionType-error" aria-live="polite" aria-atomic="true">
-                            {state.errors?.startDate &&
-                                state.errors.startDate.map((error: string) => (
-                                    <p className="mt-2 text-sm text-red-500" key={error}>
-                                        {error}
-                                    </p>
-                                ))}
                         </div>
                     </div>
                 </div>
@@ -80,27 +57,17 @@ export default function Form() {
                 {/* Start Date */}
                 <div className="mb-4">
                     <label htmlFor="startDate" className="mb-2 block text-sm font-medium">
-                        Choose a Start Date
+                        Start Date
                     </label>
                     <div className="relative mt-2 rounded-md">
                         <div className="relative">
+                            <CalendarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
                             <input
                                 id="startDate"
                                 name="startDate"
                                 type="date"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="startDate-error"
                             />
-                            <CalendarIcon
-                                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
-                        </div>
-                        <div id="starDate-error" aria-live="polite" aria-atomic="true">
-                            {state.errors?.startDate &&
-                                state.errors.startDate.map((error: string) => (
-                                    <p className="mt-2 text-sm text-red-500" key={error}>
-                                        {error}
-                                    </p>
-                                ))}
                         </div>
                     </div>
                 </div>
@@ -108,482 +75,385 @@ export default function Form() {
                 {/* End Date */}
                 <div className="mb-4">
                     <label htmlFor="endDate" className="mb-2 block text-sm font-medium">
-                        Choose an End Date
+                        End Date
                     </label>
                     <div className="relative mt-2 rounded-md">
                         <div className="relative">
+                            <CalendarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
                             <input
                                 id="endDate"
                                 name="endDate"
                                 type="date"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="endDate-error"
                             />
-                            <CalendarIcon
-                                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
-                        </div>
-                        <div id="endDate-error" aria-live="polite" aria-atomic="true">
-                            {state.errors?.endDate &&
-                                state.errors.endDate.map((error: string) => (
-                                    <p className="mt-2 text-sm text-red-500" key={error}>
-                                        {error}
-                                    </p>
-                                ))}
                         </div>
                     </div>
                 </div>
 
-                {/*/!* Payout Amount *!/*/}
-                {/*<div className="mb-4">*/}
-                {/*    <label htmlFor="amount" className="mb-2 block text-sm font-medium">*/}
-                {/*        Choose an amount*/}
-                {/*    </label>*/}
-                {/*    <div className="relative mt-2 rounded-md">*/}
-                {/*        <div className="relative">*/}
-                {/*            <input*/}
-                {/*                id="amount"*/}
-                {/*                name="amount"*/}
-                {/*                type="number"*/}
-                {/*                step="0.01"*/}
-                {/*                placeholder="Enter USD amount"*/}
-                {/*                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"*/}
-                {/*                aria-describedby="amount-error"*/}
-                {/*            />*/}
-                {/*            <CurrencyDollarIcon*/}
-                {/*                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>*/}
-                {/*        </div>*/}
-                {/*        <div id="amount-error" aria-live="polite" aria-atomic="true">*/}
-                {/*            {state.errors?.amount &&*/}
-                {/*                state.errors.amount.map((error: string) => (*/}
-                {/*                    <p className="mt-2 text-sm text-red-500" key={error}>*/}
-                {/*                        {error}*/}
-                {/*                    </p>*/}
-                {/*                ))}*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-                {/* Pricing Type */}
-                <fieldset>
-                    <legend className="mb-2 block text-sm font-medium">
-                        <span>Pricing Type </span>
-                    </legend>
-                    <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                        <div className="flex gap-4">
-                            <div className="flex items-center">
-                                <input
-                                    id="fixed"
-                                    name="pricingType"
-                                    type="radio"
-                                    value="fixed"
-                                    checked={pricingType === "fixed"}
-                                    onChange={() => setPricingType("fixed")}
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                />
-                                <label
-                                    htmlFor="fixed"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-                                >
-                                    Fixed Pricing <CurrencyDollarIcon className="h-4 w-4"/>
-                                </label>
-                            </div>
-                            <div className="flex items-center">
-                                    <input
-                                        id="tiered"
-                                        name="pricingType"
-                                        type="radio"
-                                        value="tiered"
-                                        checked={pricingType === "tiered"}
-                                        onChange={() => setPricingType("tiered")}
-                                        className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                    />
-                                <Tooltip message={"For tiered pricing we determine the budget for the creator based on their follower count and engagement rates, you just need to set your min and max spend amount and we will do the rest."}>
-                                    <label
-                                        htmlFor="tiered"
-                                        className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-                                    >
-                                        Tiered Pricing <ReceiptPercentIcon className="h-4 w-4"/>
-                                    </label>
-                                </Tooltip>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                {/* Fixed Pricing Amount */}
-                {pricingType === "fixed" && (
-                    <div className="flex gap-4">
-                        {/* Minimum Amount */}
-                        <div className="mb-4 flex-1">
-                            <label htmlFor="minAmount" className="mb-2 block text-sm font-medium">
-                                Fixed Amount
-                            </label>
-                            <div className="relative mt-2 rounded-md">
-                                <div className="relative">
-                                    <input
-                                        id="fixedAmount"
-                                        name="fixedAmount"
-                                        type="number"
-                                        step="0.01"
-                                        placeholder="Enter fixed USD amount"
-                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                        aria-describedby="fixedAmount-error"
-                                    />
-                                    <CurrencyDollarIcon
-                                        className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
-                                    />
-                                </div>
-                                <div id="fixedAmount-error" aria-live="polite" aria-atomic="true">
-                                    {/* Error handling code */}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Tiered Pricing Amount */}
-                {pricingType === "tiered" && (
-                    <div className="flex gap-4">
-                        {/* Minimum Amount */}
-                        <div className="mb-4 flex-1">
-                            <label htmlFor="minAmount" className="mb-2 block text-sm font-medium">
-                                Minimum Amount
-                            </label>
-                            <div className="relative mt-2 rounded-md">
-                                <div className="relative">
-                                    <input
-                                        id="minAmount"
-                                        name="minAmount"
-                                        type="number"
-                                        step="0.01"
-                                        placeholder="Enter minimum USD amount"
-                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                        aria-describedby="minAmount-error"
-                                    />
-                                    <CurrencyDollarIcon
-                                        className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
-                                    />
-                                </div>
-                                <div id="minAmount-error" aria-live="polite" aria-atomic="true">
-                                    {/* Error handling code */}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Maximum Amount */}
-                        <div className="mb-4 flex-1">
-                            <label htmlFor="maxAmount" className="mb-2 block text-sm font-medium">
-                                Maximum Amount
-                            </label>
-                            <div className="relative mt-2 rounded-md">
-                                <div className="relative">
-                                    <input
-                                        id="maxAmount"
-                                        name="maxAmount"
-                                        type="number"
-                                        step="0.01"
-                                        placeholder="Enter maximum USD amount"
-                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                        aria-describedby="maxAmount-error"
-                                    />
-                                    <CurrencyDollarIcon
-                                        className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
-                                    />
-                                </div>
-                                <div id="maxAmount-error" aria-live="polite" aria-atomic="true">
-                                    {/* Error handling code */}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Campaign Quantity */}
+                {/* Quantity */}
                 <div className="mb-4">
                     <label htmlFor="quantity" className="mb-2 block text-sm font-medium">
-                        Choose a Quantity Cap
+                        Quantity
                     </label>
                     <div className="relative mt-2 rounded-md">
                         <div className="relative">
+                            <ReceiptPercentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
                             <input
                                 id="quantity"
                                 name="quantity"
                                 type="number"
-                                step="1"
-                                placeholder="Enter a quantity"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="quantity-error"
+                                placeholder="Enter quantity"
                             />
-                            <ReceiptPercentIcon
-                                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
-                        </div>
-                        <div id="quantity-error" aria-live="polite" aria-atomic="true">
-                            {state.errors?.quantity &&
-                                state.errors.quantity.map((error: string) => (
-                                    <p className="mt-2 text-sm text-red-500" key={error}>
-                                        {error}
-                                    </p>
-                                ))}
                         </div>
                     </div>
                 </div>
 
-                {/* Campaign Title */}
+                {/* Title */}
                 <div className="mb-4">
                     <label htmlFor="title" className="mb-2 block text-sm font-medium">
-                        Promotion Title
+                        Title
                     </label>
                     <div className="relative mt-2 rounded-md">
                         <div className="relative">
+                            <ChatBubbleBottomCenterIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
                             <input
                                 id="title"
                                 name="title"
                                 type="text"
-                                step="1"
-                                placeholder="Enter a title"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="title-error"
+                                placeholder="Enter title"
                             />
-                            <ChatBubbleBottomCenterIcon
-                                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
-                        </div>
-                        <div id="title-error" aria-live="polite" aria-atomic="true">
-                            {state.errors?.title &&
-                                state.errors.title.map((error: string) => (
-                                    <p className="mt-2 text-sm text-red-500" key={error}>
-                                        {error}
-                                    </p>
-                                ))}
                         </div>
                     </div>
                 </div>
 
-                {/* Campaign Description */}
+                {/* Description */}
                 <div className="mb-4">
                     <label htmlFor="description" className="mb-2 block text-sm font-medium">
-                        Promotion Description
+                        Description
                     </label>
                     <div className="relative mt-2 rounded-md">
                         <div className="relative">
+                            <ChatBubbleBottomCenterIcon className="pointer-events-none absolute left-3 top-3 h-[18px] w-[18px] text-gray-500"/>
                             <textarea
                                 id="description"
-                                rows="4"
                                 name="description"
+                                rows="4"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="description-error"
-                            />
-                            <ChatBubbleBottomCenterIcon
-                                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
-                        </div>
-                        <div id="description-error" aria-live="polite" aria-atomic="true">
-                            {state.errors?.description &&
-                                state.errors.description.map((error: string) => (
-                                    <p className="mt-2 text-sm text-red-500" key={error}>
-                                        {error}
-                                    </p>
-                                ))}
+                                placeholder="Enter description"
+                            ></textarea>
                         </div>
                     </div>
                 </div>
 
-                {/* Suggested Dishes/Services */}
+                {/* Suggested Items */}
                 <div className="mb-4">
                     <label htmlFor="suggestedItems" className="mb-2 block text-sm font-medium">
-                        Suggested Dishes/Services
+                        Suggested Items
                     </label>
                     <div className="relative mt-2 rounded-md">
                         <div className="relative">
+                            <ReceiptPercentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
                             <input
                                 id="suggestedItems"
                                 name="suggestedItems"
                                 type="text"
-                                placeholder="Enter suggested dishes or services"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="suggestedItems-error"
+                                placeholder="Enter suggested items"
                             />
-                            <ReceiptPercentIcon
-                                className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
-                            />
-                        </div>
-                        <div id="suggestedItems-error" aria-live="polite" aria-atomic="true">
-                            {/* Error handling code */}
                         </div>
                     </div>
                 </div>
-                {/* Hours of Availability */}
-                {/*<div className="mb-4">*/}
-                {/*    <label htmlFor="availability" className="mb-2 block text-sm font-medium">*/}
-                {/*        Hours of Availability*/}
-                {/*    </label>*/}
-                {/*    <div className="relative mt-2 rounded-md">*/}
-                {/*        <div className="relative">*/}
-                {/*            <div className="flex items-center">*/}
-                {/*                <span className="mr-2">From:</span>*/}
-                {/*                <TimePicker*/}
-                {/*                    id="availabilityStart"*/}
-                {/*                    name="availabilityStart"*/}
-                {/*                    value={availabilityStart}*/}
-                {/*                    onChange={setAvailabilityStart}*/}
-                {/*                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"*/}
-                {/*                />*/}
-                {/*            </div>*/}
-                {/*            <div className="flex items-center mt-2">*/}
-                {/*                <span className="mr-2">To:</span>*/}
-                {/*                <TimePicker*/}
-                {/*                    id="availabilityEnd"*/}
-                {/*                    name="availabilityEnd"*/}
-                {/*                    value={availabilityEnd}*/}
-                {/*                    onChange={setAvailabilityEnd}*/}
-                {/*                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"*/}
-                {/*                />*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*        <div id="availability-error" aria-live="polite" aria-atomic="true">*/}
-                {/*            /!* Error handling code *!/*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
 
-                {/* creator platform */}
-                <fieldset>
-                    <legend className="mb-2 block text-sm font-medium">
-                        Creator Platform Used
-                    </legend>
-                    <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                        <div className="flex gap-4">
-                            <div className="flex items-center">
+                {/* Availability Start */}
+                <div className="mb-4">
+                    <label htmlFor="availabilityStart" className="mb-2 block text-sm font-medium">
+                        Availability Start
+                    </label>
+                    <div className="relative mt-2 rounded-md">
+                        <div className="relative">
+                            <ClockIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
+                            <input
+                                id="availabilityStart"
+                                name="availabilityStart"
+                                type="time"
+                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Availability End */}
+                <div className="mb-4">
+                    <label htmlFor="availabilityEnd" className="mb-2 block text-sm font-medium">
+                        Availability End
+                    </label>
+                    <div className="relative mt-2 rounded-md">
+                        <div className="relative">
+                            <ClockIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
+                            <input
+                                id="availabilityEnd"
+                                name="availabilityEnd"
+                                type="time"
+                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Pricing Type */}
+                <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium">Pricing Type</label>
+                    <div className="flex gap-4">
+                        <div className="flex items-center">
+                            <input
+                                id="fixed"
+                                name="pricingType"
+                                type="radio"
+                                value="fixed"
+                                checked={pricingType === "fixed"}
+                                onChange={() => setPricingType("fixed")}
+                                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                            />
+                            <label htmlFor="fixed" className="ml-2 text-sm font-medium text-gray-900">Fixed</label>
+                        </div>
+                        <div className="flex items-center">
+                            <input
+                                id="tiered"
+                                name="pricingType"
+                                type="radio"
+                                value="tiered"
+                                checked={pricingType === "tiered"}
+                                onChange={() => setPricingType("tiered")}
+                                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                            />
+                            <label htmlFor="tiered" className="ml-2 text-sm font-medium text-gray-900">Tiered</label>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Conditional Pricing Inputs */}
+                {pricingType === "fixed" ? (
+                    <div className="mb-4">
+                        <label htmlFor="fixedOffer" className="mb-2 block text-sm font-medium">
+                            Fixed Offer
+                        </label>
+                        <div className="relative mt-2 rounded-md">
+                            <div className="relative">
+                                <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
                                 <input
-                                    id="tiktok"
-                                    name="platform"
-                                    type="radio"
-                                    value="tiktok"
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                    aria-describedby="platform-error"
+                                    id="fixedOffer"
+                                    name="fixedOffer"
+                                    type="number"
+                                    step="0.01"
+                                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                    placeholder="Enter fixed offer amount"
                                 />
-                                <label
-                                    htmlFor="tiktok"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-                                >
-                                    TikTok <CameraIcon className="h-4 w-4"/>
-                                </label>
-                            </div>
-                            <div className="flex items-center">
-                                <input
-                                    id="instagram"
-                                    name="platform"
-                                    type="radio"
-                                    value="instagram"
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                    aria-describedby="platform-error"
-                                />
-                                <label
-                                    htmlFor="instagram"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-                                >
-                                    Instagram <CameraIcon className="h-4 w-4"/>
-                                </label>
                             </div>
                         </div>
                     </div>
-                    <div id="platform-error" aria-live="polite" aria-atomic="true">
-                        {state.errors?.platform &&
-                            state.errors.platform.map((error: string) => (
-                                <p className="mt-2 text-sm text-red-500" key={error}>
-                                    {error}
-                                </p>
-                            ))}
+                ) : (
+                    <>
+                        <div className="mb-4">
+                            <label htmlFor="tierOneOffer" className="mb-2 block text-sm font-medium">
+                                Tier One Offer
+                            </label>
+                            <div className="relative mt-2 rounded-md">
+                                <div className="relative">
+                                    <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
+                                    <input
+                                        id="tierOneOffer"
+                                        name="tierOneOffer"
+                                        type="number"
+                                        step="0.01"
+                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                        placeholder="Enter tier one offer amount"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="tierTwoOffer" className="mb-2 block text-sm font-medium">
+                                Tier Two Offer
+                            </label>
+                            <div className="relative mt-2 rounded-md">
+                                <div className="relative">
+                                    <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
+                                    <input
+                                        id="tierTwoOffer"
+                                        name="tierTwoOffer"
+                                        type="number"
+                                        step="0.01"
+                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                        placeholder="Enter tier two offer amount"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="tierThreeOffer" className="mb-2 block text-sm font-medium">
+                                Tier Three Offer
+                            </label>
+                            <div className="relative mt-2 rounded-md">
+                                <div className="relative">
+                                    <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
+                                    <input
+                                        id="tierThreeOffer"
+                                        name="tierThreeOffer"
+                                        type="number"
+                                        step="0.01"
+                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                        placeholder="Enter tier three offer amount"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
+                {/* Max Total Spend */}
+                <div className="mb-4">
+                    <label htmlFor="maxTotalSpend" className="mb-2 block text-sm font-medium">
+                        Max Total Spend
+                    </label>
+                    <div className="relative mt-2 rounded-md">
+                        <div className="relative">
+                            <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"/>
+                            <input
+                                id="maxTotalSpend"
+                                name="maxTotalSpend"
+                                type="number"
+                                step="0.01"
+                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                placeholder="Enter max total spend"
+                            />
+                        </div>
                     </div>
-                </fieldset>
+                </div>
 
-                {/* post type */}
-                <fieldset>
-                    <legend className="mb-2 block text-sm font-medium">
+                {/* Post Type */}
+                <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium">
                         Post Type
-                    </legend>
-                    <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                        <div className="flex gap-4">
+                    </label>
+                    <div className="relative mt-2 rounded-md">
+                        <div className="flex items-center space-x-4">
                             <div className="flex items-center">
                                 <input
                                     id="story"
                                     name="postType"
-                                    type="radio"
-                                    value="story"
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                    aria-describedby="postType-error"
+                                    type="checkbox"
+                                    checked={postTypes.story}
+                                    onChange={(e) => setPostTypes(prev => ({ ...prev, story: e.target.checked }))}
+                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                 />
-                                <label
-                                    htmlFor="story"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-                                >
-                                    Story <CameraIcon className="h-4 w-4"/>
+                                <label htmlFor="story" className="ml-2 block text-sm text-gray-900">
+                                    Story
                                 </label>
                             </div>
                             <div className="flex items-center">
                                 <input
-                                    id="post"
+                                    id="reel"
                                     name="postType"
-                                    type="radio"
-                                    value="post"
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                    aria-describedby="postType-error"
+                                    type="checkbox"
+                                    checked={postTypes.reel}
+                                    onChange={(e) => setPostTypes(prev => ({ ...prev, reel: e.target.checked }))}
+                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                 />
-                                <label
-                                    htmlFor="post"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600">
-                                    Post <CameraIcon className="h-4 w-4"/>
+                                <label htmlFor="reel" className="ml-2 block text-sm text-gray-900">
+                                    Reel
                                 </label>
                             </div>
                         </div>
                     </div>
-                    <div id="postType-error" aria-live="polite" aria-atomic="true">
-                        {state.errors?.postType &&
-                            state.errors.postType.map((error: string) => (
-                                <p className="mt-2 text-sm text-red-500" key={error}>
-                                    {error}
-                                </p>
-                            ))}
+                    {/* Hidden input to store the selected post types as a string */}
+                    <input
+                        type="hidden"
+                        name="postType"
+                        value={Object.entries(postTypes)
+                            .filter(([_, isChecked]) => isChecked)
+                            .map(([type, _]) => type)
+                            .join(',')}
+                    />
+                </div>
+
+                    <div className="mb-4">
+                        <label className="mb-2 block text-sm font-medium">
+                            Story Type
+                        </label>
+                        <div className="relative mt-2 rounded-md">
+                            <div className="flex items-center space-x-4">
+                                <div className="flex items-center">
+                                    <input
+                                        id="picture"
+                                        name="mediaType"
+                                        type="checkbox"
+                                        checked={mediaTypes.picture}
+                                        onChange={(e) => setMediaTypes(prev => ({ ...prev, picture: e.target.checked }))}
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                    />
+                                    <label htmlFor="picture" className="ml-2 block text-sm text-gray-900">
+                                        Picture
+                                    </label>
+                                </div>
+                                <div className="flex items-center">
+                                    <input
+                                        id="video"
+                                        name="mediaType"
+                                        type="checkbox"
+                                        checked={mediaTypes.video}
+                                        onChange={(e) => setMediaTypes(prev => ({ ...prev, video: e.target.checked }))}
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                    />
+                                    <label htmlFor="post" className="ml-2 block text-sm text-gray-900">
+                                        Video
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Hidden input to store the selected post types as a string */}
+                        <input
+                            type="hidden"
+                            name="mediaType"
+                            value={Object.entries(mediaTypes)
+                                .filter(([_, isChecked]) => isChecked)
+                                .map(([type, _]) => type)
+                                .join(',')}
+                        />
                     </div>
-                </fieldset>
 
                 {/* Tags */}
                 <div className="mb-4">
                     <label htmlFor="tags" className="mb-2 block text-sm font-medium">
-                       Tags
+                        Tags
                     </label>
                     <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            <TagsInput
-                                value={tags}
-                                onChange={setTags}
-                                // classNames="peer block w-full rounded-md py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="tags-error"
-                            />
-                            <input hidden="true"
-                                   readOnly="true"
-                                   value={tags}
-                                   name="tags"
-                                   id="tags"
-                            />
-                        </div>
-                        <div id="tags-error" aria-live="polite" aria-atomic="true">
-                            {state.errors?.tags &&
-                                state.errors.tags.map((error: string) => (
-                                    <p className="mt-2 text-sm text-red-500" key={error}>
-                                        {error}
-                                    </p>
-                                ))}
-                        </div>
+                        <TagsInput
+                            value={tags}
+                            onChange={setTags}
+                            name="tags"
+                            placeHolder="Enter tags"
+                        />
+                        <input
+                            type="hidden"
+                            name="tags"
+                            value={JSON.stringify(tags)}
+                        />
                     </div>
                 </div>
             </div>
+
+            {/* Form Actions */}
             <div className="mt-6 flex justify-end gap-4">
                 <Link
-                    href="/dashboard/invoices"
+                    href="/dashboard/promotions"
                     className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
                 >
                     Cancel
                 </Link>
-                <Button type="submit">Create Campaign</Button>
+                <Button type="submit">Create Promotion</Button>
             </div>
         </form>
     );
 }
+

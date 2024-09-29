@@ -22,7 +22,7 @@ module.exports = {
     },
     experimental: {
         serverActions: {
-            allowedOrigins: ["rnitb-108-54-145-188.a.free.pinggy.link", "localhost:3000"]
+            allowedOrigins: ["https://kiln23123.a.pinggy.link", "localhost:3000"]
         }
     }
 };

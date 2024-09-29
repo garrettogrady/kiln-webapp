@@ -275,10 +275,16 @@ async function seedPromotions(client) {
         "suggestedItems" VARCHAR(255),
         "availabilityStart" VARCHAR(255),
         "availabilityEnd" VARCHAR(255),
-        "maxOfferPrice" VARCHAR(255) NOT NULL,
-        "minOfferPrice" VARCHAR(255) NOT NULL,
+        "pricingType" VARCHAR(255) NOT NULL,
+        "fixedOffer" VARCHAR(255),
+        "tierOneOffer" VARCHAR(255),
+        "tierTwoOffer" VARCHAR(255),
+        "tierThreeOffer" VARCHAR(255),
+        "maxTotalSpend" VARCHAR(255) NOT NULL,
         "platform" VARCHAR(255),
         "postType" VARCHAR(255),
+        "mediaType" VARCHAR(255),
+        "postDeliverable" VARCHAR(255),
         "featuredImage" VARCHAR(255),
         "images" TEXT[],
         "tags" TEXT[]
@@ -287,8 +293,7 @@ async function seedPromotions(client) {
 
         console.log(`Created "promotions" table`);
         console.log(promotions)
-
-        // Insert data into the "customers" table
+        // Insert data into the "promotions" table
         const insertedPromotions = await Promise.all(
             promotions.map(
                 (promotion) => client.sql`
@@ -304,10 +309,16 @@ async function seedPromotions(client) {
         "suggestedItems",
         "availabilityStart",
         "availabilityEnd",
-        "maxOfferPrice",
-        "minOfferPrice",
+        "pricingType",
+        "fixedOffer",
+        "tierOneOffer",
+        "tierTwoOffer",
+        "tierThreeOffer",
+        "maxTotalSpend",
         "platform",
         "postType",
+        "mediaType",
+        "postDeliverable",
         "featuredImage",
         "images",
         "tags")
@@ -322,10 +333,16 @@ async function seedPromotions(client) {
         ${promotion.suggestedItems}, 
         ${promotion.availabilityStart}, 
         ${promotion.availabilityEnd}, 
-        ${promotion.maxOfferPrice}, 
-        ${promotion.minOfferPrice}, 
+        ${promotion.pricingType}, 
+        ${promotion.fixedOffer}, 
+        ${promotion.tierOneOffer}, 
+        ${promotion.tierTwoOffer}, 
+        ${promotion.tierThreeOffer}, 
+        ${promotion.maxTotalSpend}, 
         ${promotion.platform}, 
         ${promotion.postType}, 
+        ${promotion.mediaType}, 
+        ${promotion.postDeliverable}, 
         ${promotion.featuredImage}, 
         ${promotion.images}, 
         ${promotion.tags})

@@ -17,7 +17,7 @@ const creatorLinks = [
 ];
 
 const businessLinks = [
-  { name: 'Campaigns', href: '/business/campaigns', icon: HomeIcon },
+  { name: 'Campaigns', href: '/business/promotions', icon: HomeIcon },
 ];
 
 export default function NavLinks() {

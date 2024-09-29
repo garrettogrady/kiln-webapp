@@ -20,7 +20,7 @@ const links = [
   },
   {
     name: 'Campaigns',
-    href: '/dashboard/campaigns',
+    href: '/dashboard/promotions',
     icon: DocumentDuplicateIcon,
   },
   { name: 'Profile', href: '/dashboard/profile', icon: UserGroupIcon },

@@ -178,7 +178,7 @@ export async function fetchCampaigns(id: string) {
         id,
         title,
         "promotionType",
-        "maxOfferPrice",
+        "maxTotalSpend",
         "startDate",
         "endDate",
         "quantity"

@@ -1,5 +1,5 @@
 'use server';
-import { z } from 'zod';
+import {any, z} from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import {redirect} from "next/navigation";
@@ -8,38 +8,38 @@ import { AuthError } from 'next-auth';
 import bcrypt from "bcrypt";
 import {Creator, CreatorOnboardData} from "@/app/lib/definitions";
 
+// Helper function to create a date schema
+const dateSchema = z.string().refine((date) => {
+    const parsed = new Date(date);
+    return !isNaN(parsed.getTime());
+}, {
+    message: "Invalid date format",
+});
 
-const CampaignSchema = z.object({
-    id: z.string(),
-    businessId: z.string({
-        invalid_type_error: 'Not signed In',
-    }),
-    promotionType: z.string({
-        invalid_type_error: 'Please select a promotion selection',
-    }),
-    amount: z.coerce
-        .number()
-        .gt(0, { message: 'Please enter an amount greater than $0.' }),
+// Helper function to create a time schema
+const timeSchema = z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+    message: "Invalid time format. Use HH:MM",
+});
+
+const CreatePromotion = z.object({
+    businessId: z.string().uuid(),
+    promotionType: z.enum(['restaurant', 'bar', 'hotel', 'shopping', 'spa']),
+    startDate: dateSchema,
+    endDate: dateSchema,
     quantity: z.coerce
         .number()
         .gt(0, { message: 'Please enter a quantity greater than 0.' }),
-    platform: z.enum(['tiktok', 'instagram'], {
-        invalid_type_error: 'Please select a platform',
-    }),
-    postType: z.enum(['story', 'post'], {
-        invalid_type_error: 'Please select a platform',
-    }),
-    title: z.string({
-        invalid_type_error: 'Please enter a title',
-    }),
-    description: z.string({
-        invalid_type_error: 'Please enter a description',
-    }),
-    tags: z.string(),
-    startDate: z.string(),
-    endDate: z.string(),
-});
-const CreateCampaign = CampaignSchema.omit({id: true});
+    title: z.string().min(1).max(255),
+    description: z.string().min(1),
+    suggestedItems: z.string().optional(),
+    availabilityStart: z.string().optional(),
+    availabilityEnd: z.string().optional(),
+    pricingType: z.string().optional(),
+    maxTotalSpend: z.string().or(z.literal('')),
+    postType:  z.string().optional().or(z.literal('')),
+    mediaType: z.string().optional().or(z.literal('')),
+    tags: z.string().optional(),
+})
 
 
 const FormSchema = z.object({
@@ -161,93 +161,126 @@ export async function createInvoice(prevState: State, formData: FormData) {
 }
 
 
-export async function createCampaign(prevState: State, formData: FormData) {
-    console.log(formData);
+export async function createPromotion(prevState: State, formData: FormData) {
     const businessIds = await fetchAuthedUserId();
-    const validatedFields = CreateCampaign.safeParse({
+    console.log(formData);
+    console.log(formData.get('tierOneOffer'))
+    const validatedFields = CreatePromotion.safeParse({
         businessId: businessIds,
         promotionType: formData.get('promotionType'),
         startDate: formData.get('startDate'),
         endDate: formData.get('endDate'),
-        amount: formData.get('amount'),
         quantity: formData.get('quantity'),
         title: formData.get('title'),
         description: formData.get('description'),
-        platform: formData.get('platform'),
+        suggestedItems: formData.get('suggestedItems'),
+        availabilityStart: formData.get('availabilityStart'),
+        availabilityEnd: formData.get('availabilityEnd'),
+        pricingType: formData.get('pricingType'),
+        maxTotalSpend: formData.get('maxTotalSpend'),
         postType: formData.get('postType'),
+        mediaType: formData.get('mediaType'),
         tags: formData.get('tags'),
     });
-    console.log(validatedFields);
-
-    // If form validation fails, return errors early. Otherwise, continue.
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Missing Fields. Failed to Create Campaign.',
+            message: 'Missing Fields. Failed to Create Promotion.',
         };
     }
-    // Prepare data for insertion into the database
-    const { businessId,
+    console.log("validated fields sucessfully ");
+    console.log("validated fields: " + validatedFields.data);
+
+    const fixedOffer = formData.get('fixedOffer') ?? "";
+    const tierOneOffer = formData.get('tierOneOffer') ?? "";
+    const tierTwoOffer = formData.get('tierTwoOffer') ?? "";
+    const tierThreeOffer = formData.get('tierThreeOffer') ?? "";
+    const platform = "instagram";
+    const postDeliverable = "after";
+
+
+    const {
+        businessId,
         promotionType,
         startDate,
         endDate,
-        amount,
         quantity,
         title,
         description,
-        platform,
+        suggestedItems,
+        availabilityStart,
+        availabilityEnd,
+        pricingType,
+        maxTotalSpend,
         postType,
-        tags } = validatedFields.data;
+        mediaType,
+        tags
+    } = validatedFields.data;
 
-    const amountInCents = amount * 100;
     const tagList = tags.split(",");
-    const defaultList = "/business/placeholder.jpg";
-    const date = new Date().toISOString().split('T')[0];
-    console.log(tagList);
+    console.log("about to input")
+
     try {
         await sql`
-     INSERT INTO promotions (
-        "id", 
-        "businessId", 
-        "promotionType",
-        "startDate", 
-        "endDate",
-        "quantity",
-        "title",
-        "description",
-        "suggestedItems",
-        "availabilityStart",
-        "availabilityEnd",
-        "maxOfferPrice",
-        "minOfferPrice",
-        "platform",
-        "postType",
-        "featuredImage",
-        "tags")
-        VALUES (uuid_generate_v4(), 
-        ${businessId}, 
-        ${promotionType}, 
-        ${startDate}, 
-        ${endDate}, 
-        ${quantity}, 
-        ${title}, 
-        ${description}, 
-        ${amountInCents}, 
-        ${amount}, 
-        ${platform}, 
-        ${postType}, 
-        ${defaultList}, 
-        ${tagList})
-  `;
-    }
-    catch (error) {
-        console.log(error);
+            INSERT INTO promotions (
+                "id", 
+                "businessId", 
+                "promotionType",
+                "startDate", 
+                "endDate",
+                "quantity",
+                "title",
+                "description",
+                "suggestedItems",
+                "availabilityStart",
+                "availabilityEnd",
+                "pricingType",
+                "fixedOffer",
+                "tierOneOffer",
+                "tierTwoOffer",
+                "tierThreeOffer",
+                "maxTotalSpend",
+                "platform",
+                "postType",
+                "mediaType",
+                "postDeliverable",
+                "tags"
+            )
+            VALUES (
+                uuid_generate_v4(), 
+                ${businessId}, 
+                ${promotionType}, 
+                ${startDate}, 
+                ${endDate}, 
+                ${quantity}, 
+                ${title}, 
+                ${description}, 
+                ${suggestedItems},
+                ${availabilityStart},
+                ${availabilityEnd},
+                ${pricingType},
+                ${fixedOffer},
+                ${tierOneOffer},
+                ${tierTwoOffer},
+                ${tierThreeOffer},
+                ${maxTotalSpend},
+                ${platform}, 
+                ${postType},
+                ${mediaType},
+                ${postDeliverable},
+                ${tagList}
+            )
+        `;
+        console.log('Promotion created successfully')
+    } catch (error) {
+        console.error(error);
         return {
-            message: "Database Error: failed to create campaign"
-        }
+            message: "Database Error: Failed to create promotion."
+        };
     }
-    revalidatePath('/dashboard/campaigns');
-    redirect('/dashboard/campaigns');
+
+    revalidatePath('/business/promotions');
+    redirect('/business/promotions');
 }
 
 export async function updateInvoice(id: string, formData: FormData) {

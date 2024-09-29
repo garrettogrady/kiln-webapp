@@ -17,7 +17,7 @@ export function CreateInvoice() {
 export function UpdateInvoice({ id }: { id: string }) {
   return (
     <Link
-        href={`/business/campaigns/${id}/edit`}
+        href={`/business/promotions/${id}/edit`}
         className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
@@ -29,7 +29,7 @@ export function DeleteInvoice({ id }: { id: string }) {
 
   return (
       <Link
-          href={`/business/campaigns/${id}`}
+          href={`/business/promotions/${id}`}
           className="rounded-md border p-2 hover:bg-gray-100"
       >
         <EyeIcon className="w-5" />
