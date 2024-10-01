@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import {CreateCampaign, UpdateCampaign} from "@/app/ui/campaigns/buttons";
 import {createIntl, createIntlCache} from "@formatjs/intl";
+import {formatCurrency} from "@/app/lib/utils";
 
 
 export default async function ShowForm(promotion: Promotion) {
@@ -77,11 +78,11 @@ export default async function ShowForm(promotion: Promotion) {
                 {/* Invoice Amount */}
                 <div className="mb-4">
                     <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-                        Choose an amount
+                        Max Spend Amount
                     </label>
                     <div className="relative mt-2 rounded-md">
                         <div className="relative">
-                            {promotionDetails.maxOfferPrice}
+                            {formatCurrency(Number(promotionDetails.maxTotalSpend))}
                         </div>
                     </div>
                 </div>
@@ -123,6 +124,30 @@ export default async function ShowForm(promotion: Promotion) {
                     </div>
                 </div>
 
+                {promotionDetails.pricingType === "fixed" ? (
+                    <div className="mb-4">
+                        <label htmlFor="description" className="mb-2 block text-sm font-medium">
+                            Pricing
+                        </label>
+                        <div className="relative mt-2 rounded-md">
+                            <div className="relative">
+                                {formatCurrency(Number(promotionDetails.fixedOffer))}
+                            </div>
+                        </div>
+                    </div>
+                ):(
+                    <div className="mb-4">
+                        <label htmlFor="description" className="mb-2 block text-sm font-medium">
+                            First Tier
+                        </label>
+                        <div className="relative mt-2 rounded-md">
+                            <div className="relative">
+                                {promotionDetails.tierOneOffer}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Campaign Description */}
                 <div className="mb-4">
                     <label htmlFor="description" className="mb-2 block text-sm font-medium">
@@ -147,6 +172,19 @@ export default async function ShowForm(promotion: Promotion) {
                         </div>
                     </div>
                 </div>
+                {/* Campaign Description */}
+                <div className="mb-4">
+                    <label htmlFor="description" className="mb-2 block text-sm font-medium">
+                        Media Type
+                    </label>
+                    <div className="relative mt-2 rounded-md">
+                        <div className="relative">
+                            {promotionDetails.mediaType}
+                        </div>
+                    </div>
+                </div>
+
+
                 {/* Tags */}
                 <div className="mb-4">
                     <label htmlFor="tags" className="mb-2 block text-sm font-medium">

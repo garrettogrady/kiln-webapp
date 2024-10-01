@@ -3,7 +3,7 @@
 import {
   UserGroupIcon,
   HomeIcon,
-  DocumentDuplicateIcon,
+  DocumentDuplicateIcon, ReceiptPercentIcon,
 } from '@heroicons/react/24/outline';
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
@@ -18,6 +18,7 @@ const creatorLinks = [
 
 const businessLinks = [
   { name: 'Campaigns', href: '/business/promotions', icon: HomeIcon },
+  { name: 'Billing', href: '/business/billing', icon: ReceiptPercentIcon },
 ];
 
 export default function NavLinks() {

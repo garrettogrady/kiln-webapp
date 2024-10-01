@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const formatCurrency = (amount: number) => {
+  console.log("amount =s " + amount)
   return (amount / 100).toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -83,5 +84,3 @@ export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyUR
 
   return `${pathname}${queryString}`;
 };
-
-

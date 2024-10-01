@@ -168,10 +168,6 @@ export async function fetchFilteredInvoices(
 
 export async function fetchCampaigns(id: string) {
   noStore();
-
-  const enrollments = [
-
-  ]
   try {
     const promotions = await sql<PromotionTable>`
       SELECT
@@ -186,7 +182,6 @@ export async function fetchCampaigns(id: string) {
       WHERE "businessId"=${id}
       ORDER BY promotions."endDate" DESC
     `;
-
     return promotions.rows;
   } catch (error) {
     console.error('Database Error:', error);

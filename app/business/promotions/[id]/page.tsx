@@ -46,7 +46,6 @@ export default async function Page({ params }: { params: { id: string } }) {
             <ContributorsTable  />
 
             <ShowForm {...promotion}/>
-
         </main>
         </>
     );

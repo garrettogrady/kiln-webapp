@@ -1,4 +1,4 @@
-import Form from '@/app/ui/invoices/edit-form';
+import Form from '@/app/ui/campaigns/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import {fetchInvoiceById, fetchCustomers, fetchPromotionById, fetchBusinessById} from '@/app/lib/data';
 import { notFound } from 'next/navigation';

@@ -17,6 +17,7 @@ export default async function CampaignsTable() {
   const businessId = await fetchAuthedUserId();
   const promotions = await fetchCampaigns(businessId);
 
+  console.log(promotions);
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -33,14 +34,13 @@ export default async function CampaignsTable() {
                       {selectPromotionIcon(promotion.promotionType)}
                       <p>{promotion.title}</p>
                     </div>
-                    <p className="text-sm text-gray-500">{promotion.email}</p>
                   </div>
                   <InvoiceStatus status={promotion.status} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
                     <p className="text-xl font-medium">
-                      {formatCurrency(Number.parseInt(promotion.maxOfferPrice))}
+                      {formatCurrency(parseInt(promotion.maxTotalSpend, 10))}
                     </p>
                     <p>{formatDateToLocal(promotion.startDate)}</p>
                   </div>
@@ -91,7 +91,7 @@ export default async function CampaignsTable() {
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {formatCurrency(Number(promotion.maxOfferPrice))}
+                    {formatCurrency(Number(promotion.maxTotalSpend))}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatDateToLocal(promotion.startDate)}

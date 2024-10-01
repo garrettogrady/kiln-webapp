@@ -12,15 +12,7 @@ import CardWrapper from "@/app/ui/campaigns/cards";
 export const metadata: Metadata = {
     title: 'Campaigns',
 };
-export default async function Page({searchParams}: {
-    searchParams?: {
-        query?: string;
-        page?: string;
-    };
-}) {
-    const query = searchParams?.query || '';
-    const currentPage = Number(searchParams?.page) || 1;
-    const totalPages = await fetchInvoicesPages(query);
+export default async function Page() {
 
     return (
         <div className="w-full">
@@ -33,10 +25,7 @@ export default async function Page({searchParams}: {
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 <CardWrapper />
             </div>
-            <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-                <Table query={query} currentPage={currentPage} />
-            </Suspense>
-           
+            <Table />
         </div>
     );
 }

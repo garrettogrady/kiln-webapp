@@ -128,39 +128,6 @@ export type State = {
     message?: string | null;
 };
 
-export async function createInvoice(prevState: State, formData: FormData) {
-    const validatedFields = CreateInvoice.safeParse({
-        customerId: formData.get('customerId'),
-        amount: formData.get('amount'),
-        status: formData.get('status'),
-    });
-    // If form validation fails, return errors early. Otherwise, continue.
-    if (!validatedFields.success) {
-        return {
-            errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Missing Fields. Failed to Create Invoice.',
-        };
-    }
-    // Prepare data for insertion into the database
-    const { customerId, amount, status } = validatedFields.data;
-    const amountInCents = amount * 100;
-    const date = new Date().toISOString().split('T')[0];
-    try {
-        await sql`
-    INSERT INTO invoices (customer_id, amount, status, date)
-    VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
-  `;
-    }
-    catch (error) {
-        return {
-            message: "Database Error: failed to create invoice"
-        }
-    }
-    revalidatePath('/dashboard/invoices');
-    redirect('/dashboard/invoices');
-}
-
-
 export async function createPromotion(prevState: State, formData: FormData) {
     const businessIds = await fetchAuthedUserId();
     console.log(formData);
@@ -197,7 +164,6 @@ export async function createPromotion(prevState: State, formData: FormData) {
     const tierThreeOffer = formData.get('tierThreeOffer') ?? "";
     const platform = "instagram";
     const postDeliverable = "after";
-
 
     const {
         businessId,
@@ -283,36 +249,116 @@ export async function createPromotion(prevState: State, formData: FormData) {
     redirect('/business/promotions');
 }
 
-export async function updateInvoice(id: string, formData: FormData) {
-    const validatedFields = UpdateInvoice.safeParse({
-        customerId: formData.get('customerId'),
-        amount: formData.get('amount'),
-        status: formData.get('status'),
+// Define the schema for promotion update
+const UpdatePromotionSchema = z.object({
+    id: z.string(),
+    promotionType: z.string(),
+    startDate: z.string(),
+    endDate: z.string(),
+    quantity: z.coerce.number(),
+    title: z.string(),
+    description: z.string(),
+    suggestedItems: z.string(),
+    availabilityStart: z.string(),
+    availabilityEnd: z.string(),
+    pricingType: z.enum(['fixed', 'tiered']),
+    fixedOffer: z.string().optional(),
+    tierOneOffer:  z.string().optional(),
+    tierTwoOffer:  z.string().optional(),
+    tierThreeOffer:  z.string().optional(),
+    maxTotalSpend:  z.string(),
+    postType: z.string(),
+    mediaType: z.string(),
+    tags: z.string(),
+});
+
+export async function updatePromotion(prevState: any, formData: FormData) {
+    console.log(formData);
+    // Validate form data
+    const validatedFields = UpdatePromotionSchema.safeParse({
+        id: formData.get('id'),
+        promotionType: formData.get('promotionType'),
+        startDate: formData.get('startDate'),
+        endDate: formData.get('endDate'),
+        quantity: formData.get('quantity'),
+        title: formData.get('title'),
+        description: formData.get('description'),
+        suggestedItems: formData.get('suggestedItems'),
+        availabilityStart: formData.get('availabilityStart'),
+        availabilityEnd: formData.get('availabilityEnd'),
+        pricingType: formData.get('pricingType'),
+        fixedOffer: formData.get('fixedOffer'),
+        tierOneOffer: formData.get('tierOneOffer'),
+        tierTwoOffer: formData.get('tierTwoOffer'),
+        tierThreeOffer: formData.get('tierThreeOffer'),
+        maxTotalSpend: formData.get('maxTotalSpend'),
+        postType: formData.get('postType'),
+        mediaType: formData.get('mediaType'),
+        tags: formData.get('tags'),
     });
+
     // If form validation fails, return errors early. Otherwise, continue.
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Missing Fields. Failed to Update Invoice.',
+            message: 'Missing Fields. Failed to Update Promotion.',
         };
     }
 
-    const { customerId, amount, status } = validatedFields.data;
-    const amountInCents = amount * 100;
+    // Prepare data for database update
+    const {
+        id,
+        promotionType,
+        startDate,
+        endDate,
+        quantity,
+        title,
+        description,
+        suggestedItems,
+        availabilityStart,
+        availabilityEnd,
+        pricingType,
+        fixedOffer,
+        tierOneOffer,
+        tierTwoOffer,
+        tierThreeOffer,
+        maxTotalSpend,
+        postType,
+        mediaType,
+        tags,
+    } = validatedFields.data;
 
     try {
         await sql`
-        UPDATE invoices
-        SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-        WHERE id = ${id}
-      `;
-    }
-    catch (error) {
-        return { message: 'Database Error: Failed to Update Invoice.' };
+      UPDATE promotions
+      SET "promotionType" = ${promotionType},
+          "startDate" = ${startDate},
+          "endDate" = ${endDate},
+          "quantity" = ${quantity},
+          "title" = ${title},
+          "description" = ${description},
+          "suggestedItems" = ${suggestedItems},
+          "availabilityStart" = ${availabilityStart},
+          "availabilityEnd" = ${availabilityEnd},
+          "pricingType" = ${pricingType},
+          "fixedOffer" = ${fixedOffer},
+          "tierOneOffer" = ${tierOneOffer},
+          "tierTwoOffer" = ${tierTwoOffer},
+          "tierThreeOffer" = ${tierThreeOffer},
+          "maxTotalSpend" = ${maxTotalSpend},
+          "postType" = ${postType},
+          "mediaType" = ${mediaType},
+          "tags" = ${tags}
+      WHERE "id" = ${id}
+    `;
+    } catch (error) {
+        return {
+            message: 'Database Error: Failed to Update Promotion.',
+        };
     }
 
-    revalidatePath('/dashboard/invoices');
-    redirect('/dashboard/invoices');
+    revalidatePath('/business/promotions/' + id);
+    redirect('/business/promotions/' + id);
 }
 
 export async function deleteInvoice(id: string) {

@@ -149,25 +149,25 @@ export type Business = {
 
 export type Promotion = {
   id: string;
-  businessId: string;
   promotionType: string;
   startDate: string;
   endDate: string;
   quantity: number;
   title: string;
   description: string;
-  tableSize: string;
+  suggestedItems: string;
   availabilityStart: string;
   availabilityEnd: string;
-  suggestedItems: string;
-  maxOfferPrice: number;
-  minOfferPrice: number;
-  platform: 'tiktok' | 'instagram';
-  postType: 'reel' | 'story';
-  featuredImage: string;
-  images: string[];
+  pricingType: string;
+  fixedOffer?: string;
+  platform?: string;
+  tierOneOffer?: string;
+  tierTwoOffer?: string;
+  tierThreeOffer?: string;
+  maxTotalSpend: string;
+  postType: string;
+  mediaType: string;
   tags: string[];
-  updatedAt: string;
 };
 
 
@@ -215,7 +215,7 @@ export type PromotionTable = {
   id: string;
   promotionType: string;
   title: string;
-  maxOfferPrice: string;
+  maxTotalSpend: string;
   startDate: string;
   endDate: string;
   quantity: number;
