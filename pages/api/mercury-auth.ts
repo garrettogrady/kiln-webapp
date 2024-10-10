@@ -5,7 +5,6 @@ import {sql} from "@vercel/postgres";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     console.log("hi3");
-    console.log(process.env.RESEND_API_KEY);
     const resend = new Resend(process.env.RESEND_API_KEY);
     if (req.method !== 'POST') {
         console.log("Method Not Allowed");
@@ -13,8 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ message: 'Method Not Allowed bruh' });
     }
 
-    console.log(req.body.data);
-    const { cardSuffix, factorToken } = req.body.data;
+    console.log(req.body);
+    const { cardSuffix, factorToken } = req.body;
 
     if (!cardSuffix || !factorToken) {
         return res.status(400).json({ message: 'Missing required fields' });
