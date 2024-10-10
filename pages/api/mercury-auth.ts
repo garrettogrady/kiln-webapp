@@ -4,6 +4,7 @@ import {sql} from "@vercel/postgres";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    console.log("hi3");
     console.log(process.env.RESEND_API_KEY);
     const resend = new Resend(process.env.RESEND_API_KEY);
     if (req.method !== 'POST') {
