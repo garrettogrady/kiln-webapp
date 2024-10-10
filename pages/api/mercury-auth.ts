@@ -11,7 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.log("HI");
         return res.status(405).json({ message: 'Method Not Allowed bruh' });
     }
-
+    console.log("printing reuqest body");
+    console.log(req);
     console.log(req.body);
     const { cardSuffix, factorToken } = req.body;
 
@@ -19,7 +20,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: 'Missing required fields' });
     }
     console.log("made it here");
-    console.log(process.env.RESEND_API_KEY);
     try {
         // Query the database
         const result = await sql`
