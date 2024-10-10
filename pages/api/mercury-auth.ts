@@ -16,7 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!cardSuffix || !factorToken) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
-
+    console.log("made it here");
+    console.log(process.env.RESEND_API_KEY);
     try {
         // Query the database
         const result = await sql`
