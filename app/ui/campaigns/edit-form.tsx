@@ -22,17 +22,17 @@ export default function EditPromotionForm({ promotion }: { promotion: Promotion 
     const [state, dispatch] = useFormState(updatePromotion, initialState);
     const [pricingType, setPricingType] = useState(promotion.pricingType);
     const [tags, setTags] = useState<string[]>(promotion.tags);
+    const [postType, setPostType] = useState("story");
 
-    const [postTypes, setPostTypes] = useState({ story: promotion.postType === "story" ||  promotion.postType === "both", reel: promotion.postType === "reel" ||  promotion.postType === "both" });
-    const [mediaTypes, setMediaTypes] = useState({ picture: promotion.postType === "picture" ||  promotion.postType === "both", video: promotion.postType === "video" ||  promotion.postType === "both" });
+    const [mediaTypes, setMediaTypes] = useState({ picture: promotion.mediaType === "picture" ||  promotion.mediaType === "both", video: promotion.mediaType === "video" ||  promotion.mediaType === "both" });
 
 
     useEffect(() => {
         // Set initial values based on the promotion prop
         setPricingType(promotion.pricingType);
         setTags(promotion.tags);
-        setPostTypes({ story: promotion.postType === "story" ||  promotion.postType === "both", reel: promotion.postType === "reel" ||  promotion.postType === "both" });
-        setMediaTypes({ picture: promotion.postType === "picture" ||  promotion.postType === "both", video: promotion.postType === "video" ||  promotion.postType === "both" });
+        setPostType(promotion.postType);
+        setMediaTypes({ picture: promotion.mediaType === "picture" ||  promotion.mediaType === "both", video: promotion.mediaType === "video" ||  promotion.mediaType === "both" });
     }, [promotion]);
 
 
@@ -356,96 +356,87 @@ export default function EditPromotionForm({ promotion }: { promotion: Promotion 
                     </div>
                 </div>
 
-                {/* Post Type */}
+                {/* Pricing Type */}
                 <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium">
-                        Post Type
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="flex items-center space-x-4">
-                            <div className="flex items-center">
-                                <input
-                                    id="story"
-                                    name="postType"
-                                    type="checkbox"
-                                    checked={postTypes.story}
-                                    onChange={(e) => setPostTypes(prev => ({ ...prev, story: e.target.checked }))}
-                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                />
-                                <label htmlFor="story" className="ml-2 block text-sm text-gray-900">
-                                    Story
-                                </label>
-                            </div>
-                            <div className="flex items-center">
-                                <input
-                                    id="reel"
-                                    name="postType"
-                                    type="checkbox"
-                                    checked={postTypes.reel}
-                                    onChange={(e) => setPostTypes(prev => ({ ...prev, reel: e.target.checked }))}
-                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                />
-                                <label htmlFor="reel" className="ml-2 block text-sm text-gray-900">
-                                    Reel
-                                </label>
-                            </div>
+                    <label className="mb-2 block text-sm font-medium">Post Type</label>
+                    <div className="flex gap-4">
+                        <div className="flex items-center">
+                            <input
+                                id="fixed"
+                                name="postType"
+                                type="radio"
+                                value="story"
+                                checked={postType === "story"}
+                                onChange={() => setPostType("story")}
+                                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                            />
+                            <label htmlFor="story" className="ml-2 text-sm font-medium text-gray-900">Story</label>
+                        </div>
+                        <div className="flex items-center">
+                            <input
+                                id="reel"
+                                name="postType"
+                                type="radio"
+                                value="reel"
+                                checked={postType === "reel"}
+                                onChange={() =>  {
+                                    setMediaTypes({ picture: false, video: false });
+                                    setPostType("reel")
+                                }}
+                                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                            />
+                            <label htmlFor="reel" className="ml-2 text-sm font-medium text-gray-900">Reel</label>
                         </div>
                     </div>
-                    {/* Hidden input to store the selected post types as a string */}
-                    <input
-                        type="hidden"
-                        name="postType"
-                        value={Object.entries(postTypes)
-                            .filter(([_, isChecked]) => isChecked)
-                            .map(([type, _]) => type)
-                            .join(',')}
-                    />
                 </div>
 
-                <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium">
-                        Story Type
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="flex items-center space-x-4">
-                            <div className="flex items-center">
-                                <input
-                                    id="picture"
-                                    name="mediaType"
-                                    type="checkbox"
-                                    checked={mediaTypes.picture}
-                                    onChange={(e) => setMediaTypes(prev => ({ ...prev, picture: e.target.checked }))}
-                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                />
-                                <label htmlFor="picture" className="ml-2 block text-sm text-gray-900">
-                                    Picture
-                                </label>
-                            </div>
-                            <div className="flex items-center">
-                                <input
-                                    id="video"
-                                    name="mediaType"
-                                    type="checkbox"
-                                    checked={mediaTypes.video}
-                                    onChange={(e) => setMediaTypes(prev => ({ ...prev, video: e.target.checked }))}
-                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                />
-                                <label htmlFor="video" className="ml-2 block text-sm text-gray-900">
-                                    Video
-                                </label>
+                {postType === "story" ? (
+                    <div className="mb-4">
+                        <label className="mb-2 block text-sm font-medium">
+                            Story Type
+                        </label>
+                        <div className="relative mt-2 rounded-md">
+                            <div className="flex items-center space-x-4">
+                                <div className="flex items-center">
+                                    <input
+                                        id="picture"
+                                        name="mediaType"
+                                        type="checkbox"
+                                        checked={mediaTypes.picture}
+                                        onChange={(e) => setMediaTypes(prev => ({ ...prev, picture: e.target.checked }))}
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                    />
+                                    <label htmlFor="picture" className="ml-2 block text-sm text-gray-900">
+                                        Picture
+                                    </label>
+                                </div>
+                                <div className="flex items-center">
+                                    <input
+                                        id="video"
+                                        name="mediaType"
+                                        type="checkbox"
+                                        checked={mediaTypes.video}
+                                        onChange={(e) => setMediaTypes(prev => ({ ...prev, video: e.target.checked }))}
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                    />
+                                    <label htmlFor="post" className="ml-2 block text-sm text-gray-900">
+                                        Video
+                                    </label>
+                                </div>
                             </div>
                         </div>
+                        {/* Hidden input to store the selected post types as a string */}
+                        <input
+                            type="hidden"
+                            name="mediaType"
+                            value={Object.entries(mediaTypes)
+                                .filter(([_, isChecked]) => isChecked)
+                                .map(([type, _]) => type)
+                                .join(',')}
+                        />
                     </div>
-                    {/* Hidden input to store the selected media types as a string */}
-                    <input
-                        type="hidden"
-                        name="mediaType"
-                        value={Object.entries(mediaTypes)
-                            .filter(([_, isChecked]) => isChecked)
-                            .map(([type, _]) => type)
-                            .join(',')}
-                    />
-                </div>
+                ):(<div>
+                </div>)}
 
                 {/* Tags */}
                 <div className="mb-4">

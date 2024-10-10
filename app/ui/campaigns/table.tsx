@@ -13,7 +13,7 @@ import {
 import CampaignStatus from "@/app/ui/campaigns/status";
 import Enrollment from "@/app/ui/campaigns/enrollment";
 
-export default async function CampaignsTable() {
+export default async function PromotionsTable() {
   const businessId = await fetchAuthedUserId();
   const promotions = await fetchCampaigns(businessId);
 

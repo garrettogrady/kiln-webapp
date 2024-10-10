@@ -6,7 +6,8 @@ import {redirect} from "next/navigation";
 import { signIn, auth } from '@/auth';
 import { AuthError } from 'next-auth';
 import bcrypt from "bcrypt";
-import {Creator, CreatorOnboardData} from "@/app/lib/definitions";
+import {CardInfo, Creator, CreatorOnboardData} from "@/app/lib/definitions";
+import {unstable_noStore as noStore} from "next/dist/server/web/spec-extension/unstable-no-store";
 
 // Helper function to create a date schema
 const dateSchema = z.string().refine((date) => {
@@ -146,7 +147,6 @@ export async function createPromotion(prevState: State, formData: FormData) {
         pricingType: formData.get('pricingType'),
         maxTotalSpend: formData.get('maxTotalSpend'),
         postType: formData.get('postType'),
-        mediaType: formData.get('mediaType'),
         tags: formData.get('tags'),
     });
     if (!validatedFields.success) {
@@ -162,6 +162,8 @@ export async function createPromotion(prevState: State, formData: FormData) {
     const tierOneOffer = formData.get('tierOneOffer') ?? "";
     const tierTwoOffer = formData.get('tierTwoOffer') ?? "";
     const tierThreeOffer = formData.get('tierThreeOffer') ?? "";
+    const mediaType = formData.get('mediaType') ?? "";
+
     const platform = "instagram";
     const postDeliverable = "after";
 
@@ -179,7 +181,6 @@ export async function createPromotion(prevState: State, formData: FormData) {
         pricingType,
         maxTotalSpend,
         postType,
-        mediaType,
         tags
     } = validatedFields.data;
 
@@ -461,12 +462,8 @@ export async function creatorOnboard(
         VALUES (${email}, ${hashedPassword}, ${userType})
         ON CONFLICT (id) DO NOTHING;`;
 
-        await signIn('credentials', creatorData);
-        //  await sql<CreatorOnboardData>`
-        //               DELETE *
-        //               FROM creatorsignup
-        //               WHERE id = ${userId};
-        //             `;
+        const signInData = {email: creatorData.email, password: password }
+        await signIn('credentials', signInData);
     } catch (error) {
         if (error instanceof AuthError) {
             switch (error.type) {
@@ -611,9 +608,39 @@ export async function addCreatorData(userData: CreatorOnboardData) {
     }
 }
 
+export async function fetchCardObject(id: string) {
+    noStore();
+    try {
+        console.log(id);
+        const data = await sql<CardInfo>`
+      SELECT 
+      "userId", 
+      pgp_sym_decrypt("cardNumber", ${process.env.CARD_ENCRYPTION_KEY}) AS "cardNumber", 
+      "expirationDate", 
+      "cvv"
+      FROM cardinfo
+      WHERE "userId" = ${id};
+    `;
+        const cardInfo = data.rows[0];
+        console.log("card info = " + cardInfo)
+        return cardInfo;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch card user. ');
+    }
+}
 
 
 export async function fetchAuthedUserId() {
+    const user = await auth();
+    const userId = user?.user.id;
+
+    if (userId != null) {
+        return userId;
+    }
+}
+
+export async function fetchAuthedUserTier() {
     const user = await auth();
     const userId = user?.user.id;
 

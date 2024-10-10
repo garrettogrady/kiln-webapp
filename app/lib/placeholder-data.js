@@ -84,6 +84,7 @@ const creators = [
     city: 'Los Angeles, CA',
     instagram: 'gartogo',
     tiktok: 'gartogo',
+    tier: '1',
     password: '123456',
   },
   {
@@ -94,6 +95,7 @@ const creators = [
     city: 'Los Angeles, CA',
     instagram: 'yale_goldberg',
     tiktok: 'yale_goldberg',
+    tier: '3',
     password: 'password',
   },
   {
@@ -104,6 +106,7 @@ const creators = [
     city: 'New York, CA',
     instagram: 'kimk',
     tiktok: 'kimk',
+    tier: '2',
     password: '123456',
   },
 ];
@@ -132,6 +135,11 @@ const creatorsignup = [
 const enrollment = [
   { promotionId: 'e6cf9e2f-1405-45e3-9c76-d62f25f80a7d', userId: '410544b2-4001-4271-9855-fec4b6a6442a', businessId: '1e082498-f20d-4db2-8119-5aa33e0529bc',  date: Date.now(), amount: 10475, status: "redeemed" },
   { promotionId: '3b508ec3-1a7c-4e6a-a2d7-770b43fb3749', userId: '410544b2-4001-4271-9855-fec4b6a6442a', businessId: 'f0c51f16-b154-40eb-b8d2-c1179df34ed1',  date: Date.now(), amount: 7000, status: "redeemed" }
+];
+
+const cards = [
+  { id: "3f38c6b8-0d11-4e4b-8d36-ec16162859c9", userId: '410544b2-4001-4271-9855-fec4b6a6442a', cardholderName: "Garrett Ogrady", cardNumber: "1234567890123456", cardSuffix: "3456", expirationDate: "12/23", cvv: "123" },
+  { id: "75289397-69df-4e01-baeb-1d437ac45d38", userId: '50ca3e18-62cd-11ee-8c99-0242ac120002', cardholderName: "Yale Golderg", cardNumber: "1234567890123216", cardSuffix: "3216", expirationDate: "12/23", cvv: "123" },
 ];
 const businesses = [
   {
@@ -584,6 +592,7 @@ module.exports = {
   users,
   creators,
   enrollment,
+  cards,
   businesses,
   creatorsignup,
   promotions,

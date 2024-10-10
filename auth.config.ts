@@ -30,7 +30,7 @@ export const authConfig = {
                     if (isLoggedIn) return true;
                     return false;
                 } else {
-                    return Response.redirect(new URL('/business/campaigns', nextUrl));
+                    return Response.redirect(new URL('/business/promotions', nextUrl));
 
                 }
 

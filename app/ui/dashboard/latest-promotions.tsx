@@ -36,7 +36,7 @@ export default async function LatestPromotions({id}: { id: string }) {
                                     )}
                                 >
                                     <div className="flex items-center">
-                                        {selectPromotionIco (promotion.promotionType)}
+                                        {selectPromotionIcon (promotion.promotionType)}
                                         <div className="min-w-0">
                                             <p className="truncate text-sm font-semibold md:text-base">
                                                 {promotion.name}

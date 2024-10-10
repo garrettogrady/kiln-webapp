@@ -20,8 +20,8 @@ export default function PromotionForm() {
     const initialState = { message: null, errors: {} };
     const [state, dispatch] = useFormState(createPromotion, initialState);
     const [pricingType, setPricingType] = useState("fixed");
+    const [postType, setPostType] = useState("story");
     const [tags, setTags] = useState([]);
-    const [postTypes, setPostTypes] = useState({ story: false, reel: false });
     const [mediaTypes, setMediaTypes] = useState({ picture: false, video: false });
 
 
@@ -331,52 +331,40 @@ export default function PromotionForm() {
                     </div>
                 </div>
 
-                {/* Post Type */}
+                {/* Pricing Type */}
                 <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium">
-                        Post Type
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="flex items-center space-x-4">
-                            <div className="flex items-center">
-                                <input
-                                    id="story"
-                                    name="postType"
-                                    type="checkbox"
-                                    checked={postTypes.story}
-                                    onChange={(e) => setPostTypes(prev => ({ ...prev, story: e.target.checked }))}
-                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                />
-                                <label htmlFor="story" className="ml-2 block text-sm text-gray-900">
-                                    Story
-                                </label>
-                            </div>
-                            <div className="flex items-center">
-                                <input
-                                    id="reel"
-                                    name="postType"
-                                    type="checkbox"
-                                    checked={postTypes.reel}
-                                    onChange={(e) => setPostTypes(prev => ({ ...prev, reel: e.target.checked }))}
-                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                />
-                                <label htmlFor="reel" className="ml-2 block text-sm text-gray-900">
-                                    Reel
-                                </label>
-                            </div>
+                    <label className="mb-2 block text-sm font-medium">Post Type</label>
+                    <div className="flex gap-4">
+                        <div className="flex items-center">
+                            <input
+                                id="fixed"
+                                name="postType"
+                                type="radio"
+                                value="story"
+                                checked={postType === "story"}
+                                onChange={() => setPostType("story")}
+                                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                            />
+                            <label htmlFor="story" className="ml-2 text-sm font-medium text-gray-900">Story</label>
+                        </div>
+                        <div className="flex items-center">
+                            <input
+                                id="reel"
+                                name="postType"
+                                type="radio"
+                                value="reel"
+                                checked={postType === "reel"}
+                                onChange={() =>  {
+                                    setMediaTypes({ picture: false, video: false });
+                                    setPostType("reel")
+                                }}
+                                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                            />
+                            <label htmlFor="reel" className="ml-2 text-sm font-medium text-gray-900">Reel</label>
                         </div>
                     </div>
-                    {/* Hidden input to store the selected post types as a string */}
-                    <input
-                        type="hidden"
-                        name="postType"
-                        value={Object.entries(postTypes)
-                            .filter(([_, isChecked]) => isChecked)
-                            .map(([type, _]) => type)
-                            .join(',')}
-                    />
                 </div>
-
+                {postType === "story" ? (
                     <div className="mb-4">
                         <label className="mb-2 block text-sm font-medium">
                             Story Type
@@ -421,7 +409,8 @@ export default function PromotionForm() {
                                 .join(',')}
                         />
                     </div>
-
+                ):(<div>
+                </div>)}
                 {/* Tags */}
                 <div className="mb-4">
                     <label htmlFor="tags" className="mb-2 block text-sm font-medium">

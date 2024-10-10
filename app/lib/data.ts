@@ -11,7 +11,7 @@ import {
   PromotionTable,
   Business,
   PromotionGrid,
-  LatestPromotionRaw, CreatorOnboardData,
+  LatestPromotionRaw, CreatorOnboardData, CardInfo,
 } from './definitions';
 import { formatCurrency } from './utils';
 import {GetServerSideProps} from "next";
@@ -281,9 +281,12 @@ export async function fetchFilteredPromotions(
         promotions.title,
         promotions.description,
         promotions."featuredImage",
-        promotions.description,
-        promotions."minOfferPrice",
-        promotions."maxOfferPrice",
+        promotions."pricingType",
+        promotions."fixedOffer",
+        promotions."tierOneOffer",
+        promotions."tierTwoOffer",
+        promotions."tierThreeOffer",
+        promotions."maxTotalSpend",
         businesses."placesId",
         businesses."locationLat",
         businesses."locationLng",
@@ -477,7 +480,7 @@ export async function fetchLatestPromotionsFromUser(id: string) {
   noStore();
   try {
     const data = await sql<LatestPromotionRaw>`
-      SELECT promotions."maxOfferPrice" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
+      SELECT enrollment."amount" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
       FROM promotions
       JOIN businesses ON promotions."businessId" = businesses.id
       JOIN enrollment ON promotions.id = enrollment."promotionId"
@@ -569,6 +572,7 @@ export async function fetchPastPromotionsFromUser(id: string) {
     throw new Error('Failed to fetch the latest business from user.');
   }
 
+
 }
 export async function fetchPromotionCardData() {
   noStore();
@@ -627,11 +631,14 @@ export async function checkUserEnrollment(promotionId: string) {
   }
 }
 
-export async function fetchCreator(userId: string) {
+export async function fetchCreatorTier() {
   try {
-    const user = await sql`SELECT * FROM creators WHERE "id"=${userId}`;
-    console.log(user);
-    return user.rows[0];
+    const user = await auth();
+    const userId = user?.user.id;
+    if (userId != null) {
+      const tier = await sql`SELECT "tier" FROM creators WHERE "id"=${userId}`;
+      return tier.rows[0].tier;
+    }
   } catch (error) {
     console.log(error)
   }

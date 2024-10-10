@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import {CreateCampaign} from "@/app/ui/campaigns/buttons";
 import CardWrapper from "@/app/ui/campaigns/cards";
+import PromotionsTable from "@/app/ui/campaigns/table";
 
 export const metadata: Metadata = {
     title: 'Campaigns',
@@ -25,7 +26,7 @@ export default async function Page() {
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 <CardWrapper />
             </div>
-            <Table />
+            <PromotionsTable />
         </div>
     );
 }

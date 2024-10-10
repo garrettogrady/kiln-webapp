@@ -13,8 +13,8 @@ export default function ContactPage({ params }: { params: { id: string } }) {
 
     return (
         <OnboardPage
-            title="add us as a contact"
-            description="save our number so you can text us receipts, reviews or just say what’s up"
+            title="Connect With the KILN Team! "
+            description="Save our number to text us receipts, reviews, or just say hi. Stay up to date with important updates, exclusive offers, upcoming events, and more."
             activeStep={4}
             totalSteps={5}
             buttonText="next"

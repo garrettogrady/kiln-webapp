@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from "next/link";
 
 const ContactButton = () => {
     const handleClick = () => {
@@ -21,7 +22,7 @@ END:VCARD`;
         const encodedVCard = encodeURIComponent(vcard);
 
         // Create the tel URI with the encoded vCard
-        const telUri = `tel:${contact.phone}?contact=${encodedVCard}`;
+        const telUri = `contact://${contact.phone}?contact=${encodedVCard}`;
 
         // Open the URI
         window.location.href = telUri;
@@ -29,10 +30,10 @@ END:VCARD`;
 
     return (
         <div className="pt-12 pb-12">
-            <button onClick={handleClick} className="w-half flex justify-center py-2 px-4 border border-[#254442] rounded-md shadow-sm text-sm font-medium text-[#254442] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#254442]"
+            <Link href={"/contact.vcf"} download={true} className="w-half flex justify-center py-2 px-4 border border-[#254442] rounded-md shadow-sm text-sm font-medium text-[#254442] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#254442]"
             >
                 Add Contact
-            </button>
+            </Link>
         </div>
     );
 };

@@ -1,14 +1,10 @@
-import {CustomerField, Promotion} from '@/app/lib/definitions';
-import Link from 'next/link';
-import React, { useState } from "react";
-
-import {CreateCampaign, UpdateCampaign} from "@/app/ui/campaigns/buttons";
-import {createIntl, createIntlCache} from "@formatjs/intl";
-import {formatCurrency} from "@/app/lib/utils";
-
+import React from 'react';
+import { Promotion } from '@/app/lib/definitions';
+import { UpdateCampaign } from "@/app/ui/campaigns/buttons";
+import { createIntl, createIntlCache } from "@formatjs/intl";
+import { formatCurrency } from "@/app/lib/utils";
 
 export default async function ShowForm(promotion: Promotion) {
-    console.log(promotion)
     const cache = createIntlCache();
     const intl = createIntl(
         {
@@ -17,186 +13,57 @@ export default async function ShowForm(promotion: Promotion) {
         },
         cache
     );
-    const startDate = new Date(promotion.startDate.toString());
-    console.log("start date hi hi hi " + promotion.startDate)
-    console.log(startDate)
-    const endDate = new Date(promotion.endDate);
-    const startFormatter = intl.formatDate(startDate, {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-    });
-    const endFormatter = intl.formatDate(endDate, {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-    });
 
-    const promotionDetails = promotion;
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return intl.formatDate(date, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+        });
+    };
+
+    const renderField = (label: string, value: any) => {
+        if (value === "" || value === null) return null;
+        return (
+            <div className="mb-4">
+                <label className="mb-2 block text-sm font-medium">{label}</label>
+                <div className="relative mt-2 rounded-md">
+                    <div className="relative">
+                        {Array.isArray(value) ? value.join(', ') : value.toString()}
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div>
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
                 <h3>Promotion Details</h3>
-                <UpdateCampaign id={promotion.id}/>
+                <UpdateCampaign id={promotion.id} />
             </div>
             <div className="rounded-md bg-gray-50 p-4 md:p-6">
-                <div className="mb-4">
-                    <label htmlFor="promotionType" className="mb-2 block text-sm font-medium">
-                        Promotion Type
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {promotionDetails.promotionType}
-                        </div>
-                    </div>
-                </div>
-
-                {/* \Start Date */}
-                <div className="mb-4">
-                    <label htmlFor="startDate" className="mb-2 block text-sm font-medium">
-                        Start Date
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {startFormatter.toString()}
-                        </div>
-                    </div>
-                </div>
-
-                {/* End Date */}
-                <div className="mb-4">
-                    <label htmlFor="endDate" className="mb-2 block text-sm font-medium">
-                        Choose an End Date
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {endFormatter.toString()}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Invoice Amount */}
-                <div className="mb-4">
-                    <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-                        Max Spend Amount
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {formatCurrency(Number(promotionDetails.maxTotalSpend))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Campaign Quantity */}
-                <div className="mb-4">
-                    <label htmlFor="quantity" className="mb-2 block text-sm font-medium">
-                        Choose a Quantity Cap
-                    </label>
-
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {promotionDetails.quantity}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Campaign Title */}
-                <div className="mb-4">
-                    <label htmlFor="title" className="mb-2 block text-sm font-medium">
-                        Promotion Title
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {promotionDetails.title}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Campaign Description */}
-                <div className="mb-4">
-                    <label htmlFor="description" className="mb-2 block text-sm font-medium">
-                        Promotion Description
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {promotionDetails.description}
-                        </div>
-                    </div>
-                </div>
-
-                {promotionDetails.pricingType === "fixed" ? (
-                    <div className="mb-4">
-                        <label htmlFor="description" className="mb-2 block text-sm font-medium">
-                            Pricing
-                        </label>
-                        <div className="relative mt-2 rounded-md">
-                            <div className="relative">
-                                {formatCurrency(Number(promotionDetails.fixedOffer))}
-                            </div>
-                        </div>
-                    </div>
-                ):(
-                    <div className="mb-4">
-                        <label htmlFor="description" className="mb-2 block text-sm font-medium">
-                            First Tier
-                        </label>
-                        <div className="relative mt-2 rounded-md">
-                            <div className="relative">
-                                {promotionDetails.tierOneOffer}
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Campaign Description */}
-                <div className="mb-4">
-                    <label htmlFor="description" className="mb-2 block text-sm font-medium">
-                        Creator Platform Used
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {promotionDetails.platform}
-                        </div>
-                    </div>
-                </div>
-
-
-                {/* Campaign Description */}
-                <div className="mb-4">
-                    <label htmlFor="description" className="mb-2 block text-sm font-medium">
-                        Post Type
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {promotionDetails.postType}
-                        </div>
-                    </div>
-                </div>
-                {/* Campaign Description */}
-                <div className="mb-4">
-                    <label htmlFor="description" className="mb-2 block text-sm font-medium">
-                        Media Type
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {promotionDetails.mediaType}
-                        </div>
-                    </div>
-                </div>
-
-
-                {/* Tags */}
-                <div className="mb-4">
-                    <label htmlFor="tags" className="mb-2 block text-sm font-medium">
-                       Tags
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            {promotionDetails.tags}
-                        </div>
-                    </div>
-                </div>
+                {renderField('Promotion Type', promotion.promotionType)}
+                {renderField('Start Date', promotion.startDate && formatDate(promotion.startDate))}
+                {renderField('End Date', promotion.endDate && formatDate(promotion.endDate))}
+                {renderField('Quantity', promotion.quantity)}
+                {renderField('Title', promotion.title)}
+                {renderField('Description', promotion.description)}
+                {renderField('Suggested Items', promotion.suggestedItems)}
+                {renderField('Availability Start', promotion.availabilityStart && formatDate(promotion.availabilityStart))}
+                {renderField('Availability End', promotion.availabilityEnd && formatDate(promotion.availabilityEnd))}
+                {renderField('Pricing Type', promotion.pricingType)}
+                {renderField('Fixed Offer', promotion.fixedOffer && formatCurrency(promotion.fixedOffer))}
+                {renderField('Platform', promotion.platform)}
+                {renderField('Tier One Offer', promotion.tierOneOffer && formatCurrency(promotion.tierOneOffer))}
+                {renderField('Tier Two Offer', promotion.tierTwoOffer && formatCurrency(promotion.tierTwoOffer))}
+                {renderField('Tier Three Offer', promotion.tierThreeOffer && formatCurrency(promotion.tierThreeOffer))}
+                {renderField('Max Total Spend', promotion.maxTotalSpend && formatCurrency(promotion.maxTotalSpend))}
+                {renderField('Post Type', promotion.postType)}
+                {renderField('Media Type', promotion.mediaType)}
+                {renderField('Tags', promotion.tags)}
             </div>
         </div>
     );
-}
+};

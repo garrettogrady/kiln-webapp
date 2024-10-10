@@ -29,7 +29,7 @@ const PasswordForm: React.FC<{ creatorData: CreatorOnboardData }> = ({ creatorDa
             //await use(userId, password)
             //const creator = await fetchOnboardById(userId);
             await creatorOnboard(creatorData, password);
-            router.push('/onboard/'+creatorData.id+'/instagram')
+            router.push('/onboard/'+creatorData.id+'/provision')
         } catch (error) {
             console.error('Error updating password:', error)
             setError('Failed to update password. Please try again.')

@@ -4,6 +4,7 @@ const {
     customers,
     users,
     enrollment,
+    cards,
     creatorsignup,
     creators,
     businesses,
@@ -63,7 +64,8 @@ async function seedCreators(client) {
             phone TEXT NOT NULL,
             city VARCHAR(255) NOT NULL,
             instagram VARCHAR(255) NOT NULL UNIQUE,
-            tiktok VARCHAR(255) NOT NULL UNIQUE
+            tiktok VARCHAR(255) NOT NULL UNIQUE,
+            tier VARCHAR(255)
           );
         `;
 
@@ -73,8 +75,8 @@ async function seedCreators(client) {
         const insertedCreators = await Promise.all(
             creators.map(async (user) => {
                 return client.sql`
-                    INSERT INTO creators (id, name, email, phone, city, instagram, tiktok)
-                    VALUES (${user.id}, ${user.name}, ${user.email}, ${user.phone}, ${user.city}, ${user.instagram}, ${user.tiktok})
+                    INSERT INTO creators (id, name, email, phone, city, instagram, tiktok, tier)
+                    VALUES (${user.id}, ${user.name}, ${user.email}, ${user.phone}, ${user.city}, ${user.instagram}, ${user.tiktok}, ${user.tier})
                     ON CONFLICT (id) DO NOTHING;
                 `;
             }),
@@ -404,6 +406,55 @@ async function seedEnrollment(client) {
     }
 }
 
+async function seedCardInfo(client) {
+    try {
+        // Create the "revenue" table if it doesn't exist
+        await client.sql`DROP TABLE cardinfo`;
+
+        const createTable = await client.sql`
+          CREATE TABLE cardinfo (
+            "id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            "userId" UUID NOT NULL,
+            "cardholderName" VARCHAR(100) NOT NULL,
+            "cardNumber" BYTEA NOT NULL,
+            "cardSuffix" VARCHAR(100) NOT NULL,
+            "cvv" VARCHAR(100) NOT NULL,
+            "expirationDate" VARCHAR(100) NOT NULL
+        );
+        `;
+        const encryption_key = process.env.CARD_ENCRYPTION_KEY;
+        // Insert data into the "revenue" table
+        console.log(encryption_key)
+        const insertedCards = await Promise.all(
+            cards.map(
+                (card) => client.sql`
+                    INSERT INTO cardinfo ("id", "userId", "cardholderName", "cardNumber", "cardSuffix", "cvv", "expirationDate")
+                    VALUES (
+                        ${card.id},
+                        ${card.userId},
+                        ${card.cardholderName},
+                        pgp_sym_encrypt(${card.cardNumber}, ${encryption_key}),  
+                        ${card.cardSuffix},
+                        ${card.cvv},
+                        ${card.expirationDate}
+                    )
+                    ON CONFLICT (id) DO NOTHING;
+              `,
+            ),
+        );
+
+        console.log(`Seeded ${insertedCards.length} cards`);
+
+        return {
+            createTable,
+            enrollment: insertedCards,
+        };
+    } catch (error) {
+        console.error('Error seeding revenue:', error);
+        throw error;
+    }
+}
+
 async function main() {
     const client = await db.connect();
 
@@ -413,6 +464,7 @@ async function main() {
     await seedBusiness(client);
     await seedPromotions(client);
     await seedEnrollment(client);
+    await seedCardInfo(client);
 
     await client.end();
 }

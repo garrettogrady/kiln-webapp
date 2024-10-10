@@ -1,8 +1,11 @@
-import React, { ReactNode } from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import {KilnLogo} from "@/app/ui/KilnLogo";
 import ProgressIndicator from "@/app/ui/components/progress-indicator";
 import LogoHeader from "@/app/ui/components/logo-header";
 import {useRouter} from "next/navigation";
+import {CardInfo} from "@/app/lib/definitions";
+import {fetchCardObject} from "@/app/lib/actions";
+
 
 interface OnboardPageProps {
     title: string;
@@ -14,6 +17,7 @@ interface OnboardPageProps {
     onButtonClick: () => void;
     children?: ReactNode;
     showBackButton?: boolean;
+    id?: string;
 }
 
 const OnboardPage: React.FC<OnboardPageProps> = ({
@@ -26,8 +30,25 @@ const OnboardPage: React.FC<OnboardPageProps> = ({
                                                     isProvisioning,
                                                    children,
                                                      showBackButton = true,
+                                                    id,
                                                }) => {
     const router = useRouter();
+    const [cardInfo, setCardInfo] = useState<CardInfo | null>(null);
+
+    useEffect(() => {
+        const getCardInfo = async () => {
+            if (isProvisioning && id) {
+                try {
+                    const fetchedCardInfo = await fetchCardObject(id!);
+                    setCardInfo(fetchedCardInfo);
+                } catch (error) {
+                    console.error('Error fetching card information:', error);
+                    // Handle the error appropriately
+                }
+            }
+        };
+        getCardInfo();
+    }, [isProvisioning]);
 
     const handleBack = () => {
         router.back();
@@ -60,22 +81,22 @@ const OnboardPage: React.FC<OnboardPageProps> = ({
                     <div className="w-full max-w-xs mt-6 bg-white rounded-lg shadow-sm">
                         <input
                             type="text"
-                            placeholder="4242 4242 4242 4242"
-                            value="4242 4242 4242 4242"
+                            value={cardInfo?.cardNumber || ''}
                             className="w-full p-3 text-lg border-b border-gray-200 rounded-t-lg focus:outline-none"
+                            readOnly
                         />
                         <div className="flex">
                             <input
                                 type="text"
-                                placeholder="08 / 21"
-                                value="08 / 21"
+                                value={cardInfo?.expirationDate || ''}
                                 className="w-1/2 p-3 text-lg border-r border-gray-200 focus:outline-none"
+                                readOnly
                             />
                             <input
                                 type="text"
-                                placeholder="812"
-                                value="812"
+                                value={cardInfo?.cvv || ''}
                                 className="w-1/2 p-3 text-lg focus:outline-none"
+                                readOnly
                             />
                         </div>
                     </div>

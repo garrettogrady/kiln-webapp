@@ -159,17 +159,25 @@ export type Promotion = {
   availabilityStart: string;
   availabilityEnd: string;
   pricingType: string;
-  fixedOffer?: string;
+  fixedOffer?: number;
   platform?: string;
-  tierOneOffer?: string;
-  tierTwoOffer?: string;
-  tierThreeOffer?: string;
-  maxTotalSpend: string;
+  tierOneOffer?: number;
+  tierTwoOffer?: number;
+  tierThreeOffer?: number;
+  maxTotalSpend: number;
   postType: string;
   mediaType: string;
   tags: string[];
 };
 
+export type CardInfo = {
+  id: string;
+  userId: string;
+  cardNumber: string;
+  cardSuffix: string;
+  expirationDate: string;
+  cvv: string;
+}
 
 export type OnboardFormData = {
   name: string;
@@ -198,10 +206,15 @@ export type PromotionGrid = {
   quantity: number;
   title: string;
   description: string;
-  maxOfferPrice: number;
-  minOfferPrice: number;
+  pricingType: string;
+  fixedOffer: number;
+  tierOneOffer: number;
+  tierTwoOffer: number;
+  tierThreeOffer: number;
+  maxTotalSpend: number;
   platform: 'tiktok' | 'instagram';
-  postType: 'reel' | 'story';
+  postType: string;
+  mediaType: string;
   featuredImage: string;
   placesId: string;
   locationLat: string;

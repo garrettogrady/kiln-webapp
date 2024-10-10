@@ -12,13 +12,14 @@ export default function ProvisionCardPage({ params }: { params: { id: string } }
 
     return (
         <OnboardPage
-            title="provision card"
-            description="Final step! Let's get your KILN card set up. Head on over to wallet and select new card and add the following details"
+            title="Add Card to Wallet"
+            description="Once your KILN card is added to your wallet, it’s all you need to access your experiences."
             activeStep={3}
             totalSteps={5}
             buttonText="Next"
             onButtonClick={handleClick}
             isProvisioning={true}
+            id={params.id}
         >
         </OnboardPage>
     );

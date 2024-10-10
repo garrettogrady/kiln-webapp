@@ -1,4 +1,4 @@
-import { Revenue } from './definitions';
+import {Promotion, PromotionGrid, Revenue} from './definitions';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import {
   BuildingOfficeIcon,
@@ -8,7 +8,6 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const formatCurrency = (amount: number) => {
-  console.log("amount =s " + amount)
   return (amount / 100).toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -84,3 +83,18 @@ export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyUR
 
   return `${pathname}${queryString}`;
 };
+
+export const calculateOfferAmount = (promotion: PromotionGrid, tier: String) => {
+  console.log("tier = " + tier);
+  if (promotion.pricingType === 'fixed') {
+    return formatCurrency(promotion.fixedOffer).toString();
+  }
+  if (promotion.pricingType === 'tiered') {
+    if (tier == '1') {
+      return formatCurrency(promotion.tierOneOffer).toString();
+    } else if (tier == '2') {
+      return formatCurrency(promotion.tierTwoOffer).toString();
+    }
+  }
+  return formatCurrency(promotion.tierThreeOffer).toString();
+}
