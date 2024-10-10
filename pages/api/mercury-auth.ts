@@ -13,7 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ message: 'Method Not Allowed bruh' });
     }
 
-    const { cardSuffix, factorToken } = req.body;
+    console.log(req.body.data);
+    const { cardSuffix, factorToken } = req.body.data;
 
     if (!cardSuffix || !factorToken) {
         return res.status(400).json({ message: 'Missing required fields' });
