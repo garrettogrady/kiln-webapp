@@ -449,17 +449,17 @@ export async function creatorOnboard(
     try {
         // Prepare data for insertion into the database
 
-        const { name, email, phone, city, instagram, tiktok } = creatorData;
+        const { id, name, email, phone, city, instagram, tiktok } = creatorData;
         const userType = "creator";
         const hashedPassword = await bcrypt.hash(password, 10);
         await sql`
-        INSERT INTO creators (name, email, phone, city, instagram, tiktok)
-        VALUES (${name}, ${email}, ${phone}, ${city}, ${instagram}, ${tiktok})
+        INSERT INTO creators (id, name, email, phone, city, instagram, tiktok)
+        VALUES (${id}, ${name}, ${email}, ${phone}, ${city}, ${instagram}, ${tiktok})
         ON CONFLICT (id) DO NOTHING;`;
 
         await sql`
-        INSERT INTO users ( email, password, type)
-        VALUES (${email}, ${hashedPassword}, ${userType})
+        INSERT INTO users ( id, email, password, type)
+        VALUES (${id}, ${email}, ${hashedPassword}, ${userType})
         ON CONFLICT (id) DO NOTHING;`;
 
         const signInData = {email: creatorData.email, password: password }
@@ -612,6 +612,7 @@ export async function fetchCardObject(id: string) {
     noStore();
     try {
         console.log(id);
+        console.log(process.env.CARD_ENCRYPTION_KEY);
         const data = await sql<CardInfo>`
       SELECT 
       "userId", 
