@@ -25,6 +25,7 @@ export const authConfig = {
             }
 
             if (userType === 'admin') {
+                console.log("admin logged in");
                 return true;
             }
 
