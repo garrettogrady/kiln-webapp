@@ -11,7 +11,7 @@ export const authConfig = {
             const isLoggedIn = !!auth?.user;
             const userType = auth?.user?.type;
             console.log("userType: " + userType);
-            const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+            const isOnlogout = nextUrl.pathname.startsWith('/logout');
             const isOnCreatorPage = nextUrl.pathname.startsWith('/creator');
             const isOnBusinessPage = nextUrl.pathname.startsWith('/business');
             const isOnProfilePage = nextUrl.pathname.endsWith('/profile');
@@ -21,6 +21,10 @@ export const authConfig = {
             const isAdminPage = nextUrl.pathname.startsWith('/admin');
 
             if (isOnRegisterPage || isCreatorOnboardPage || isBusinessOnboardPage) {
+                return true;
+            }
+
+            if (isOnlogout) {
                 return true;
             }
 
