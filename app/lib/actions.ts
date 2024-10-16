@@ -131,8 +131,9 @@ export type State = {
 
 export async function createPromotion(prevState: State, formData: FormData) {
     const user = await auth();
+    const isAdmin = user?.user?.type === 'admin';
     let businessId = "";
-    if (user?.user?.type !== 'admin') {
+    if (isAdmin) {
         businessId = formData.get('businessId')!.toString();
     } else {
         businessId = await fetchAuthedUserId();
@@ -250,9 +251,10 @@ export async function createPromotion(prevState: State, formData: FormData) {
             message: "Database Error: Failed to create promotion."
         };
     }
-    if (user?.user?.type !== 'admin') {
-        revalidatePath('/admin/business');
-        redirect('/admin/business');
+    if (isAdmin) {
+        console.log("is admin")
+        revalidatePath('/business/'+businessId+'/promotions');
+        redirect('/business/'+businessId+'/promotions');
     } else {
         revalidatePath('/business/promotions');
         redirect('/business/promotions');
@@ -309,6 +311,7 @@ export async function updatePromotion(prevState: any, formData: FormData) {
         tags: formData.get('tags'),
     });
 
+    console.log(validatedFields.success)
     // If form validation fails, return errors early. Otherwise, continue.
     if (!validatedFields.success) {
         return {

@@ -4,12 +4,12 @@ import { fetchCustomers } from '@/app/lib/data';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Create Campaign',
+    title: 'Create Promotion',
 };
 export default async function Page({ params }: { params: { id: string } }) {
     return (
         <main>
-            <Form  />
+            <Form businessId={params.id}  />
         </main>
     );
 }

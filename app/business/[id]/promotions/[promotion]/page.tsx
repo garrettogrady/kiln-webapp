@@ -17,12 +17,13 @@ export const metadata = {
     }
 };
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { id: string, promotion: string } }) {
     // const query = searchParams?.query || '';
     // const currentPage = Number(searchParams?.page) || 1;
     // const totalPages = await fetchPromoptionsPages(query);
-    const id = params.id;
-    const promotion = await fetchPromotionById(id);
+    console.log("params " + params.id);
+    const promotionId = params.promotion;
+    const promotion = await fetchPromotionById(promotionId);
 
     return (
         <>
@@ -41,11 +42,11 @@ export default async function Page({ params }: { params: { id: string } }) {
             <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
                 {promotion.title}
             </h1>
-            <EngagementCards promotionId={id} />
+            <EngagementCards promotionId={promotionId} />
 
             <ContributorsTable  />
 
-            <ShowForm {...promotion}/>
+            <ShowForm promotion={promotion} businessId={params.id}/>
         </main>
         </>
     );

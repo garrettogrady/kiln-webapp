@@ -55,8 +55,8 @@ export default async function ContributorsTable() {
                     <p>{formatDateToLocal(promotion.date)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateInvoice id={promotion.id} />
-                    <DeleteInvoice id={promotion.id} />
+                    <UpdateInvoice promotionId={promotion.id} />
+                    <DeleteInvoice promotionId={promotion.id} />
                   </div>
                 </div>
               </div>

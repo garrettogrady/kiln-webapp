@@ -13,10 +13,9 @@ import {
 import CampaignStatus from "@/app/ui/campaigns/status";
 import Enrollment from "@/app/ui/campaigns/enrollment";
 
-export default async function PromotionsTable() {
-  const businessId = await fetchAuthedUserId();
-  const promotions = await fetchCampaigns(businessId);
-
+export default async function PromotionsTable({id}: { id: string }) {
+  const promotions = await fetchCampaigns(id);
+  console.log("business id = " + id);
   console.log(promotions);
   return (
     <div className="mt-6 flow-root">
@@ -45,8 +44,8 @@ export default async function PromotionsTable() {
                     <p>{formatDateToLocal(promotion.startDate)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateInvoice id={promotion.id} />
-                    <DeleteInvoice id={promotion.id} />
+                    <UpdateInvoice promotionId={promotion.id} businessId={id} />
+                    <DeleteInvoice promotionId={promotion.id} businessId={id}  />
                   </div>
                 </div>
               </div>
@@ -110,8 +109,8 @@ export default async function PromotionsTable() {
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <DeleteInvoice id={promotion.id} />
-                      <UpdateInvoice id={promotion.id} />
+                      <UpdateInvoice promotionId={promotion.id} businessId={id} />
+                      <DeleteInvoice promotionId={promotion.id} businessId={id}  />
                     </div>
                   </td>
                 </tr>

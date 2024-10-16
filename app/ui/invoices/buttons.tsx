@@ -14,10 +14,10 @@ export function CreateInvoice() {
   );
 }
 
-export function UpdateInvoice({ id }: { id: string }) {
+export function UpdateInvoice({ promotionId, businessId }: { promotionId: string, businessId: string }) {
   return (
     <Link
-        href={`/business/promotions/${id}/edit`}
+        href={`/business/${businessId}/promotions/${promotionId}/edit`}
         className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
@@ -25,11 +25,22 @@ export function UpdateInvoice({ id }: { id: string }) {
   );
 }
 
-export function DeleteInvoice({ id }: { id: string }) {
+export function GotoBusiness({ id }: { id: string }) {
+  return (
+      <Link
+          href={`/business/${id}/promotions`}
+          className="rounded-md border p-2 hover:bg-gray-100"
+      >
+        <EyeIcon className="w-5" />
+      </Link>
+  );
+}
+
+export function DeleteInvoice({ promotionId, businessId }: { promotionId: string, businessId: string }) {
 
   return (
       <Link
-          href={`/business/promotions/${id}`}
+          href={`/business/${businessId}/promotions/${promotionId}`}
           className="rounded-md border p-2 hover:bg-gray-100"
       >
         <EyeIcon className="w-5" />

@@ -19,7 +19,7 @@ const links = [
     icon: DocumentDuplicateIcon,
   },
   {
-    name: 'Campaigns',
+    name: 'Promotions',
     href: '/dashboard/promotions',
     icon: DocumentDuplicateIcon,
   },

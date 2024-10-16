@@ -7,8 +7,8 @@ import EditPromotionForm from "@/app/ui/campaigns/edit-form";
 export const metadata: Metadata = {
     title: 'Edit Invoices',
 };
-export default async function Page({ params }: { params: { id: string } }) {
-    const id = params.id;
+export default async function Page({ params }: { params: { id: string, promotion: string } }) {
+    const id = params.promotion;
     const promotion = await fetchPromotionById(id);
     if (!promotion) {
         notFound();

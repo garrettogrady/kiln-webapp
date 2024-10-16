@@ -4,22 +4,22 @@ import { fetchCustomers } from '@/app/lib/data';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Create Campaign',
+    title: 'Create Promotion',
 };
-export default async function Page() {
+export default async function Page({ params }: { params: { id: string }}) {
     return (
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Campaigns', href: '/dashboard/promotions' },
+                    { label: 'Promotions', href: '/dashboard/promotions' },
                     {
-                        label: 'Create Campaign',
+                        label: 'Create Promotion',
                         href: '/dashboard/campaign/create',
                         active: true,
                     },
                 ]}
             />
-            <Form />
+            <Form businessId={params.id} />
         </main>
     );
 }

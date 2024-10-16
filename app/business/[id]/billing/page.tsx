@@ -12,7 +12,7 @@ import clsx from "clsx";
 import {ArrowPathIcon} from "@heroicons/react/24/outline";
 
 export const metadata: Metadata = {
-    title: 'Campaigns',
+    title: 'Promotions',
 };
 export default async function Page() {
     //const totalPages = await fetchInvoicesPages(query);

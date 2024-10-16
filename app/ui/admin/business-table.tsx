@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
+import {UpdateInvoice, DeleteInvoice, GotoBusiness} from '@/app/ui/invoices/buttons';
 import InvoiceStatus from '@/app/ui/invoices/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import {fetchBusinessById, fetchBusinesses, fetchCampaigns, fetchFilteredInvoices} from '@/app/lib/data';
@@ -40,8 +40,7 @@ export default async function BusinessTable() {
                 <td className="whitespace-nowrap px-3 py-3">{business.businessInstagram}</td>
                 <td className="whitespace-nowrap py-3 pl-6 pr-3">
                   <div className="flex justify-end gap-3">
-                    <DeleteInvoice id={business.id} />
-                    <UpdateInvoice id={business.id} />
+                    <GotoBusiness id={business.id} />
                   </div>
                 </td>
               </tr>

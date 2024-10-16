@@ -1,4 +1,4 @@
-// app/creator/[id]/page.tsx
+// app/creator/[promotion]/page.tsx
 import { sql } from '@vercel/postgres';
 import {KilnLogo} from "@/app/ui/KilnLogo";
 import UserForm from "@/app/ui/creator/onboard/creator-form";

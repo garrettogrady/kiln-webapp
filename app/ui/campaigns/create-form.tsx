@@ -16,7 +16,7 @@ import { Button } from '@/app/ui/button';
 import { createPromotion } from '@/app/lib/actions'; // Assume this function exists
 import Tooltip from "@/app/ui/campaigns/tooltip";
 
-export default function PromotionForm() {
+export default function PromotionForm({ businessId }: { businessId: string }) {
     const initialState = { message: null, errors: {} };
     const [state, dispatch] = useFormState(createPromotion, initialState);
     const [pricingType, setPricingType] = useState("fixed");
@@ -411,6 +411,13 @@ export default function PromotionForm() {
                     </div>
                 ):(<div>
                 </div>)}
+                <input
+                    id="businessId"
+                    name="businessId"
+                    type="hidden"
+                    value={businessId}
+                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
                 {/* Tags */}
                 <div className="mb-4">
                     <label htmlFor="tags" className="mb-2 block text-sm font-medium">

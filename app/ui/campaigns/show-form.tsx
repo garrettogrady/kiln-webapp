@@ -1,10 +1,10 @@
 import React from 'react';
 import { Promotion } from '@/app/lib/definitions';
-import { UpdateCampaign } from "@/app/ui/campaigns/buttons";
+import {UpdateCampaign, UpdatePromotion, updatePromotion} from "@/app/ui/campaigns/buttons";
 import { createIntl, createIntlCache } from "@formatjs/intl";
 import { formatCurrency } from "@/app/lib/utils";
 
-export default async function ShowForm(promotion: Promotion) {
+export default async function ShowForm({ promotion, businessId}: { promotion: Promotion, businessId: string }) {
     const cache = createIntlCache();
     const intl = createIntl(
         {
@@ -41,7 +41,7 @@ export default async function ShowForm(promotion: Promotion) {
         <div>
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
                 <h3>Promotion Details</h3>
-                <UpdateCampaign id={promotion.id} />
+                <UpdatePromotion promotionId={promotion.id} businessId={businessId}/>
             </div>
             <div className="rounded-md bg-gray-50 p-4 md:p-6">
                 {renderField('Promotion Type', promotion.promotionType)}

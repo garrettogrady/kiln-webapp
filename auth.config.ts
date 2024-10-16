@@ -25,11 +25,7 @@ export const authConfig = {
             }
 
             if (userType === 'admin') {
-                if (isAdminPage) {
-                   return true;
-                } else {
-                    return Response.redirect(new URL('/admin', nextUrl));
-                }
+                return true;
             }
 
             if (userType === 'business') {
@@ -40,7 +36,7 @@ export const authConfig = {
                     if (isLoggedIn) return true;
                     return false;
                 } else {
-                    return Response.redirect(new URL('/business/promotions', nextUrl));
+                    return Response.redirect(new URL('/business/'+auth?.user?.id+'/promotions', nextUrl));
 
                 }
 
