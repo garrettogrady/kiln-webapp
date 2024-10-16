@@ -6,6 +6,7 @@ const {
     enrollment,
     cards,
     creatorsignup,
+    businesssignup,
     creators,
     businesses,
     promotions
@@ -136,6 +137,50 @@ async function seedCreatorsSignups(client) {
     }
 }
 
+async function seedBusinessSignups(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+        await client.sql`DROP TABLE businesssignup`;
+        // Create the "creators" table if it doesn't exist
+        const createTable = await client.sql`
+        CREATE TABLE IF NOT EXISTS businesssignup (
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            "businessName" VARCHAR(255) NOT NULL,
+            "contactName" VARCHAR(255) NOT NULL,
+            "contactEmail" TEXT NOT NULL UNIQUE,
+            "jobTitle" VARCHAR(255) NOT NULL,
+            "contactPhoneNumber" TEXT NOT NULL,
+            "businessLocation" VARCHAR(255) NOT NULL,
+            "businessInstagram" VARCHAR(255) NOT NULL,
+            "businessType" VARCHAR(255) NOT NULL
+          );
+        `;
+
+        console.log(`Created "business signup" table`);
+
+        // Insert data into the "creators" table
+        const insertedBusinesses = await Promise.all(
+            businesssignup.map(async (user) => {
+                return client.sql`
+                    INSERT INTO businesssignup (id, "businessName", "contactName", "contactEmail", "jobTitle", "contactPhoneNumber", "businessLocation", "businessInstagram",  "businessType")
+                    VALUES (${user.id}, ${user.businessName}, ${user.contactName}, ${user.contactEmail}, ${user.jobTitle}, ${user.contactPhoneNumber}, ${user.businessLocation}, ${user.businessInstagram}, ${user.businessType})
+                    ON CONFLICT (id) DO NOTHING;
+                `;
+            }),
+        );
+
+        console.log(`Seeded ${insertedBusinesses.length} businesses`);
+
+        return {
+            createTable,
+            businesses: insertedBusinesses,
+        };
+    } catch (error) {
+        console.error('Error seeding creators:', error);
+        throw error;
+    }
+}
+
 
 async function seedCustomers(client) {
     try {
@@ -185,7 +230,6 @@ async function seedBusiness(client) {
       CREATE TABLE IF NOT EXISTS businesses (
         "id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         "businessType" VARCHAR(255) NOT NULL,
-        "promotions" TEXT[],
         "businessName" VARCHAR(255) NOT NULL,
         "businessDescription" TEXT NOT NULL,
         "businessInstagram" VARCHAR(255),
@@ -212,7 +256,6 @@ async function seedBusiness(client) {
         INSERT INTO businesses (
         "id", 
         "businessType", 
-        "promotions", 
         "businessName",
         "businessDescription",
         "businessInstagram",
@@ -228,7 +271,6 @@ async function seedBusiness(client) {
         "tags")
         VALUES (${business.id}, 
         ${business.businessType}, 
-        ${business.promotions}, 
         ${business.businessName}, 
         ${business.businessDescription}, 
         ${business.businessInstagram}, 
@@ -461,6 +503,7 @@ async function main() {
     await seedUsers(client);
     await seedCreators(client);
     await seedCreatorsSignups(client);
+    await seedBusinessSignups(client);
     await seedBusiness(client);
     await seedPromotions(client);
     await seedEnrollment(client);

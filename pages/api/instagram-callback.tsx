@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.log('user_id:', user_id);
 
         // Redirect the user back to your app
-        res.redirect('/creator/onboard/bank');
+        res.redirect('/creator-onboard/bank');
     } catch (error) {
         console.error('Error exchanging code for token:', error);
         res.status(500).json({ error: 'Failed to authenticate with Instagram' });

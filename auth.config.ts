@@ -16,10 +16,20 @@ export const authConfig = {
             const isOnBusinessPage = nextUrl.pathname.startsWith('/business');
             const isOnProfilePage = nextUrl.pathname.endsWith('/profile');
             const isOnRegisterPage = nextUrl.pathname.startsWith('/register');
-            const isOnboardPage = nextUrl.pathname.startsWith('/onboard');
+            const isCreatorOnboardPage = nextUrl.pathname.startsWith('/creator-onboard');
+            const isBusinessOnboardPage = nextUrl.pathname.startsWith('/business-onboard');
+            const isAdminPage = nextUrl.pathname.startsWith('/admin');
 
-            if (isOnRegisterPage || isOnboardPage) {
+            if (isOnRegisterPage || isCreatorOnboardPage || isBusinessOnboardPage) {
                 return true;
+            }
+
+            if (userType === 'admin') {
+                if (isAdminPage) {
+                   return true;
+                } else {
+                    return Response.redirect(new URL('/admin', nextUrl));
+                }
             }
 
             if (userType === 'business') {

@@ -198,6 +198,24 @@ export type CreatorOnboardData = {
   city: string;
 };
 
+export type BusinessOnboardData = {
+  id: string;
+  businessName: string;
+  contactName: string;
+  jobTitle: string;
+  contactEmail: string;
+  contactPhoneNumber: string;
+  businessLocation: string;
+  businessInstagram: string;
+  businessType: string;
+  businessDescription?: string;
+  address?: string;
+  placesId?: string;
+  locationLat?: string;
+  locationLng?: string;
+  tags?: string;
+};
+
 export type PromotionGrid = {
   id: string;
   businessId: string;

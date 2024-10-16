@@ -6,7 +6,7 @@ import {redirect} from "next/navigation";
 import { signIn, auth } from '@/auth';
 import { AuthError } from 'next-auth';
 import bcrypt from "bcrypt";
-import {CardInfo, Creator, CreatorOnboardData} from "@/app/lib/definitions";
+import {BusinessOnboardData, CardInfo, Creator, CreatorOnboardData} from "@/app/lib/definitions";
 import {unstable_noStore as noStore} from "next/dist/server/web/spec-extension/unstable-no-store";
 
 // Helper function to create a date schema
@@ -130,11 +130,17 @@ export type State = {
 };
 
 export async function createPromotion(prevState: State, formData: FormData) {
-    const businessIds = await fetchAuthedUserId();
+    const user = await auth();
+    let businessId = "";
+    if (user?.user?.type !== 'admin') {
+        businessId = formData.get('businessId')!.toString();
+    } else {
+        businessId = await fetchAuthedUserId();
+    }
     console.log(formData);
     console.log(formData.get('tierOneOffer'))
     const validatedFields = CreatePromotion.safeParse({
-        businessId: businessIds,
+        businessId: businessId,
         promotionType: formData.get('promotionType'),
         startDate: formData.get('startDate'),
         endDate: formData.get('endDate'),
@@ -168,7 +174,6 @@ export async function createPromotion(prevState: State, formData: FormData) {
     const postDeliverable = "after";
 
     const {
-        businessId,
         promotionType,
         startDate,
         endDate,
@@ -245,9 +250,15 @@ export async function createPromotion(prevState: State, formData: FormData) {
             message: "Database Error: Failed to create promotion."
         };
     }
+    if (user?.user?.type !== 'admin') {
+        revalidatePath('/admin/business');
+        redirect('/admin/business');
+    } else {
+        revalidatePath('/business/promotions');
+        redirect('/business/promotions');
+    }
 
-    revalidatePath('/business/promotions');
-    redirect('/business/promotions');
+
 }
 
 // Define the schema for promotion update
@@ -477,6 +488,42 @@ export async function creatorOnboard(
     }
 }
 
+
+export async function businessOnboard(
+    businessData: BusinessOnboardData,
+    password: string,
+) {
+    try {
+        // Prepare data for insertion into the database
+
+        const { id, businessName, contactName, contactEmail, contactPhoneNumber, businessInstagram, businessType, businessDescription, address, placesId, locationLat, locationLng } = businessData;
+        const userType = "business";
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await sql`
+        INSERT INTO businesses (id, "businessName", "contactName", "contactEmail", "contactPhoneNumber", "businessInstagram", "businessType", "businessDescription", "address", "placesId", "locationLat", "locationLng" )
+        VALUES (${id}, ${businessName}, ${contactName}, ${contactEmail}, ${contactPhoneNumber}, ${businessInstagram}, ${businessType}, ${businessDescription}, ${address}, ${placesId}, ${locationLat}, ${locationLng} )
+        ON CONFLICT (id) DO NOTHING;`;
+
+        await sql`
+        INSERT INTO users ( id, email, password, type)
+        VALUES (${id}, ${contactEmail}, ${hashedPassword}, ${userType})
+        ON CONFLICT (id) DO NOTHING;`;
+
+        const signInData = {email: contactEmail, password: password }
+        await signIn('credentials', signInData);
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid credentials.';
+                default:
+                    return 'Something went wrong.';
+            }
+        }
+        throw error;
+    }
+}
+
 export async function businessRegister(
     prevState: string | undefined,
     formData: FormData,
@@ -578,6 +625,27 @@ export async function updateUserData(userData: CreatorOnboardData) {
           email = ${userData.email},
           phone = ${userData.phone},
           instagram = ${userData.instagram},
+          tiktok = ${userData.tiktok},
+          city = ${userData.city}
+      WHERE id = ${userData.id}
+    `;
+        return { success: true };
+    } catch (error) {
+        console.error('Failed to update user data:', error);
+        return { success: false, error: 'Failed to update user data' };
+    }
+}
+
+export async function updateBusinessData(userData: BusinessOnboardData) {
+    try {
+        await sql`
+      UPDATE businesssignup
+      SET name = ${userData.companyName},
+          email = ${userData.name},
+          phone = ${userData.jobtitle},
+          instagram = ${userData.email},
+          instagram = ${userData.phoneNumber},
+          instagram = ${userData.businesslocation},
           tiktok = ${userData.tiktok},
           city = ${userData.city}
       WHERE id = ${userData.id}

@@ -11,7 +11,7 @@ import {
   PromotionTable,
   Business,
   PromotionGrid,
-  LatestPromotionRaw, CreatorOnboardData, CardInfo,
+  LatestPromotionRaw, CreatorOnboardData, CardInfo, BusinessOnboardData,
 } from './definitions';
 import { formatCurrency } from './utils';
 import {GetServerSideProps} from "next";
@@ -91,6 +91,47 @@ export async function fetchCardData(userId: string) {
   }
 }
 
+
+export async function fetchAdminCardData() {
+  noStore();
+  try {
+    //const enrollmentCountPromise = sql`SELECT COUNT(*) FROM enrollment where "userId"=${userId}`;
+    // You can probably combine these into a single SQL query
+    // However, we are intentionally splitting them to demonstrate
+    // how to initialize multiple queries in parallel with JS.
+    const signupCountPromise = sql`SELECT COUNT(*) FROM creatorsignup`;
+    const creatorCountPromise = sql`SELECT COUNT(*) FROM creators`;
+    const businessCountPromise = sql`SELECT COUNT(*) FROM businesses`;
+    const promotionCountPromise = sql`SELECT COUNT(*) FROM promotions`;
+    // const redeemedCountPromise = sql`SELECT COUNT(*) FROM enrollment WHERE "userId"=${userId} AND status='redeemed'`;
+    // const enrolledTotalPromise = sql`SELECT SUM("amount") FROM enrollment WHERE "userId"=${userId} AND status='redeemed'`;
+    // const totalBusinessPromise = sql`SELECT COUNT(DISTINCT "businessId") FROM enrollment WHERE "userId"=${userId} AND status='redeemed'`;
+
+    const data = await Promise.all([
+      signupCountPromise,
+      creatorCountPromise,
+      businessCountPromise,
+      promotionCountPromise,
+    ]);
+
+    const numberOfSignups = Number(data[0].rows[0].count ?? '0');
+    const numberOfCreators = Number(data[1].rows[0].count ?? '0');
+    const numberOfBusinesses = Number(data[2].rows[0].count ?? '0');
+    const numberOfPromotions = Number(data[3].rows[0].count ?? '0');
+    // const totalEnrolledPromotions = formatCurrency(data[2].rows[0].sum ?? '0');
+    // const totalBusiness = Number(data[3].rows[0].count ?? '0');
+
+    return {
+      numberOfSignups,
+      numberOfCreators,
+      numberOfBusinesses,
+      numberOfPromotions,
+    };
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch card data.');
+  }
+}
 
 export async function fetchCampaignCardData(promotionId: string) {
   noStore();
@@ -388,6 +429,38 @@ export async function fetchOnboardById(id: string) {
   }
 }
 
+export async function fetchOnboardBusinessById(id: string) {
+  noStore();
+  try {
+    const data = await sql<BusinessOnboardData>`
+      SELECT *
+      FROM businesssignup
+      WHERE id = ${id};
+    `;
+    const business = data.rows[0];
+    console.log("business = " + business)
+    return business;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch onboarded business. ');
+  }
+}
+
+export async function fetchCreatorSignups() {
+  noStore();
+  try {
+    const data = await sql<CreatorOnboardData>`
+      SELECT *
+      FROM creatorsignup;    `;
+    const creators = data.rows
+    console.log("creators = " + creators)
+    return creators;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch onboarded user2. ');
+  }
+}
+
 export async function fetchBusinessById(id: string) {
   noStore();
   try {
@@ -399,6 +472,22 @@ export async function fetchBusinessById(id: string) {
     const businesses = data.rows
     console.log(businesses);
     return businesses[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch invoice.');
+  }
+}
+
+export async function fetchBusinesses() {
+  noStore();
+  try {
+    const data = await sql<Business>`
+      SELECT *
+      FROM businesses;
+    `;
+    const businesses = data.rows
+    console.log(businesses);
+    return businesses;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoice.');

@@ -21,9 +21,17 @@ const businessLinks = [
   { name: 'Billing', href: '/business/billing', icon: ReceiptPercentIcon },
 ];
 
+const adminLinks = [
+  { name: 'creators', href: '/admin/creator', icon: HomeIcon },
+  { name: 'business', href: '/admin/business', icon: ReceiptPercentIcon },
+];
+
 export default function NavLinks() {
   const pathname = usePathname();
   let links = pathname.includes("/creator") ? creatorLinks : businessLinks;
+  if (pathname.includes("/admin")) {
+    links = adminLinks;
+  }
   return (
     <>
       {links.map((link) => {

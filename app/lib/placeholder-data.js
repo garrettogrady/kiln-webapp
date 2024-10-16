@@ -73,6 +73,12 @@ const users = [
     email: 'yale@trykiln.com',
     password: '123456',
   },
+  {
+    id: 'f0a2d613-35f7-4875-bcf4-347cd84e7f82',
+    type: 'admin',
+    email: 'lily@trykiln.com',
+    password: '123456',
+  },
 ];
 
 const creators = [
@@ -129,6 +135,31 @@ const creatorsignup = [
     city: 'Los Angeles, CA',
     instagram: 'yale_goldberg5',
     tiktok: 'yale_goldberg5',
+  }
+];
+
+const businesssignup = [
+  {
+    id: '12370484-2465-40df-bdeb-5e5a3facd813',
+    businessName: 'Chipotle BBQ',
+    contactName: 'Bill Johnson',
+    jobTitle: 'Chief of Staff',
+    contactEmail: 'chipotle@bbqtryme.com',
+    contactPhoneNumber: '310-555-0123',
+    businessLocation: 'NY',
+    businessInstagram: 'ChipotleBBQ',
+    businessType: 'Cafe',
+  },
+  {
+    id: '4056ce7c-4da2-4f41-8e30-b67f045c89a3',
+    businessName: 'Super Macs',
+    contactName: 'Leonard Johnson',
+    jobTitle: 'Founder',
+    contactEmail: 'LJ@mackies.com',
+    contactPhoneNumber: '310-555-0123',
+    businessLocation: 'NY',
+    businessInstagram: 'lil_mackies',
+    businessType: 'Restaurant',
   }
 ];
 
@@ -595,6 +626,7 @@ module.exports = {
   cards,
   businesses,
   creatorsignup,
+  businesssignup,
   promotions,
   transactions
 };

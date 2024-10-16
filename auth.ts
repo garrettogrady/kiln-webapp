@@ -22,12 +22,12 @@ export const { auth, signIn, signOut } = NextAuth({
     providers: [
         Credentials({
             async authorize(credentials) {
-                console.log("signing in: " + credentials.toString())
                 const parsedCredentials = z
                     .object({ email: z.string().email(), password: z.string().min(6) })
                     .safeParse(credentials);
 
-
+                JSON.parse(JSON.stringify(credentials));
+                JSON.parse(JSON.stringify(parsedCredentials));
                 if (parsedCredentials.success) {
                     const { email, password } = parsedCredentials.data;
                     console.log("email: " + email);
