@@ -59,7 +59,7 @@ export const authConfig = {
                     if (isLoggedIn) return true;
                     return false;
                 } else {
-                    return Response.redirect(new URL('/creator/promo', nextUrl));
+                    return Response.redirect(new URL('/creator/promotions', nextUrl));
                 }
             }
             // if (isOnDashboard) {
