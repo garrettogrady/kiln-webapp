@@ -4,7 +4,8 @@ import {User} from "@/app/lib/definitions";
 export const authConfig = {
     pages: {
         signIn: '/login',
-        newUser: "/register/creator",
+        signOut: '/logout',
+        newUser: "/register/business",
     },
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
@@ -29,8 +30,13 @@ export const authConfig = {
             }
 
             if (userType === 'admin') {
-                console.log("admin logged in");
-                return true;
+
+                if (isLoggedIn){
+                    console.log("admin logged in");
+                    return true;
+                } else {
+                    return false;
+                }
             }
 
             if (userType === 'business') {
@@ -46,14 +52,14 @@ export const authConfig = {
                 }
 
             } else if (userType === 'creator' ) {
-                if( isOnCreatorPage) {
+                if(isOnCreatorPage) {
                     if (isOnProfilePage && isLoggedIn) {
                         return Response.redirect(new URL('/creator/profile/'+auth?.user?.id, nextUrl));
                     }
                     if (isLoggedIn) return true;
                     return false;
                 } else {
-                    return Response.redirect(new URL('/creator/promotions', nextUrl));
+                    return Response.redirect(new URL('/creator/promo', nextUrl));
                 }
             }
             // if (isOnDashboard) {

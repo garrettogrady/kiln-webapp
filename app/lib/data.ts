@@ -318,9 +318,9 @@ export async function fetchFilteredPromotions(
   try {
     const promotions = await sql<PromotionGrid>`
       SELECT
-        promotions.id,
-        promotions.title,
-        promotions.description,
+        promotions."id",
+        promotions."title",
+        promotions."description",
         promotions."featuredImage",
         promotions."pricingType",
         promotions."fixedOffer",
@@ -592,14 +592,6 @@ export async function fetchLatestPromotionsFromUser(id: string) {
 export async function fetchLatestTransactionsFromUser(id: string) {
   noStore();
   try {
-    // const data = await sql<LatestPromotionRaw>`
-    //   SELECT promotions."maxOfferPrice" AS amount, promotions.title as name, businesses."businessType" as "promotionType", businesses."businessName" as business, promotions.id
-    //   FROM promotions
-    //   JOIN businesses ON promotions."businessId" = businesses.id
-    //   JOIN enrollment ON promotions.id = enrollment."promotionId"
-    //   where enrollment.status = 'enrolled' and enrollment."userId" = ${id}
-    //   LIMIT 5`;
-
     const data = {
         rows: [
             {
@@ -700,6 +692,7 @@ export async function fetchPromotionCardData() {
 }
 
 export async function checkUserEnrollment(promotionId: string) {
+  noStore();
   const user = await auth();
   const userId = user?.user.id;
   console.log(userId)
@@ -721,6 +714,7 @@ export async function checkUserEnrollment(promotionId: string) {
 }
 
 export async function fetchCreatorTier() {
+  noStore();
   try {
     const user = await auth();
     const userId = user?.user.id;
