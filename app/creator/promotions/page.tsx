@@ -13,19 +13,21 @@ export const metadata = {
     }
 };
 
-export default async function HomePage({searchParams}: {
-    searchParams?: {
-        query?: string;
-        page?: string;
-        map?: boolean;
-    };
-}) {
-    const query = searchParams?.query || '';
-    const currentPage = Number(searchParams?.page) || 1;
-    const showMap = Boolean(searchParams?.map) || false;
-    const totalPages = await fetchPromotionsPages(query);
+// export default async function HomePage({searchParams}: {
+//     searchParams?: {
+//         query?: string;
+//         page?: string;
+//         map?: boolean;
+//     };
+// }) {
+export default async function HomePage() {
+    // const query = searchParams?.query || '';
+    // const currentPage = Number(searchParams?.page) || 1;
+    // const showMap = Boolean(searchParams?.map) || false;
+    const totalPages = await fetchPromotionsPages('');
     //const { replace } = useRouter();
-    console.log("show map: " + showMap);
+    console.log("" +
+        "show map: " + showMap);
 
     return (
 
@@ -37,7 +39,7 @@ export default async function HomePage({searchParams}: {
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
                 <Search placeholder="Search promotions..." />
             </div>
-             <PromotionsGrid  query={query} currentPage={currentPage} showMap={showMap} />
+             <PromotionsGrid  query={""} currentPage={1} showMap={false} />
             <div className="mt-5 flex w-full justify-center">
                 <Pagination totalPages={totalPages} />
             </div>
