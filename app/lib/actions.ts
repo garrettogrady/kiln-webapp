@@ -619,7 +619,6 @@ export async function enrollUserInPromotion(promotionId: string, businessId: str
         return { isUserEnrolled: false};
     }
 }
-
 export async function updateUserData(userData: CreatorOnboardData) {
     try {
         await sql`
