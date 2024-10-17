@@ -31,26 +31,21 @@ export const authConfig = {
                 return true;
             }
 
-            // if (isOnlogin && isLoggedIn) {
-            //     console.log("on login")
-            //     if (userType === 'admin') {
-            //         return Response.redirect(new URL('/admin/business', nextUrl));
-            //     } else if (userType === 'business') {
-            //         return Response.redirect(new URL('/business/'+auth?.user?.id+'/promotions', nextUrl));
-            //     } else if (userType === 'creator') {
-            //         return Response.redirect(new URL('/creator/promotions', nextUrl));
-            //     }
-            // }
+            if (isOnlogin && isLoggedIn) {
+                console.log("on login")
+                if (userType === 'admin') {
+                    return Response.redirect(new URL('/admin/business', nextUrl));
+                } else if (userType === 'business') {
+                    return Response.redirect(new URL('/business/'+auth?.user?.id+'/promotions', nextUrl));
+                } else if (userType === 'creator') {
+                    return Response.redirect(new URL('/creator/promotions', nextUrl));
+                }
+            }
 
 
             if (userType === 'admin') {
                 console.log("on admin");
-                if (isAdminPage){
-                    return true;
-                } else {
-                    return false;
-                }
-
+                return true;
             }
 
             if (userType === 'business') {
