@@ -60,8 +60,6 @@ export const authConfig = {
                     if (isLoggedIn) return true;
                     return false;
                 } else {
-                    console.log("revalidating to /creator/promotions")
-                    revalidatePath('/creator/promotions');
                     return Response.redirect(new URL('/creator/promotions', nextUrl));
                 }
             }
