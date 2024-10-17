@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import {fetchCreatorSignups} from "@/app/lib/data";
 import {CreatorOnboardData} from "@/app/lib/definitions";
+import Link from "next/link";
 
 
 export default async function CreatorOnboardPage() {
@@ -103,12 +104,14 @@ export default async function CreatorOnboardPage() {
                                     <p className="text-gray-900 whitespace-no-wrap">{creator.city}</p>
                                 </td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <button
-                                        onClick={() => handleApprove(creator.id)}
-                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                    >
-                                        Approve
-                                    </button>
+                                    <Link href={`/admin/creator/approve/${creator.id}`}>
+                                        <button
+                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                        >
+                                            Approve
+                                        </button>
+                                    </Link>
+
                                 </td>
                             </tr>
                         ))}

@@ -17,7 +17,7 @@ export type Creator = {
   city: string;
   instagram: string;
   tiktok: string;
-  password: string;
+  tier: string;
 };
 export type Customer = {
   id: string;

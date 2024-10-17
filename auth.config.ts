@@ -14,6 +14,7 @@ export const authConfig = {
             const userType = auth?.user?.type;
             console.log("userType: " + userType);
             const isOnlogout = nextUrl.pathname.startsWith('/logout');
+            const isOnlogin = nextUrl.pathname.startsWith('/login');
             const isOnCreatorPage = nextUrl.pathname.startsWith('/creator');
             const isOnBusinessPage = nextUrl.pathname.startsWith('/business');
             const isOnProfilePage = nextUrl.pathname.endsWith('/profile');
@@ -26,18 +27,30 @@ export const authConfig = {
                 return true;
             }
 
-            if (isOnlogout) {
+            if (isOnlogout && isLoggedIn) {
                 return true;
             }
 
+            if (isOnlogin && isLoggedIn) {
+                if (userType === 'admin') {
+                    return Response.redirect(new URL('/admin/business', nextUrl));
+                } else if (userType === 'business') {
+                    return Response.redirect(new URL('/business/'+auth?.user?.id+'/promotions', nextUrl));
+                } else if (userType === 'creator') {
+                    return Response.redirect(new URL('/creator/promotions', nextUrl));
+                }
+            }
+
+
+
             if (userType === 'admin') {
 
-                if (isLoggedIn){
-                    console.log("admin logged in");
+                if (isAdminPage){
                     return true;
                 } else {
                     return false;
                 }
+
             }
 
             if (userType === 'business') {

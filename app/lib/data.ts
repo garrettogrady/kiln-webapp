@@ -11,7 +11,7 @@ import {
   PromotionTable,
   Business,
   PromotionGrid,
-  LatestPromotionRaw, CreatorOnboardData, CardInfo, BusinessOnboardData,
+  LatestPromotionRaw, CreatorOnboardData, CardInfo, BusinessOnboardData, Creator,
 } from './definitions';
 import { formatCurrency } from './utils';
 import {GetServerSideProps} from "next";
@@ -452,6 +452,21 @@ export async function fetchCreatorSignups() {
     const data = await sql<CreatorOnboardData>`
       SELECT *
       FROM creatorsignup;    `;
+    const creators = data.rows
+    console.log("creators = " + creators)
+    return creators;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch onboarded user2. ');
+  }
+}
+
+export async function fetchCreators() {
+  noStore();
+  try {
+    const data = await sql<Creator>`
+      SELECT *
+      FROM creators;    `;
     const creators = data.rows
     console.log("creators = " + creators)
     return creators;

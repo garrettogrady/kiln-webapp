@@ -13,19 +13,15 @@ export const metadata = {
     }
 };
 
-export default async function DashboardPage() {
+export default async function ApprovalPage() {
     return (
         <main>
             <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-                Profile
+                Creator Approval
             </h1>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <Suspense fallback={<CardsSkeleton />}>
-                    <AdminCardWrapper  />
-                </Suspense>
+
             </div>
-            <LatestSignups/>
-            {/*<LatestSignups/>*/}
         </main>
     );
 }
