@@ -22,7 +22,7 @@ module.exports = {
     },
     experimental: {
         serverActions: {
-            allowedOrigins: ["https://kiln23123.a.pinggy.link", "localhost:3000", "https://nextjstutorial-garrett-ogradys-projects.vercel.app"]
+            allowedOrigins: ["https://kiln23123.a.pinggy.link", "localhost:3000", "https://app.trykiln.coom"]
         }
     }
 };
