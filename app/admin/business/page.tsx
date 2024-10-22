@@ -9,12 +9,13 @@ import { Metadata } from 'next';
 import {CreateCampaign} from "@/app/ui/campaigns/buttons";
 import CardWrapper from "@/app/ui/campaigns/cards";
 import BusinessTable from "@/app/ui/admin/business-table";
-import AdminCardWrapper from "@/app/ui/admin/cards";
+import AdminCardWrapper from "@/app/ui/admin/business-cards";
+import AdminBusinessCardWrapper from "@/app/ui/admin/business-cards";
 
 export const metadata: Metadata = {
     title: 'admin business',
 };
-export default async function Page() {
+export default async function BusinessAdminPage() {
 
     return (
         <div className="w-full">
@@ -23,7 +24,7 @@ export default async function Page() {
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 <Suspense fallback={<CardsSkeleton />}>
-                    <AdminCardWrapper  />
+                    <AdminBusinessCardWrapper  />
                 </Suspense>
             </div>
             <BusinessTable />

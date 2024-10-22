@@ -51,8 +51,8 @@ export default async function ShowForm({ promotion, businessId}: { promotion: Pr
                 {renderField('Title', promotion.title)}
                 {renderField('Description', promotion.description)}
                 {renderField('Suggested Items', promotion.suggestedItems)}
-                {renderField('Availability Start', promotion.availabilityStart && formatDate(promotion.availabilityStart))}
-                {renderField('Availability End', promotion.availabilityEnd && formatDate(promotion.availabilityEnd))}
+                {renderField('Availability Start', promotion.availabilityStart && promotion.availabilityStart)}
+                {renderField('Availability End', promotion.availabilityEnd && promotion.availabilityEnd)}
                 {renderField('Pricing Type', promotion.pricingType)}
                 {renderField('Fixed Offer', promotion.fixedOffer && formatCurrency(promotion.fixedOffer))}
                 {renderField('Platform', promotion.platform)}

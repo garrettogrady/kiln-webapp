@@ -251,14 +251,8 @@ export async function createPromotion(prevState: State, formData: FormData) {
             message: "Database Error: Failed to create promotion."
         };
     }
-    if (isAdmin) {
-        console.log("is admin")
-        revalidatePath('/business/'+businessId+'/promotions');
-        redirect('/business/'+businessId+'/promotions');
-    } else {
-        revalidatePath('/business/promotions');
-        redirect('/business/promotions');
-    }
+    revalidatePath('/business/'+businessId+'/promotions');
+    redirect('/business/'+businessId+'/promotions');
 
 
 }
@@ -282,7 +276,7 @@ const UpdatePromotionSchema = z.object({
     tierThreeOffer:  z.string().optional(),
     maxTotalSpend:  z.string(),
     postType: z.string(),
-    mediaType: z.string(),
+    mediaType: z.string().optional(),
     tags: z.string(),
 });
 
@@ -301,19 +295,24 @@ export async function updatePromotion(prevState: any, formData: FormData) {
         availabilityStart: formData.get('availabilityStart'),
         availabilityEnd: formData.get('availabilityEnd'),
         pricingType: formData.get('pricingType'),
-        fixedOffer: formData.get('fixedOffer'),
-        tierOneOffer: formData.get('tierOneOffer'),
-        tierTwoOffer: formData.get('tierTwoOffer'),
-        tierThreeOffer: formData.get('tierThreeOffer'),
         maxTotalSpend: formData.get('maxTotalSpend'),
         postType: formData.get('postType'),
-        mediaType: formData.get('mediaType'),
         tags: formData.get('tags'),
     });
 
-    console.log(validatedFields.success)
+    const businessId = formData.get('businessId')!.toString();
+    const fixedOffer = formData.get('fixedOffer') ?? "";
+    const tierOneOffer = formData.get('tierOneOffer') ?? "";
+    const tierTwoOffer = formData.get('tierTwoOffer') ?? "";
+    const tierThreeOffer = formData.get('tierThreeOffer') ?? "";
+    const mediaType = formData.get('mediaType') ?? "";
+
+    const platform = "instagram";
+    const postDeliverable = "after";
+
     // If form validation fails, return errors early. Otherwise, continue.
     if (!validatedFields.success) {
+        console.log(validatedFields.error.flatten())
         return {
             errors: validatedFields.error.flatten().fieldErrors,
             message: 'Missing Fields. Failed to Update Promotion.',
@@ -333,16 +332,15 @@ export async function updatePromotion(prevState: any, formData: FormData) {
         availabilityStart,
         availabilityEnd,
         pricingType,
-        fixedOffer,
-        tierOneOffer,
-        tierTwoOffer,
-        tierThreeOffer,
         maxTotalSpend,
         postType,
-        mediaType,
         tags,
     } = validatedFields.data;
 
+    const tagList = tags.split(",");
+    console.log("about to input")
+
+    console.log(validatedFields.data);
     try {
         await sql`
       UPDATE promotions
@@ -363,7 +361,7 @@ export async function updatePromotion(prevState: any, formData: FormData) {
           "maxTotalSpend" = ${maxTotalSpend},
           "postType" = ${postType},
           "mediaType" = ${mediaType},
-          "tags" = ${tags}
+          "tags" = ${tagList}
       WHERE "id" = ${id}
     `;
     } catch (error) {
@@ -371,9 +369,10 @@ export async function updatePromotion(prevState: any, formData: FormData) {
             message: 'Database Error: Failed to Update Promotion.',
         };
     }
+    console.log("promotion updated succesfully")
 
-    revalidatePath('/business/promotions/' + id);
-    redirect('/business/promotions/' + id);
+    revalidatePath('/business/'+businessId +'/promotions/' + id);
+    redirect('/business/'+businessId +'/promotions/' + id);
 }
 
 export async function deleteInvoice(id: string) {

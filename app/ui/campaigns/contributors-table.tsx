@@ -18,11 +18,11 @@ export default async function ContributorsTable() {
   const promotions = await fetchCampaigns(businessId);
 
   const enrollments = [
-    { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Gartogo',  date: Date.now(), followers: "10K", posts: '3', engagement: "5K", amount: 11245 },
-    { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Jack_Jones',  date: Date.now(), followers: "255K", posts: '3', engagement: "22K", amount: 6723 },
-    { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Milesteller',  date: Date.now(), followers: "112K",  posts: '2', engagement: "45K", amount: 7435 },
-    { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Johnsummit',  date: Date.now(), followers: "98K", posts: '2', engagement: "93K", amount: 14057 },
-    { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Seanjones',  date: Date.now(), followers: "322K",posts: '3', engagement: "101K", amount: 23420 },
+    // { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Gartogo',  date: Date.now(), followers: "10K", posts: '3', engagement: "5K", amount: 11245 },
+    // { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Jack_Jones',  date: Date.now(), followers: "255K", posts: '3', engagement: "22K", amount: 6723 },
+    // { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Milesteller',  date: Date.now(), followers: "112K",  posts: '2', engagement: "45K", amount: 7435 },
+    // { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Johnsummit',  date: Date.now(), followers: "98K", posts: '2', engagement: "93K", amount: 14057 },
+    // { promotionId: '1e082498-f20d-4db2-8119-5aa33e0529bc', userName: '@Seanjones',  date: Date.now(), followers: "322K",posts: '3', engagement: "101K", amount: 23420 },
 
   ];
 

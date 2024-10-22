@@ -14,19 +14,14 @@ const iconMap = {
   invoices: InboxIcon,
 };
 
-export default async function AdminCardWrapper() {
+export default async function AdminBusinessCardWrapper() {
   const {
-      numberOfSignups,
-      numberOfCreators,
       numberOfBusinesses,
       numberOfPromotions,
   } = await fetchAdminCardData();
   return (
     <>
       {/* NOTE: comment in this code when you get to this point in the course */}
-        <Card title="New Creator Signups" value={numberOfSignups} type="enrolled" />
-        <Card title="Total Creators" value={numberOfCreators} type="totalPromotions" />
-
         <Card title="Total Promotions" value={numberOfPromotions} type="redeemed" />
       <Card title="Total Businesses" value={numberOfBusinesses} type="totalBusinesses"
       />

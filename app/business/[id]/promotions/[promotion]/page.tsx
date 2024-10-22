@@ -11,7 +11,7 @@ import ShowForm from "@/app/ui/campaigns/show-form";
 import Breadcrumbs from "@/app/ui/campaigns/breadcrumbs";
 
 export const metadata = {
-    description: 'View Campaign',
+    description: 'View Promotions',
     openGraph: {
         type: 'website'
     }
@@ -29,10 +29,10 @@ export default async function Page({ params }: { params: { id: string, promotion
         <>
         <Breadcrumbs
             breadcrumbs={[
-                { label: 'Campaigns', href: '/dashboard/promotions' },
+                { label: 'Promotions', href: '/business/'+params.id+'/promotions' },
                 {
-                    label: 'View Campaign',
-                    href: '/dashboard/promotions/view',
+                    label: 'View Promotion',
+                    href: '/business/'+params.id+'/promotions/'+promotionId,
                     active: true,
                 },
             ]}

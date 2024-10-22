@@ -19,16 +19,16 @@ export default async function EngagementCards({promotionId}: { promotionId: stri
     return (
         <>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-4">
-                <Card title="Creators" value={5} type="redemptions"  />
-                <Card title="Total Business Spend" value="$2598.73" type="spend" />
-                <Card title="Total Business Overspend" value="$1213.52" type="spend" />
-                <Card title="Total Engagement" value="134.2K" type="engagement" />
+                <Card title="Creators" value={0} type="redemptions"  />
+                <Card title="Total Business Spend" value="$0.00" type="spend" />
+                <Card title="Total Business Overspend" value="$0.00" type="spend" />
+                <Card title="Total Engagement" value="0" type="engagement" />
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-4">
-                <Card title="Total Posts" value={13} type="posts" />
-                <Card title="Engagement Rate" value="2.5%" type="engagement" />
-                <Card title="Value Per Engagement" value="$.27" type="posts" />
-                <Card title="Value Per Impression" value="$.94" type="posts" />
+                <Card title="Total Posts" value={0} type="posts" />
+                <Card title="Engagement Rate" value="0" type="engagement" />
+                <Card title="Value Per Engagement" value="$0.00" type="posts" />
+                <Card title="Value Per Impression" value="$0.00" type="posts" />
 
             </div>
         </>

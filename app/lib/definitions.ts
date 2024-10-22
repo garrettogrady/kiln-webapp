@@ -2,6 +2,8 @@
 // It describes the shape of the data, and what data type each property should accept.
 // For simplicity of teaching, we're manually defining these types.
 // However, these types are generated automatically if you're using an ORM such as Prisma.
+import * as React from "react";
+
 export type User = {
   id: string;
   type: string;
@@ -149,6 +151,7 @@ export type Business = {
 
 export type Promotion = {
   id: string;
+  businessId: string;
   promotionType: string;
   startDate: string;
   endDate: string;
@@ -264,4 +267,14 @@ export type Image = {
   width: number;
   height: number;
 };
+
+//const adminLinks = [
+//   { name: 'creators', href: '/admin/creator', icon: HomeIcon },
+//   { name: 'business', href: '/admin/business', icon: ReceiptPercentIcon },
+// ];
+export type LinkList = {
+  name: string;
+  href: string;
+  icon: string;
+}
 

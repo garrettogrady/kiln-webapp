@@ -6,6 +6,10 @@ import {signOut} from "@/auth";
 import {ArrowTopRightOnSquareIcon} from "@heroicons/react/24/outline";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+    let links = [
+        { name: 'creators', href: '/admin/creator', icon: 'home' },
+        { name: 'business', href: '/admin/business', icon: 'user' },
+    ];
     return (
 
         <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
@@ -20,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         </div>
                     </Link>
                     <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
-                        <NavLinks />
+                        <NavLinks links={links} />
                         <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
                         <form
                             action={async () => {

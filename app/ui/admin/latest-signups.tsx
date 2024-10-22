@@ -8,33 +8,9 @@ import Link from "next/link";
 export default async function CreatorOnboardPage() {
     const creators = await fetchCreatorSignups();
 
-    // const [creators, setCreators] = useState<CreatorOnboardData[]>([]);
-    //
-    // useEffect(() => {
-    //     fetchCreators();
-    // }, []);
-    //
-    // const fetchCreators = async () => {
-    //     try {
-    //         const response = await fetchCreatorSignups();
-    //         setCreators(response);
-    //     } catch (error) {
-    //         console.error('Error fetching creators:', error);
-    //     }
-    // };
 
     const handleApprove = async (id: string) => {
-        // try {
-        //     const response = await fetch(`/api/approveCreator/${id}`, {
-        //         method: 'POST',
-        //     });
-        //     if (response.ok) {
-        //         // Remove the approved creator from the list
-        //         setCreators(creators.filter(creator => creator.id !== id));
-        //     }
-        // } catch (error) {
-        //     console.error('Error approving creator:', error);
-        // }
+
     };
 
     return (

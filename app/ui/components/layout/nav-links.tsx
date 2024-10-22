@@ -8,35 +8,32 @@ import {
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import {LinkList} from "@/app/lib/definitions";
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const creatorLinks = [
-  { name: 'Home', href: '/creator/promotions', icon: HomeIcon },
-  { name: 'Profile', href: '/creator/profile', icon: UserGroupIcon },
+  { name: 'Home', href: '/creator/promotions', icon: 'home' },
+  { name: 'Profile', href: '/creator/profile', icon: 'reciept' },
 ];
 
 const businessLinks = [
-  { name: 'Promotions', href: '/business/promotions', icon: HomeIcon },
-  { name: 'Billing', href: '/business/billing', icon: ReceiptPercentIcon },
+  { name: 'Promotions', href: '/business/promotions', icon: 'home' },
+  { name: 'Billing', href: '/business/billing', icon: 'reciept' },
 ];
 
 const adminLinks = [
-  { name: 'creators', href: '/admin/creator', icon: HomeIcon },
-  { name: 'business', href: '/admin/business', icon: ReceiptPercentIcon },
+  { name: 'creators', href: '/admin/creator', icon: 'home' },
+  { name: 'business', href: '/admin/business', icon: 'reciept' },
 ];
-
-export default function NavLinks() {
+export default function NavLinks({links}:{links: LinkList[];}) {
 
   const pathname = usePathname();
-  let links = pathname.includes("/creator") ? creatorLinks : businessLinks;
-  if (pathname.includes("/admin")) {
-    links = adminLinks;
-  }
+
   return (
     <>
       {links.map((link) => {
-        const LinkIcon = link.icon;
+        //const LinkIcon = link.icon;
         return (
             <Link
                 key={link.name}
@@ -48,7 +45,7 @@ export default function NavLinks() {
                     }
                 )}
             >
-              <LinkIcon className="w-6 text-[#254442]" />
+              {/*<LinkIcon className="w-6 text-[#254442]" />*/}
               <p className="hidden md:block">{link.name}</p>
             </Link>
         );
