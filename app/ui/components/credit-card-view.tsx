@@ -45,8 +45,6 @@ const CreditCardComponent: React.FC<{ id: string }> = ({ id }) => {
         <div className="w-full max-w-sm bg-white rounded-lg shadow-sm p-4">
             <div className="flex justify-between items-center mb-4">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">Active</span>
-                <img src="/onboard/debitVirtual.png" alt="Mastercard logo" className="h-6" />
             </div>
 
             <div className="mb-4 relative">

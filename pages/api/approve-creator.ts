@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Resend } from 'resend';
 import {sql} from "@vercel/postgres";
+import PropTypes from "prop-types";
+import React from "react";
+import {User} from "@/app/lib/definitions";
+import CreatorApproval, {CreatorApprovalEmailTemplate} from "@/app/ui/emails/creator-approval";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -38,25 +42,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
         // Query the database
-        const result = await sql`
-                    SELECT email
+        const result = await sql<User>`
+                    SELECT *
                     FROM creatorsignup
                     WHERE id = ${creatorId}`;
         console.log('SQL query result:', result);
-        const userEmail = result.rows[0];
-
+        const userEmail = result.rows[0].email;
+        const id = result.rows[0].id;
 
         if (!userEmail) {
             return res.status(404).json({ message: 'User not found' });
         }
-        console.log(userEmail.email)
 
+        console.log(userEmail)
+        console.log(id)
+        const link = process.env.APP_URL + '/creator-onboard/' + id;
+        console.log("cardholder name " + cardholderName);
+        console.log("link: " + link)
         // Send email using Resend
         const { data, error } = await resend.emails.send({
             from: 'info@trykiln.com',
-            to: userEmail.email,
+            to: userEmail,
             subject: 'Welcome to KILN',
-            html: `<p>Welcoime to KILN - please create your account here: <a>app.trykiln.com/creator-onboard/${creatorId}</a></p>`,
+            react: React.createElement(CreatorApprovalEmailTemplate, { name: cardholderName, link })
         });
 
         if (error) {

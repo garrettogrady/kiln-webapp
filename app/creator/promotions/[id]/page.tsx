@@ -19,7 +19,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     if (!promotion) {
         notFound();
     }
-
+    if (!promotion.images) {
+        promotion.images = new Array("/business/placeholder.jpg");
+    }
     return (
         <main>
             <div className="mx-auto max-w-screen-2xl px-4">

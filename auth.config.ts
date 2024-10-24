@@ -47,9 +47,9 @@ export const authConfig = {
 
             if (userType === 'admin') {
                 console.log("on admin");
-                // if (isAdminCreatorPage){
-                //     return Response.redirect(new URL('/admin/creator', nextUrl));
-                // }
+                if (isAdminCreatorPage){
+                    return true;
+                }
                 return true;
             }
 

@@ -494,6 +494,7 @@ export async function fetchBusinessById(id: string) {
   }
 }
 
+
 export async function fetchBusinesses() {
   noStore();
   try {

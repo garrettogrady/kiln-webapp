@@ -171,6 +171,8 @@ export type Promotion = {
   postType: string;
   mediaType: string;
   tags: string[];
+  images?: string[];
+
 };
 
 export type CardInfo = {

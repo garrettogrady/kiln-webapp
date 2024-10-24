@@ -17,6 +17,9 @@ const ProductGridItems: React.FC<ProductGridItemsProps> = ({ promotion, tier }) 
 
     const offerAmount = promotion.pricingType === 'fixed' ? formatCurrency(promotion.fixedOffer).toString() :  formatCurrency(promotion.fixedOffer).toString()
 
+    if (!promotion.featuredImage) {
+        promotion.featuredImage = "/business/placeholder.jpg";
+    }
     return (
         <Grid.Item key={promotion.id} className="animate-fadeIn">
             <Link className="relative inline-block h-full w-full" href={`/creator/promotions/${promotion.id}`}>

@@ -1,19 +1,11 @@
-"use client";
 import React, { useState, useEffect } from 'react';
-import { Dialog } from '@headlessui/react';
 import {fetchCampaigns, fetchCreators, fetchCreatorSignups} from "@/app/lib/data";
-import { CreatorOnboardData } from "@/app/lib/definitions";
-import InvoiceStatus from "@/app/ui/invoices/status";
-import {formatCurrency, formatDateToLocal} from "@/app/lib/utils";
-import {DeleteInvoice, UpdateInvoice} from "@/app/ui/invoices/buttons";
-import Enrollment from "@/app/ui/campaigns/enrollment";
-import CampaignStatus from "@/app/ui/campaigns/status";
 import {PersonStandingIcon} from "lucide-react";
 import Link from "next/link";
 
 export default async function CreatorAdminTable() {
     const creators = await fetchCreatorSignups();
-
+    console.log(creators);
     return (
         <div className="mt-6 flow-root">
             <div className="inline-block min-w-full align-middle">

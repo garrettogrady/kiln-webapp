@@ -1,15 +1,8 @@
 "use client";
 import {lusitana} from "@/app/ui/fonts";
 import {Suspense, useState} from "react";
-import {CardsSkeleton, InvoiceSkeleton} from "@/app/ui/skeletons";
-import CardWrapper from "@/app/ui/creator/cards";
-import LatestPromotions from "@/app/ui/dashboard/latest-promotions";
-import AdminCardWrapper from "@/app/ui/admin/business-cards";
-import LatestSignups from "@/app/ui/admin/latest-signups";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
-import {revalidatePath} from "next/cache";
-import {redirect} from "next/navigation";
+import {useRouter} from "next/navigation";
+
 
 type CreditCardData = {
     cardholderName: string;
@@ -28,6 +21,7 @@ export default function ApprovalPage({ params }: { params: { creatorId: string }
         cvv: '',
         creatorId: params.creatorId
     });
+    const router = useRouter()
 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +47,8 @@ export default function ApprovalPage({ params }: { params: { creatorId: string }
         catch (e) {
             console.log("error " + e)
         }
-        redirect('/admin/creator');
+
+        router.push('/admin/creator');
     };
 
     return (
@@ -151,7 +146,6 @@ export default function ApprovalPage({ params }: { params: { creatorId: string }
                                     />
                                 </div>
                             </div>
-
                             <button
                                 type="submit"
                                 className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors mt-6"

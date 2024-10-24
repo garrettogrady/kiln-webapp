@@ -26,7 +26,6 @@ export function UpdateInvoice({ promotionId, businessId }: { promotionId: string
 }
 
 export function GotoBusiness({ id }: { id: string }) {
-  console.log("going to + " + `/business/${id}/promotions`)
   return (
       <Link
           href={`/business/${id}/promotions`}
